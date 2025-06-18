@@ -9,6 +9,10 @@ const Dashboard: React.FC = () => {
   const { UserDetails } = useUser();
   const navigate = useNavigate();
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Placeholder Component
   const PlaceholderDashboard = () => (
     <div className="relative p-4 bg-white">

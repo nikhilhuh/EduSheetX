@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Home } from "lucide-react"; // You can use any icon library here
 
 const formatSegment = (segment: string) =>
-  segment
+  decodeURIComponent(segment)
     .split("-")
     .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
     .join(" ");
@@ -14,7 +14,7 @@ const Breadcrumbs: React.FC = () => {
 
   return (
     <nav className="text-sm tablet:text-lg text-gray-100 my-6 px-4">
-      <ol className="flex flex-wrap items-center space-x-1 laptop-sm:space-x-2">
+      <ol className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2">
         {/* Home */}
         <li className="flex items-center gap-1">
           <Link

@@ -15,7 +15,7 @@ import {
 } from "recharts";
 import { Users, Book, Layers3, CalendarClock } from "lucide-react";
 import Clockloader from "../../components/Loaders/Clockloader";
-import ErrorModal from "../../components/Modals/Status Modals/ErrorModal";
+import ErrorModal from "../../components/Modals/ErrorModal";
 import NoDataImg from "../../assets/images/nodata.svg";
 import { getTeacherDashboard } from "../../services/api/apiCalls/teacher/getDashboard";
 

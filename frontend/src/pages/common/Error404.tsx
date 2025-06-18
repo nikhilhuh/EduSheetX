@@ -16,9 +16,9 @@ const Error404: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="flex flex-col">
       <Navbar />
-      <main className="flex flex-col-reverse laptop-sm:flex-row items-center justify-center min-h-[80vh] px-6 py-12 bg-white gap-10">
+      <main className="flex flex-col-reverse laptop-sm:flex-row items-center justify-center min-h-[80vh] px-6 py-12 gap-10">
         {/* Text Section */}
         <div className="text-center laptop-sm:text-left max-w-xl">
           <h1 className="text-6xl font-extrabold text-blue-700 mb-4">404</h1>
@@ -48,7 +48,7 @@ const Error404: React.FC = () => {
         </div>
       </main>
       <Footer />
-    </>
+    </div>
   );
 };
 

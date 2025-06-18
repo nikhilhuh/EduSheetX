@@ -2,8 +2,8 @@ import React from "react";
 import { useUser } from "../../context/UserContext";
 import { Link } from "react-router-dom";
 import { logout } from "../../services/api/apiCalls/common/logout";
-import SuccessModal from "../Modals/Status Modals/SuccessModal";
-import ErrorModal from "../Modals/Status Modals/ErrorModal";
+import SuccessModal from "../Modals/SuccessModal";
+import ErrorModal from "../Modals/ErrorModal";
 import Cliploader from "../Loaders/Cliploader";
 
 const Navbar: React.FC = () => {
@@ -66,7 +66,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="w-full sticky top-0 bg-blue-500 text-white px-6 py-4 flex justify-around items-center z-50">
+    <nav className="w-full sticky top-0 bg-gradient-to-br from-blue-500 to-blue-600 text-white px-6 py-4 flex justify-around items-center z-40">
       {success && <SuccessModal success={success} />}
       {error && <ErrorModal error={error} />}
       <Link to="/" className="cursor-pointer">

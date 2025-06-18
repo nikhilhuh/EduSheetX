@@ -30,4 +30,55 @@ export type Subject = {
   _id?: string;
   name: string;
   topics: string[];
-}
+};
+
+export type Question = {
+  questionText: string;
+  options: {
+    A: string;
+    B: string;
+    C: string;
+    D: string;
+  };
+};
+
+export type Test = {
+  _id: string;
+  createdAt?: string;
+  isDone: boolean;
+  createdBy: {
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
+  name: string;
+  subject: string;
+  topic: string;
+  updatedAt?: string;
+  timeLimit: number;
+  questions: Question[];
+};
+
+export type QuestionResult = {
+  questionText: string;
+  selectedOption: string | null;
+  correctAnswer: string;
+  options: {
+    A: string;
+    B: string;
+    C: string;
+    D: string;
+  };
+  status: "correct" | "wrong" | "unattempted";
+  isCorrect: boolean;
+};
+
+export type ResultType = {
+  totalQuestions: number;
+  attemptedQuestions: number;
+  correctAnswers: number;
+  wrongAnswers: number;
+  unattempted: number;
+  marks: number;
+  questions: QuestionResult[];
+};

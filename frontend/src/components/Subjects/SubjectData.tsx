@@ -12,7 +12,7 @@ const SubjectData: React.FC<SubjectDataProps> = ({ subject, onClick }) => {
     <div
       onClick={() => onClick(subject)}
       title={`Give Test of ${subject.name}`}
-      className={`group px-4 py-6 rounded-2xl flex flex-col items-center border bg-white shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out gap-3 text-center border-blue-100 cursor-pointer`}
+      className={`group px-4 py-6 rounded-2xl flex flex-col items-center border border-blue-100 bg-blue-50 shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300 ease-in-out gap-3 text-center cursor-pointer`}
     >
       {/* Colorful circle background with icon */}
       <div className="p-6 rounded-full bg-blue-100 group-hover:bg-yellow-200 transition-colors">

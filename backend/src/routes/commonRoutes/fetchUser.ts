@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import { userModel } from "../../models/dbmodels/userModel";
-import { User } from "../../models/type models/userType";
 const router = express.Router();
 
 router.post("/", async (req: Request, res: Response) => {

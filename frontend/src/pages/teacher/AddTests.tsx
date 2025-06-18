@@ -2,8 +2,8 @@ import React from "react";
 import { useUser } from "../../context/UserContext";
 import { getSubjects } from "../../services/api/apiCalls/common/getSubjects";
 import { Subject } from "../../utils/constants";
-import ErrorModal from "../../components/Modals/Status Modals/ErrorModal";
-import SuccessModal from "../../components/Modals/Status Modals/SuccessModal";
+import ErrorModal from "../../components/Modals/ErrorModal";
+import SuccessModal from "../../components/Modals/SuccessModal";
 import { addTest } from "../../services/api/apiCalls/teacher/addTest";
 import Clockloader from "../../components/Loaders/Clockloader";
 

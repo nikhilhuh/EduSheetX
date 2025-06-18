@@ -16,6 +16,8 @@ import Subjects from "../pages/common/Subjects";
 import Topics from "../pages/common/Topics";
 import Tests from "../pages/common/Tests";
 import Dashboard from "../pages/common/Dashboard";
+import TestPage from "../pages/common/TestPage";
+import TestResultPage from "../pages/common/TestResultPage";
 
 
 const AppRoutes: React.FC = () => {
@@ -30,6 +32,8 @@ const AppRoutes: React.FC = () => {
       <Route path="/subjects" element={<Subjects />} />
       <Route path="/subjects/:subjectName" element={<Topics />} />
       <Route path="/subjects/:subjectName/:topicName"  element={<Tests />} />
+      <Route path="/subjects/:subjectName/:topicName/:testName"  element={<TestPage />} />
+      <Route path="/subjects/:subjectName/:topicName/:testName/result" element={<TestResultPage />} />
       {/* Fallback */}
       <Route path="*" element={<Error404 />} />
 

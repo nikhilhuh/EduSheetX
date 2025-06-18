@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import ErrorModal from "../../components/Modals/Status Modals/ErrorModal";
-import SuccessModal from "../../components/Modals/Status Modals/SuccessModal";
+import ErrorModal from "../../components/Modals/ErrorModal";
+import SuccessModal from "../../components/Modals/SuccessModal";
 import { useUser } from "../../context/UserContext";
 import { signin } from "../../services/api/apiCalls/common/signin";
 import { fetchuser } from "../../services/api/apiCalls/common/fetchUserDetails";
