@@ -11,58 +11,44 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   onComplete,
   testId,
 }) => {
-  const [secondsLeft, setSecondsLeft] = React.useState<number>(0);
+  const [secondsLeft, setSecondsLeft] = React.useState<number>(minutes * 60);
 
   React.useEffect(() => {
     const storageKey = `test_start_time_${testId}`;
-    let startTime = localStorage.getItem(storageKey);
     let parsedStartTime: number;
 
-    if (!startTime) {
+    const saved = localStorage.getItem(storageKey);
+    if (saved) {
+      parsedStartTime = parseInt(saved);
+    } else {
       parsedStartTime = Date.now();
       localStorage.setItem(storageKey, parsedStartTime.toString());
-    } else {
-      parsedStartTime = parseInt(startTime);
     }
 
     const endTime = parsedStartTime + minutes * 60 * 1000;
-    const now = Date.now();
 
-    if (now >= endTime) {
-      // Time already up when loading
-      localStorage.removeItem(storageKey);
-      if (onComplete) onComplete();
-      return;
-    }
-
-    const updateTimer = () => {
-      const currentTime = Date.now();
-      const remaining = Math.max(Math.floor((endTime - currentTime) / 1000), 0);
-      setSecondsLeft(remaining);
-
+    const update = () => {
+      const now = Date.now();
+      const remaining = Math.floor((endTime - now) / 1000);
       if (remaining <= 0) {
+        setSecondsLeft(0);
         clearInterval(interval);
         localStorage.removeItem(storageKey);
         if (onComplete) onComplete();
+      } else {
+        setSecondsLeft(remaining);
       }
     };
 
-    updateTimer(); // Set initial state
-    const interval = setInterval(updateTimer, 1000);
-
+    update();
+    const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
   }, [minutes, onComplete, testId]);
 
-  const formatTime = (totalSeconds: number) => {
-    const hrs = Math.floor(totalSeconds / 3600);
-    const mins = Math.floor((totalSeconds % 3600) / 60);
-    const secs = totalSeconds % 60;
-
-    const pad = (num: number) => num.toString().padStart(2, "0");
-
-    return hrs > 0
-      ? `${pad(hrs)}:${pad(mins)}:${pad(secs)}`
-      : `${pad(mins)}:${pad(secs)}`;
+  const format = (s: number) => {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
   };
 
   return (
@@ -72,7 +58,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
     >
       <span className="text-lg tablet:text-xl font-semibold">⏳</span>
       <span className="font-mono text-xl tablet:text-2xl tracking-wider">
-        {formatTime(secondsLeft)}
+        {format(secondsLeft)}
       </span>
     </div>
   );

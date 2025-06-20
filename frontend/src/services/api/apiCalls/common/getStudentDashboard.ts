@@ -1,11 +1,13 @@
-import { Student } from "../../../../utils/constants";
+import { getOrCreateUserId } from "../../../../utils/getOrCreateUserId";
 import { axiosInstance } from "../../../axiosInstance";
 import { apiErrorHandler } from "../../apiErrorHandling";
 
-export const getStudentDashboard = async (email: Student['email']) => {
+const userId = getOrCreateUserId();
+
+export const getStudentDashoard = async () => {
   try {
     const response = await axiosInstance.get("/getstudentdashboard", {
-      params: { email },
+      params: { userId },
     });
     return response.data;
   } catch (err: any) {

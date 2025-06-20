@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Subject } from "../../utils/constants";
 import ErrorModal from "../../components/Modals/ErrorModal";
 import Navbar from "../../components/Layout/Navbar";
@@ -8,45 +8,53 @@ import Hero from "../../components/Topics/Hero";
 import NoData from "../../components/Miscellaneous/NoData";
 import MainContent from "../../components/Topics/MainContent";
 import NotFound from "../../components/Miscellaneous/NotFound";
+import { getSubjectTopics } from "../../services/api/apiCalls/common/getSubjectTopics";
+import LoadingData from "../../components/Miscellaneous/LoadingData";
 
 const Topics: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { subjectName } = useParams();
   const [error, setError] = React.useState<string>("");
-  // Try to retrieve subject from state or sessionStorage
-  const [subject, setSubject] = React.useState<Subject | null>(null);
+  const [topics, setTopics] = React.useState<Subject['topics']>([]);
+  const [loadingData, setLoadingData] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    const subjectFromState = location.state?.subject;
-    if (subjectFromState) {
-      setSubject(subjectFromState);
-      sessionStorage.setItem(
-        "selectedSubject",
-        JSON.stringify(subjectFromState)
-      );
-    } else {
-      const stored = sessionStorage.getItem("selectedSubject");
-      if (stored) {
-        setSubject(JSON.parse(stored));
-      } else {
+    const fetchTopics = async () => {
+      if (!subjectName) return;
+      setLoadingData(true);
+      try {
+        const response = await getSubjectTopics(subjectName);
+        if (response.success) {
+          setTopics(response.data);
+        } else {
+          setError(
+            response.message || "Unable to fetch Subject Topics, try again"
+          );
+          setTimeout(() => {
+            setError("");
+            navigate(-1);
+          }, 2000);
+        }
+      } catch (err: any) {
         setError("Unable to fetch Subject Topics, try again");
         setTimeout(() => {
           setError("");
           navigate(-1);
         }, 2000);
+      } finally {
+        setLoadingData(false);
       }
-    }
+    };
+    fetchTopics();
   }, []);
 
   const handleTopicClick = (topic: string) => {
-    if (!subject) return;
-    navigate(`${encodeURIComponent(topic)}`, {
-      state: { topic }, // passing topic as location.state
-    });
+    if (!subjectName) return;
+    navigate(`${encodeURIComponent(topic)}`);
   };
 
-  if (!subject) return <NotFound text="Subject was not found." />;
+  if (!subjectName) return <NotFound text="Subject was not found." />;
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -54,13 +62,18 @@ const Topics: React.FC = () => {
       <Navbar />
       <Hero />
       {/* Main content */}
-      <div className="px-4 py-2 flex-1">
-        {subject.topics.length === 0 ? (
+      {loadingData? (
+        <LoadingData text={`Searching for available topics of the ${subjectName}`} />
+      ) : (
+        <div className="px-4 py-2 flex-1">
+        {topics.length === 0 ? (
           <NoData text="No topics found at the moment.." />
         ) : (
-          <MainContent subject={subject} handleTopicClick={handleTopicClick} />
+          <MainContent subjectName={subjectName} topics={topics} handleTopicClick={handleTopicClick} />
         )}
       </div>
+      )}
+      
       <Footer />
     </div>
   );

@@ -2,16 +2,17 @@ import React from "react";
 import { Subject } from "../../utils/constants";
 
 const MainContent: React.FC<{
-  subject: Subject;
+  subjectName: Subject['name'];
+  topics: Subject['topics'];
   handleTopicClick: (topic: string) => void;
-}> = ({ subject, handleTopicClick }) => {
+}> = ({ subjectName, topics, handleTopicClick }) => {
   return (
     <div className="max-w-6xl mx-auto px-4 py-16">
       <h2 className="text-3xl laptop-sm:text-4xl font-extrabold text-center text-blue-800 mb-10 capitalize">
-        Topics in {subject.name}
+        Topics in {subjectName}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {subject.topics.map((topic, idx) => (
+        {topics.map((topic, idx) => (
           <div
             key={idx}
             onClick={() => handleTopicClick(topic)}

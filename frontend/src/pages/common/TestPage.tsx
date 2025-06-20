@@ -30,6 +30,7 @@ const TestPage: React.FC = () => {
 
   if (!test) return <NotFound text="Test was not found." />;
 
+
   const handleNext = () => {
     if (currentQuestionIndex < test.questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
@@ -61,6 +62,7 @@ const TestPage: React.FC = () => {
       );
 
       if (response.success) {
+        localStorage.removeItem(`test_start_time_${test._id}`);
         const result = response.data;
         navigate("result", { state: { result } });
       } else {
@@ -74,7 +76,7 @@ const TestPage: React.FC = () => {
       setEvaluating(false);
     }
   };
-  
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {error && <ErrorModal error={error} />}

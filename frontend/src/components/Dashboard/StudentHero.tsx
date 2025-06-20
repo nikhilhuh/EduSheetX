@@ -1,12 +1,28 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import MascotImg from "../../assets/images/mascot.png";
+import React from "react";
+import { User } from "../../utils/constants";
+import Breadcrumbs from "../Layout/Breadcrumbs";
 
-const Hero: React.FC = () => {
+interface StudentHeroProps {
+  totalTests: number;
+  averageMarks: string;
+  percentage: string;
+  testStreak: number;
+  UserDetails: User;
+}
+
+const StudentHero: React.FC<StudentHeroProps> = ({
+  totalTests,
+  averageMarks,
+  percentage,
+  testStreak,
+  UserDetails
+}) => {
+  const cardStyle =
+    "rounded-2xl p-5 shadow-lg bg-gradient-to-br text-white from-purple-500 to-indigo-600 flex flex-col justify-center gap-4 text-center";
   return (
     <>
-    {/* Hero Section */}
-      <header className="relative bg-blue-500 w-full flex flex-col laptop-sm:flex-row items-center justify-around gap-14 px-6 py-10 overflow-hidden pb-20">
+      {/* Hero Section */}
+      <header className="relative bg-blue-500 w-full flex flex-col laptop-sm:flex-row items-center justify-around gap-14 px-6 py-10 pb-20 overflow-hidden">
         {/* Background Gradient (under everything) */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 z-0" />
         {/* Decorative Floating Shapes (above gradient, behind content) */}
@@ -76,65 +92,56 @@ const Hero: React.FC = () => {
           </svg>
         </div>
         {/* Left Content */}
-        <div className="z-20 max-w-xl space-y-4 text-center laptop-sm:text-left">
+        <div className="z-20 max-w-2xl space-y-4 text-center">
           {/* Headline */}
-          <h1 className="text-4xl tablet:text-5xl laptop-sm:text-6xl font-extrabold text-white leading-tight drop-shadow-md">
-            Online Tests for <br />
-            <span className="text-yellow-300 glow">Class 10</span>
+          <h1 className="text-4xl laptop-sm:text-6xl font-extrabold text-white leading-tight text-center drop-shadow-md">
+            <span>Welcome</span>
+            <br />
+            <span className="text-yellow-300 glow">
+              {UserDetails.firstName} {UserDetails.lastName}
+            </span>
           </h1>
-
           {/* Subtext */}
-          <p className="text-gray-100 text-lg tablet:text-xl leading-relaxed text-center max-w-xl">
-            Attempt MCQ tests by subject and topic. Get instant scores and track
-            your progress easily — all in one place.
+          <p className="text-gray-100 text-lg md:text-xl leading-relaxed text-center max-w-lg">
+            Your personalised dashboard is ready to track your progress.
           </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 mt-6 justify-center laptop-sm:justify-start">
-            <Link to="/subjects">
-              <button className="px-6 py-3 bg-yellow-300 text-black font-semibold rounded-xl shadow-md hover:bg-yellow-400 transition-all text-sm sm:text-base cursor-pointer">
-                🚀 Start Practicing
-              </button>
-            </Link>
-            <Link to="/dashboard">
-              <button className="px-6 py-3 bg-white border border-blue-500 text-blue-600 font-semibold rounded-xl shadow-md hover:bg-blue-100 transition-all text-sm sm:text-base cursor-pointer">
-                📈 Go to Dashboard
-              </button>
-            </Link>
+          <div className="flex justify-center">
+            <div className="inline-flex justify-center items-center gap-2 bg-white/20 text-white rounded-full px-4 py-1 backdrop-blur-md">
+              <Breadcrumbs />
+            </div>
           </div>
-
-          {/* Why Us Section */}
-          <section className="pt-10 border-t border-white/20 mt-8 tablet:hidden laptop-sm:block">
-            <h2 className="text-2xl laptop-sm:text-3xl font-semibold text-white mb-4 text-left">
-              Why <span className="text-yellow-300 glow">EduSheetX?</span>
-            </h2>
-            <ul className="space-y-4 text-lg laptop-sm:text-xl text-gray-100 text-left">
-              <li className="flex items-start gap-3">
-                <span className="text-xl">🎯</span> Topic-wise Class 10 MCQ
-                Tests
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-xl">⚡</span> Instant Score Evaluation
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-xl">📊</span> Dashboard to track your
-                progress
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-xl">📱</span> Fully responsive on mobile &
-                tablet
-              </li>
-            </ul>
-          </section>
         </div>
-        {/* Right Image or mascot */}
-        <div className="z-20 flex justify-center items-center">
-          <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
-            <img
-              src={MascotImg}
-              alt="Mascot"
-              className="w-full h-auto object-contain drop-shadow-2xl"
-            />
+        {/* Summary Cards */}
+        <div className="grid w-full laptop-sm:w-auto mobile-l:grid-cols-2 gap-4 mb-8 z-20">
+          <div
+          title="Total tests submitted by you"
+            className={`${cardStyle} bg-gradient-to-br from-yellow-400 to-yellow-600`}
+          >
+            <p>Total Tests Taken</p>
+            <p className="text-xl tablet:text-3xl font-bold">{totalTests}</p>
+          </div>
+          <div
+          title="Your Average Marks in all the tests combined"
+            className={`${cardStyle} bg-gradient-to-br from-sky-400 to-sky-600`}
+          >
+            <p>Average Marks</p>
+            <p className="text-xl tablet:text-3xl font-bold">{averageMarks}</p>
+          </div>
+          <div
+          title="Your percentage in all tests"
+            className={`${cardStyle} bg-gradient-to-br from-green-400 to-green-600`}
+          >
+            <p>Percentage</p>
+            <p className="text-xl tablet:text-3xl font-bold">{percentage}%</p>
+          </div>
+          <div
+          title={`You current streak`}
+            className={`${cardStyle} bg-gradient-to-br from-pink-400 to-pink-600`}
+          >
+            <p>Current Streak</p>
+            <p className="text-xl tablet:text-3xl font-bold">
+              {testStreak}
+            </p>
           </div>
         </div>
       </header>
@@ -147,13 +154,13 @@ const Hero: React.FC = () => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            fill="#f3f4f6"
+            fill="#ffffff"
             d="M0,160L48,165.3C96,171,192,181,288,176C384,171,480,149,576,160C672,171,768,213,864,213.3C960,213,1056,171,1152,154.7C1248,139,1344,149,1392,154.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
           />
         </svg>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Hero
+export default StudentHero;

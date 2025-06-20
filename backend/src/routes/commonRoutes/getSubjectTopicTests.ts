@@ -16,7 +16,9 @@ router.get("/", async (req: Request, res: Response) => {
       return;
     }
 
-    const subject = await subjectModel.findOne({ name: subjectName });
+    const subject = await subjectModel.findOne({
+      name: { $regex: new RegExp(`^${subjectName}$`, "i") },
+    });
     if (!subject) {
       res.status(404).json({ success: false, message: "Subject not found." });
       return;
@@ -53,7 +55,7 @@ router.get("/", async (req: Request, res: Response) => {
                 $expr: {
                   $and: [
                     { $eq: ["$test", "$$testId"] },
-                    { $eq: ["$user", userId] },
+                    { $eq: [{ $toString: "$user" }, userId.toString()] },
                   ],
                 },
               },
@@ -73,8 +75,6 @@ router.get("/", async (req: Request, res: Response) => {
           subject: 1,
           topic: 1,
           timeLimit: 1,
-          createdAt: 1,
-          updatedAt: 1,
           isDone: 1,
           "createdBy.firstName": 1,
           "createdBy.lastName": 1,

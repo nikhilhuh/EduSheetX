@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ErrorModal from "../../components/Modals/ErrorModal";
 import SuccessModal from "../../components/Modals/SuccessModal";
-import { addStudent } from "../../services/api/apiCalls/student/addStudent";
+import { signUp } from "../../services/api/apiCalls/common/signUp";
 import { SignUpUser } from "../../utils/constants";
 import Cliploader from "../../components/Loaders/Cliploader";
 import Navbar from "../../components/Layout/Navbar";
@@ -22,7 +22,6 @@ const SignUp: React.FC = () => {
     firstName: "",
     lastName: "",
     role: "student",
-    studentClass: "10",
     email: "",
     password: "",
   });
@@ -59,10 +58,9 @@ const SignUp: React.FC = () => {
       return;
     setLoading(true);
     try {
-      const response = await addStudent(
+      const response = await signUp(
         credentials.firstName,
         credentials.lastName,
-        credentials.studentClass,
         credentials.email,
         credentials.password
       );
@@ -102,6 +100,7 @@ const SignUp: React.FC = () => {
           alt="Student Welcome"
           className="h-full w-full object-contain"
         />
+
         <div className="flex-1 flex flex-col justify-center items-center px-4 py-8">
           {/* Header Image */}
           <img

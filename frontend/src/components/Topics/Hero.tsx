@@ -6,7 +6,7 @@ const Hero: React.FC = () => {
   return (
     <>
       {/* Hero Section */}
-      <header className="relative bg-blue-500 w-full flex flex-col-reverse tablet:flex-row items-center justify-around gap-14 px-6 py-20 overflow-hidden">
+      <header className="relative bg-blue-500 w-full flex flex-col-reverse tablet:flex-row items-center justify-around gap-14 px-6 py-10 pb-20 overflow-hidden">
         {/* Background Gradient (under everything) */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 z-0" />
         {/* Decorative Floating Shapes (above gradient, behind content) */}
@@ -77,7 +77,7 @@ const Hero: React.FC = () => {
         </div>
         {/* Left Text Content */}
         <div className="z-20 max-w-xl space-y-6 text-center md:text-left">
-          <h1 className="text-4xl laptop-sm:text-6xl font-extrabold text-white leading-tight">
+          <h1 className="text-4xl tablet:text-5xl laptop-sm:text-6xl font-extrabold text-white leading-tight">
             Choose Your <span className="text-yellow-300">Topic</span>
           </h1>
           <p className="text-white/90 text-lg">
@@ -88,7 +88,7 @@ const Hero: React.FC = () => {
           </div>
         </div>
         {/* Right Mascot/Image */}
-        <div className="relative z-20 w-full max-w-sm">
+        <div className="hidden tablet:block relative z-20 max-w-xs laptop-sm:max-w-sm laptop-lg:max-w-md">
           {/* Yellow Glow Blob */}
           <img
             src={EduSheetXgif}

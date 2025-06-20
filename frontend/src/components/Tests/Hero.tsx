@@ -6,7 +6,7 @@ const Hero: React.FC = () => {
   return (
     <>
       {/* Hero Section */}
-      <header className="relative bg-blue-500 w-full flex flex-col-reverse tablet:flex-row items-center justify-around gap-14 px-6 py-20 overflow-hidden">
+      <header className="relative bg-blue-500 w-full flex flex-col-reverse tablet:flex-row items-center justify-around gap-14 px-6 py-10 pb-20 overflow-hidden">
         {/* Background Gradient (under everything) */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 z-0" />
         {/* Decorative Floating Shapes (above gradient, behind content) */}
@@ -77,10 +77,10 @@ const Hero: React.FC = () => {
         </div>
         {/* Left Text Content */}
         <div className="z-20 max-w-xl space-y-6 text-center md:text-left">
-          <h1 className="text-4xl laptop-sm:text-6xl font-extrabold text-white leading-tight">
+          <h1 className="text-4xl tablet:text-5xl laptop-sm:text-6xl font-extrabold text-white leading-tight">
             Choose Your <span className="text-yellow-300">Test</span>
           </h1>
-          <ul className="text-white/90 text-lg space-y-1 list-disc list-inside text-left md:text-left px-4">
+          <ul className="text-white/90 max-w-lg text-lg space-y-1 list-disc list-inside text-left tablet:text-left px-4">
             <li>
               The Test will start as soon as you click the{" "}
               <strong>Start Test</strong> button.
@@ -95,7 +95,7 @@ const Hero: React.FC = () => {
           </div>
         </div>
         {/* Right Mascot/Image */}
-        <div className="relative z-20 w-full max-w-sm">
+        <div className="hidden tablet:block relative z-20 max-w-xs laptop-sm:max-w-sm laptop-lg:max-w-md">
           {/* Yellow Glow Blob */}
           <img
             src={EduSheetXgif}

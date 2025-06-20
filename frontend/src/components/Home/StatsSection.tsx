@@ -7,6 +7,7 @@ export const StatsSection: React.FC<{
     totalStudents: number;
     totalTestsTaken: number;
     totalQuestionsAnswered: number;
+    testsAvailable: number;
   };
 }> = ({ siteStats }) => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.3 });
@@ -17,7 +18,7 @@ export const StatsSection: React.FC<{
         EduSheetX Impact
       </h2>
 
-      <div className="grid grid-cols-1 tablet:grid-cols-3 gap-8 max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 tablet:grid-cols-4 gap-8 mx-auto">
         <StatCard
           label="Total Students Helped"
           value={siteStats?.totalStudents || 0}
@@ -33,6 +34,12 @@ export const StatsSection: React.FC<{
         <StatCard
           label="Questions Answered"
           value={siteStats?.totalQuestionsAnswered || 0}
+          color="text-purple-600"
+          inView={inView}
+        />
+        <StatCard
+          label="Tests Available"
+          value={siteStats?.testsAvailable || 0}
           color="text-purple-600"
           inView={inView}
         />

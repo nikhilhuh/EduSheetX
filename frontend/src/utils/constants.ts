@@ -1,15 +1,15 @@
-export type User = {
-  _id?: string;
+export type UserRole = "student" | "teacher";
+export type UserStatus = "active" | "inactive";
+
+export interface User {
+  _id: string; 
   firstName: string;
   lastName: string;
   email: string;
-  password?: string; 
-  role: "student" | "teacher";
-  status: "active" | "inactive";
-  studentClass?: string;  
-  createdAt?: string;
-  updatedAt?: string;
-};
+  password: string;
+  role: UserRole;
+  status: UserStatus;
+}
 
 export type SignUpUser = {
   firstName: string;
@@ -17,17 +17,16 @@ export type SignUpUser = {
   role: "student";
   email: string;
   password: string;
-  studentClass: string;
 };
 
 export type SignInUser = {
   email: User["email"];
-  role: User["role"];
   password: string;
+  guestId?: string;
 };
 
 export type Subject = {
-  _id?: string;
+  _id: string;
   name: string;
   topics: string[];
 };
@@ -44,7 +43,6 @@ export type Question = {
 
 export type Test = {
   _id: string;
-  createdAt?: string;
   isDone: boolean;
   createdBy: {
     firstName: string;
@@ -54,7 +52,6 @@ export type Test = {
   name: string;
   subject: string;
   topic: string;
-  updatedAt?: string;
   timeLimit: number;
   questions: Question[];
 };

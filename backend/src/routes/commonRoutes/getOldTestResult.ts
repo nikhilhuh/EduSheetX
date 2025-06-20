@@ -18,7 +18,9 @@ router.get("/", async (req: Request, res: Response) => {
 
     const testResult = await testResultModel.findOne({
       test: testId,
-      user: userId,
+      $expr: {
+        $eq: [{ $toString: "$user" }, userId.toString()],
+      },
     });
 
     if (!testResult) {

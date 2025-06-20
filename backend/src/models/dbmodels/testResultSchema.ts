@@ -19,9 +19,9 @@ const questionResultSchema = new mongoose.Schema({
 });
 
 const testResultSchema = new mongoose.Schema({
-  user: { type: String, required: true }, // anon user ID
-  test: { type: mongoose.Schema.Types.ObjectId, ref: "Test", required: true },
-  subject: { type: mongoose.Schema.Types.ObjectId, ref: "Subject", required: true },
+  user: { type: mongoose.Schema.Types.Mixed, required: true },
+  test: { type: mongoose.Schema.Types.ObjectId, ref: "Tests", required: true },
+  subject: { type: mongoose.Schema.Types.ObjectId, ref: "Subjects", required: true },
   topic: { type: String, required: true },
   totalQuestions: { type: Number, required: true },
   attemptedQuestions: { type: Number, required: true },
@@ -29,11 +29,11 @@ const testResultSchema = new mongoose.Schema({
   wrongAnswers: { type: Number, required: true },
   unattempted: { type: Number, required: true },
   marks: { type: Number, required: true },
-  questions: [questionResultSchema], // renamed from 'detailedResult'
+  questions: [questionResultSchema], 
   attemptedAt: { type: Date, default: Date.now },
 });
 
-// Unique constraint: one result per test per user
+testResultSchema.index({ user: 1 });
 testResultSchema.index({ user: 1, test: 1 }, { unique: true });
 
 const testResultModel = mongoose.model("TestResult", testResultSchema, "TestResult");

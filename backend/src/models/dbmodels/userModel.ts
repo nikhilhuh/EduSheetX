@@ -15,10 +15,10 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["student", "teacher"],
+      required: true,
       default: "student",
     },
     status: { type: String, enum: ["active", "inactive"], default: "inactive" },
-    studentClass: { type: String, required: true, default: "10" },
   },
   { timestamps: true }
 );

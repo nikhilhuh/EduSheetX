@@ -1,12 +1,13 @@
 import React from "react";
 import { useUser } from "../../context/UserContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../services/api/apiCalls/common/logout";
 import SuccessModal from "../Modals/SuccessModal";
 import ErrorModal from "../Modals/ErrorModal";
 import Cliploader from "../Loaders/Cliploader";
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate();
   const { UserDetails, setUserDetails } = useUser();
   const [idClicked, setIdClicked] = React.useState<boolean>(false);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
@@ -66,11 +67,13 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="w-full sticky top-0 bg-gradient-to-br from-blue-500 to-blue-600 text-white px-6 py-4 flex justify-around items-center z-40">
+    <nav className="w-full sticky top-0 bg-gradient-to-br from-blue-500 to-blue-600 text-white px-6 py-4 flex justify-around items-center z-30">
       {success && <SuccessModal success={success} />}
       {error && <ErrorModal error={error} />}
       <Link to="/" className="cursor-pointer">
-        <div title="Go to Home" className="text-2xl font-bold tracking-wide">EduSheetX</div>
+        <div title="Go to Home" className="text-2xl font-bold tracking-wide">
+          EduSheetX
+        </div>
       </Link>
       {!UserDetails ? (
         <div className="flex items-center gap-4">
@@ -96,33 +99,53 @@ const Navbar: React.FC = () => {
           >
             {UserDetails.firstName[0]}
           </div>
-          {/* user options dropdown */}
+          {/* User Options Dropdown */}
           {idClicked && (
-            <div className="absolute top-full mt-1 right-2 bg-gray-100 border rounded text-black text-lg">
-              <div title="Your name" className="border-b px-4 py-2">
-                {UserDetails.firstName} {UserDetails.lastName}
-              </div>
-              {/* email */}
-              <div
-                title="Your registered email"
-                className="px-4 py-2 border-b "
-              >
-                {UserDetails.email}
-              </div>
-              <div
-                onClick={handleLogout}
-                title="Logout"
-                className={`text-red-500 hover:cursor-pointer px-4 py-2 hover:bg-red-500 hover:text-white hover:font-semibold transition-all ${
-                  loading && "bg-red-500"
-                }`}
-              >
-                {loading ? (
-                  <div className="w-full flex justify-center items-center">
-                    <Cliploader size={20} />{" "}
+            <div className="absolute top-full mt-2 right-2 bg-white shadow drop-shadow-2xl rounded-2xl border border-gray-200 z-40 animate-fade-in-up text-sm sm:text-base overflow-hidden">
+              {/* Profile Section */}
+              <div className="flex items-center gap-4 px-5 py-4 border-b bg-gray-50">
+                <div className="h-12 w-12 rounded-full bg-yellow-500 flex items-center justify-center text-white font-bold text-lg">
+                  {UserDetails.firstName?.[0]}
+                  {UserDetails.lastName?.[0]}
+                </div>
+                <div>
+                  <div className="font-semibold text-gray-800">
+                    {UserDetails.firstName} {UserDetails.lastName}
                   </div>
-                ) : (
-                  "Logout"
-                )}
+                  <div className="text-xs text-gray-500 break-words">
+                    {UserDetails.email}
+                  </div>
+                </div>
+              </div>
+
+              {/* Menu Options */}
+              <div className="border-t border-black p-2">
+                <button
+                title="Go to your dashboard"
+                  onClick={() => navigate("/dashboard")}
+                  className="w-full text-left px-3 py-2 hover:bg-yellow-200 text-gray-800 transition-all duration-200 cursor-pointer rounded-md"
+                >
+                  🧭 Dashboard
+                </button>
+              </div>
+
+              {/* Logout */}
+              <div className="px-2 pb-2">
+                <button
+                  onClick={handleLogout}
+                  title="Logout"
+                  className={`w-full text-left text-red-600 hover:text-white hover:bg-red-500 font-medium py-2 px-3 rounded-md transition-all duration-300 ${
+                    loading ? "bg-red-100" : "cursor-pointer"
+                  }`}
+                >
+                  {loading ? (
+                    <div className="flex justify-center items-center">
+                      <Cliploader size={18} />
+                    </div>
+                  ) : (
+                    "🚪 Logout"
+                  )}
+                </button>
               </div>
             </div>
           )}

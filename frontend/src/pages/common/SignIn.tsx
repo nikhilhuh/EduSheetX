@@ -11,6 +11,7 @@ import Navbar from "../../components/Layout/Navbar";
 import Footer from "../../components/Layout/Footer";
 import SigninImg from "../../assets/images/signin.svg";
 import LeaderBoardImg from "../../assets/images/leaderboard.svg";
+import { getOrCreateUserId } from "../../utils/getOrCreateUserId";
 
 const SignIn: React.FC = () => {
   const { setUserDetails } = useUser();
@@ -20,7 +21,6 @@ const SignIn: React.FC = () => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
   const [credentials, setCredentials] = React.useState<SignInUser>({
-    role: "student",
     email: "",
     password: "",
   });
@@ -49,16 +49,18 @@ const SignIn: React.FC = () => {
     if (!isFormValid || loading) return;
     setLoading(true);
     try {
+      const guestId: string | undefined = getOrCreateUserId();
       const response = await signin(
-        credentials.role,
         credentials.email,
-        credentials.password
+        credentials.password,
+        guestId
       );
       if (response.success) {
-        const userDetails = await fetchuser(credentials.email);
-        if (userDetails.success) {
-          localStorage.setItem("user", JSON.stringify(userDetails.user));
-          setUserDetails(userDetails.user);
+        const userDetailsResponse = await fetchuser(credentials.email);
+        if (userDetailsResponse.success) {
+          localStorage.setItem("userId", userDetailsResponse.user._id);
+          localStorage.setItem("user", JSON.stringify(userDetailsResponse.user));
+          setUserDetails(userDetailsResponse.user);
           setSuccess("Signin successful!");
           setError("");
           setTimeout(() => {

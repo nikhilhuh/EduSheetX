@@ -1,15 +1,21 @@
-export type User = {
-  _id?: string;
+export type UserRole = "student" | "teacher";
+export type UserStatus = "active" | "inactive";
+
+export interface User {
+  _id: string; 
   firstName: string;
   lastName: string;
   email: string;
-  password?: string; 
-  role: "student" | "teacher";
-  status: "active" | "inactive";
-  studentClass?: string;  
-  createdAt?: string;
-  updatedAt?: string;
-};
+  password: string;
+  role: UserRole;
+  status: UserStatus;
+}
+
+export interface SubjectType {
+  _id: string;
+  name: string;
+  topics: string[];
+}
 
 export type QuestionResult = {
   questionText: string;

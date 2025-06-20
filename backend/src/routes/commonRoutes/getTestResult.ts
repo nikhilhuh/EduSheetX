@@ -3,6 +3,7 @@ import { subjectModel } from "../../models/dbmodels/subjectModel";
 import { testModel } from "../../models/dbmodels/testModel";
 import { incrementSiteStats } from "../../utils/incrementSiteStats";
 import { testResultModel } from "../../models/dbmodels/testResultSchema";
+import mongoose from "mongoose";
 const router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
@@ -48,8 +49,10 @@ router.get("/", async (req: Request, res: Response) => {
 
     // ✅ Check if user already submitted this test
     const existingResult = await testResultModel.findOne({
-      user: userId,
       test: test._id,
+      $expr: {
+        $eq: [{ $toString: "$user" }, userId.toString()],
+      },
     });
 
     if (existingResult) {
@@ -108,7 +111,9 @@ router.get("/", async (req: Request, res: Response) => {
 
     // ✅ Save to testResultModel
     await testResultModel.create({
-      user: userId,
+      user: mongoose.Types.ObjectId.isValid(userId)
+        ? new mongoose.Types.ObjectId(userId)
+        : userId,
       test: test._id,
       subject: subject._id,
       topic: topicName,

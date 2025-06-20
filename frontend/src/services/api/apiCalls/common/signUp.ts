@@ -2,13 +2,12 @@ import { User } from "../../../../utils/constants";
 import { axiosInstance } from "../../../axiosInstance";
 import { apiErrorHandler } from "../../apiErrorHandling";
 
-export const addStudent = async (
-firstName: User['firstName'], lastName: User['lastName'], studentClass: User['studentClass'], email: User['email'], password: string) => {
+export const signUp = async (
+firstName: User['firstName'], lastName: User['lastName'], email: User['email'], password: string) => {
   try {
-    const response = await axiosInstance.post("/addstudent", {
+    const response = await axiosInstance.post("/signup", {
       firstName,
       lastName,
-      studentClass,
       email,
       password,
     });

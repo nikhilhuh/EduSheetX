@@ -1,9 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
 // Teacher pages
-import TeacherDashboard from "../pages/teacher/Dashboard";
 import AddTests from "../pages/teacher/AddTests";
-
 
 //  Common pages
 import Unauthorized from "../pages/common/Unauthorized";
@@ -39,7 +37,6 @@ const AppRoutes: React.FC = () => {
 
       {/* Teacher Routes - Protected */}
       <Route element={<ProtectedRoute allowedRoles={["teacher"]} />}>
-        <Route path="dashboard" element={<TeacherDashboard />} />
         <Route path="addtests" element={<AddTests />} />
         <Route path="*" element={<Error404 />} />
       </Route>

@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.post("/", async (req: Request, res: Response) => {
   try {
-    const { firstName, lastName, email, studentClass, password } = req.body;
-    if (!firstName || !lastName || !studentClass || !email || !password) {
+    const { firstName, lastName, email, password } = req.body;
+    if (!firstName || !lastName || !email || !password) {
       res.status(400).json({
         success: false,
         message: "Please provide all required fields.",
@@ -33,14 +33,13 @@ router.post("/", async (req: Request, res: Response) => {
       lastName,
       email,
       password: hashedPassword,
-      studentClass,
       role: "student",
       status: "inactive",
     });
 
     res
       .status(201)
-      .json({ success: true, message: "Student created successfully" });
+      .json({ success: true, message: "Student signed up successfully" });
     return;
   } catch (err) {
     console.log(`Error Signing Up User: ${err}`);

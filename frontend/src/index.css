@@ -1,36 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Anton&family=Dancing+Script:wght@400..700&family=Underdog&display=swap");
 @import "tailwindcss";
 
-:root {
-  --color-primary: #e9d2fa;
-  --color-primaryHover: #f3e7fd;
-  --color-secondary: #ffffff;
-  color: black;
-}
-.blue {
-  --color-primary: #d0e8ff;
-  --color-primaryHover: #e6f3ff;
-  --color-secondary: #ffffff;
-  color: black;
-}
-.orange {
-  --color-primary: #ffd8b2;
-  --color-primaryHover: #ffe9d6;
-  --color-secondary: #ffffff;
-  color: black;
-}
-.pink {
-  --color-primary: #ffcde0;
-  --color-primaryHover: #ffe6ef;
-  --color-secondary: #ffffff;
-  color: black;
-}
-.dark {
-  --color-primary: #2c2b2b;
-  --color-primaryHover: #504f4f;
-  --color-secondary: #444343;
-  color: white;
-}
 .modal-input-field {
   @apply bg-transparent outline-none focus:outline-none border-b-2 border-gray-400 px-2 py-1 max-w-max overflow-ellipsis;
 }
@@ -47,9 +17,6 @@
   height: 100svh;
 }
 @theme {
-  --color-blueLight: #3c99dc;
-  --color-blue: #2565ae;
-  --color-blueDark: #0f5298;
 
   /* your fonts (imported from google fonts) */
   --font-underdog: Underdog, sans-serif;
@@ -142,4 +109,19 @@
 
 .fade-in-up {
   animation: fadeInUp 0.5s ease-out forwards;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.3s ease-out;
 }

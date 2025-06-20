@@ -3,7 +3,7 @@ import InstructionsImg from "../../assets/images/instructions.png";
 
 export const Instructions: React.FC = () => {
   return (
-    <section className="px-6 text-gray-800">
+    <section className="p-6 text-gray-800">
       <div className="max-w-6xl mx-auto grid laptop-sm:grid-cols-2 gap-12 items-center">
         {/* Left Text Content */}
         <div>
@@ -58,8 +58,7 @@ export const Instructions: React.FC = () => {
               After completing all the questions, click on "Submit" button.
             </li>
             <li>
-              Your Score will be displayed on the screen along with a
-              leaderboard of that test.
+              Your Result will be displayed on the screen .
             </li>
           </ul>
         </div>

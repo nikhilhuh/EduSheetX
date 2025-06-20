@@ -17,7 +17,7 @@ const Hero: React.FC<{ result: ResultType }> = ({ result }) => {
   return (
     <>
       {/* Hero Section */}
-      <header className="relative bg-blue-500 w-full flex flex-col tablet:flex-row items-center justify-around gap-14 px-6 py-20 overflow-hidden">
+      <header className="relative bg-blue-500 w-full flex flex-col laptop-sm:flex-row items-center justify-around gap-14 px-6 py-10 pb-20 overflow-hidden">
         {/* Background Gradient (under everything) */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 z-0" />
         {/* Decorative Floating Shapes (above gradient, behind content) */}
@@ -88,8 +88,10 @@ const Hero: React.FC<{ result: ResultType }> = ({ result }) => {
         </div>
         {/* Left Text Content */}
         <div className="z-20 max-w-xl space-y-6 text-center md:text-left">
-          <h1 className="text-4xl laptop-sm:text-6xl font-extrabold text-white leading-tight text-center">
-            {testName} <span className="text-yellow-300">RESULT</span>
+          <h1 className="text-4xl tablet:text-5xl laptop-lg:text-6xl font-extrabold text-white leading-tight text-center">
+            {testName} 
+            <br />
+            <span className="text-yellow-300">RESULT</span>
           </h1>
           <p className="text-white text-2xl font-semibold text-center">
             Your score is {result.marks} / {result.totalQuestions * 1}

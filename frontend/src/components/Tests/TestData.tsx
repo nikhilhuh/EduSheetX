@@ -72,7 +72,9 @@ const TestData: React.FC<TestDataProps> = ({ test, setError }) => {
           {test.name}
         </h3>
 
-        <div className={`text-lg text-gray-700 flex items-center ${isDone? "flex-wrap" : "flex-col"} justify-center gap-4`}>
+        <div
+          className={`text-lg text-gray-700 flex items-center flex-wrap justify-center gap-4`}
+        >
           <p>
             📝 Questions:{" "}
             <span className="font-semibold">{test.questions.length}</span>
@@ -83,23 +85,14 @@ const TestData: React.FC<TestDataProps> = ({ test, setError }) => {
         </div>
 
         {isDone ? (
-          <>
-            <button
-              title="Test is already attempted by you"
-              className="mt-2 px-5 py-2 text-lg font-semibold rounded-xl text-white bg-gray-400 cursor-not-allowed"
-              disabled
-            >
-              Test Completed
-            </button>
-            <button
-              title="View Test Result"
-              onClick={handleViewResult}
-              disabled={loading}
-              className="mt-2 px-5 py-2 text-lg font-semibold rounded-xl text-white bg-green-600 hover:bg-green-700 transition-all cursor-pointer"
-            >
-              {loading? <Cliploader size={20} /> : "View Result"}
-            </button>
-          </>
+          <button
+            title="View Test Result"
+            onClick={handleViewResult}
+            disabled={loading}
+            className="mt-2 px-5 py-2 text-lg font-semibold rounded-xl text-white bg-green-600 hover:bg-green-700 transition-all cursor-pointer"
+          >
+            {loading ? <Cliploader size={20} /> : "View Result"}
+          </button>
         ) : (
           <button
             title={`Start ${test.name}`}

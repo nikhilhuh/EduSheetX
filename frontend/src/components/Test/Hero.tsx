@@ -1,12 +1,11 @@
 import React from "react";
-import Breadcrumbs from "../../components/Layout/Breadcrumbs";
 import GoodLuckImg from "../../assets/images/good-luck.png";
 
 const Hero: React.FC = () => {
   return (
     <>
       {/* Hero Section */}
-      <header className="relative bg-blue-500 w-full flex flex-col-reverse tablet:flex-row items-center justify-around gap-14 px-6 py-20 overflow-hidden">
+      <header className="relative bg-blue-500 w-full flex flex-col-reverse tablet:flex-row items-center justify-around gap-14 px-6 py-10 pb-20 overflow-hidden">
         {/* Background Gradient (under everything) */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 z-0" />
         {/* Decorative Floating Shapes (above gradient, behind content) */}
@@ -77,7 +76,7 @@ const Hero: React.FC = () => {
         </div>
         {/* Left Text Content */}
         <div className="z-20 max-w-xl space-y-6 text-center md:text-left">
-          <h1 className="text-4xl laptop-sm:text-6xl font-extrabold text-white leading-tight">
+          <h1 className="text-4xl tablet:text-5xl laptop-sm:text-6xl font-extrabold text-white leading-tight">
             GOOD <span className="text-yellow-300">LUCK</span>
           </h1>
 
@@ -90,17 +89,16 @@ const Hero: React.FC = () => {
               question.
             </li>
             <li>
-              <strong>Do not</strong> close, minimize, or navigate away from the
-              tab — the test will be submitted.
+              The test will be submitted automatically once the timer runs out.
+            </li>
+            <li>
+              <strong>Do not</strong> refresh the page , otherwise be ready to
+              select the answers again.
             </li>
             <li>
               <strong>No Negative Marking</strong>.
             </li>
           </ul>
-
-          <div className="inline-flex items-center gap-2 bg-white/20 text-white rounded-full px-4 py-1 backdrop-blur-md">
-            <Breadcrumbs />
-          </div>
         </div>
 
         {/* Right Mascot/Image */}

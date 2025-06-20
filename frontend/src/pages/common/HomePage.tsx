@@ -5,12 +5,14 @@ import { getSiteStats } from "../../services/api/apiCalls/common/getSiteStats";
 import { StatsSection } from "../../components/Home/StatsSection";
 import { Instructions } from "../../components/Home/Instructions";
 import Hero from "../../components/Home/Hero";
+import PopularSubjects from "../../components/Home/PopularSubjects";
 
 const HomePage: React.FC = () => {
   const [siteStats, setSiteStats] = React.useState<{
     totalStudents: number;
     totalTestsTaken: number;
     totalQuestionsAnswered: number;
+    testsAvailable: number;
   }>();
 
   React.useEffect(() => {
@@ -33,7 +35,8 @@ const HomePage: React.FC = () => {
       <Navbar />
       <Hero />
       <Instructions />
-      <StatsSection siteStats={siteStats ?? { totalStudents: 0, totalTestsTaken: 0, totalQuestionsAnswered: 0 }} />
+      <PopularSubjects />
+      <StatsSection siteStats={siteStats ?? { totalStudents: 0, totalTestsTaken: 0, totalQuestionsAnswered: 0, testsAvailable: 0 }} />
       <Footer />
     </div>
   );
