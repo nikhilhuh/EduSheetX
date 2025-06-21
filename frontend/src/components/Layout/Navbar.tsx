@@ -5,6 +5,7 @@ import { logout } from "../../services/api/apiCalls/common/logout";
 import SuccessModal from "../Modals/SuccessModal";
 import ErrorModal from "../Modals/ErrorModal";
 import Cliploader from "../Loaders/Cliploader";
+import { getOrCreateUserId } from "../../utils/getOrCreateUserId";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -48,7 +49,10 @@ const Navbar: React.FC = () => {
         setTimeout(() => {
           setSuccess("");
           localStorage.removeItem("user");
+          localStorage.removeItem("userId");
           setUserDetails(null);
+          getOrCreateUserId();
+          navigate("/");
         }, 2000);
       } else {
         setError("Logout failed. Try again.");
@@ -121,13 +125,26 @@ const Navbar: React.FC = () => {
               {/* Menu Options */}
               <div className="border-t border-black p-2">
                 <button
-                title="Go to your dashboard"
+                  title="Go to your dashboard"
                   onClick={() => navigate("/dashboard")}
                   className="w-full text-left px-3 py-2 hover:bg-yellow-200 text-gray-800 transition-all duration-200 cursor-pointer rounded-md"
                 >
                   🧭 Dashboard
                 </button>
               </div>
+
+              {/* add test for teachers */}
+              {UserDetails.role === "teacher" && (
+                <div className="px-2 pb-2">
+                  <button
+                    title="Add a Test"
+                    onClick={() => navigate("/teacher/addtest")}
+                    className="w-full text-left px-3 py-2 hover:bg-yellow-200 text-gray-800 transition-all duration-200 cursor-pointer rounded-md"
+                  >
+                    ➕ Add Test
+                  </button>
+                </div>
+              )}
 
               {/* Logout */}
               <div className="px-2 pb-2">

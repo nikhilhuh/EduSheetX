@@ -1,10 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Layout/Navbar";
-import Footer from "../../components/Layout/Footer";
 import { useUser } from "../../context/UserContext";
 import { Lock } from "lucide-react";
 import StudentDashboard from "../../components/Dashboard/StudentDashboard";
+import TeacherDashboard from "../../components/Dashboard/TeacherDashboard";
 
 const Dashboard: React.FC = () => {
   const { UserDetails } = useUser();
@@ -15,10 +15,18 @@ const Dashboard: React.FC = () => {
   }, []);
 
   // Placeholder Component
-  const PlaceholderDashboard = () => (
+  const PlaceholderDashboard = () => {
+    React.useEffect(()=> {
+      document.body.style.overflow = "hidden";
+
+      return()=>{
+        document.body.style.overflow= "auto";
+      }
+    }, [])
+    return(
     <div className="flex flex-col min-h-screen bg-white">
       <Navbar />
-      <div className="relative p-4 bg-white">
+      <div className="relative p-10 bg-white">
         {/* Centered overlay text */}
         <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
           <div className="bg-white/90 p-6 rounded-xl shadow-lg w-[90%] sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%] text-center pointer-events-auto">
@@ -41,7 +49,7 @@ const Dashboard: React.FC = () => {
 
         {/* Blurred placeholder cards behind */}
         <div className="grid grid-cols-1 tablet:grid-cols-2 laptop-lg:grid-cols-3 gap-4 filter blur-sm pointer-events-none">
-          {Array.from({ length: 12 }).map((_, i) => (
+          {Array.from({ length: 20 }).map((_, i) => (
             <div
               key={i}
               className="bg-gray-100 p-4 rounded-xl shadow animate-pulse flex items-start gap-4"
@@ -60,14 +68,14 @@ const Dashboard: React.FC = () => {
           ))}
         </div>
       </div>
-      <Footer />
     </div>
-  );
+  ); 
+}
 
   return (
     <>
       {UserDetails ? (
-        <>{UserDetails.role === "student" ? <StudentDashboard /> : null}</>
+        <>{UserDetails.role === "student" ? <StudentDashboard /> : <TeacherDashboard />}</>
       ) : (
         <PlaceholderDashboard />
       )}

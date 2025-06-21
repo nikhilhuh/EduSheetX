@@ -5,7 +5,7 @@ import { Subject } from "../../utils/constants";
 import ErrorModal from "../../components/Modals/ErrorModal";
 import SuccessModal from "../../components/Modals/SuccessModal";
 import { addTest } from "../../services/api/apiCalls/teacher/addTest";
-import Clockloader from "../../components/Loaders/Clockloader";
+import Cliploader from "../../components/Loaders/Cliploader";
 
 const AddTests: React.FC = () => {
   const { UserDetails } = useUser();
@@ -35,7 +35,7 @@ const AddTests: React.FC = () => {
     const fetchSubjects = async () => {
       setLoading(true);
       try {
-        const res = await getSubjects(UserDetails.email);
+        const res = await getSubjects();
         if (res.success) {
           const subs = res.data.map((sub: Subject) => ({
             label: sub.name.toUpperCase(),
@@ -146,7 +146,7 @@ const AddTests: React.FC = () => {
       {success && <SuccessModal success={success} />}
       {loading ? (
         <div className="h-[60vh] flex items-center justify-center">
-          <Clockloader size={60} />
+          <Cliploader size={60} />
         </div>
       ) : (
         <>

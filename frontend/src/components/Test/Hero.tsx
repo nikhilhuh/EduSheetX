@@ -102,7 +102,7 @@ const Hero: React.FC = () => {
         </div>
 
         {/* Right Mascot/Image */}
-        <div className="relative z-20 w-full max-w-sm">
+        <div className="hidden tablet:block relative z-20 w-full max-w-sm">
           {/* Yellow Glow Blob */}
           <img
             src={GoodLuckImg}

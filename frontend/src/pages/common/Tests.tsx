@@ -18,10 +18,7 @@ const Tests: React.FC = () => {
   const [loadingData, setLoadingData] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  React.useEffect(() => {
+    window.scrollTo(0,0);
     const fetchSubjectTopicTests = async () => {
       if (!subjectName || !topicName) return;
       setLoadingData(true);

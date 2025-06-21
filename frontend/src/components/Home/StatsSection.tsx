@@ -14,7 +14,7 @@ export const StatsSection: React.FC<{
 
   return (
     <section ref={ref} className="mt-10 px-6 text-center">
-      <h2 className="text-3xl tablet:text-4xl font-bold mb-10 text-gray-800">
+      <h2 className="text-2xl mobile-l:text-3xl laptop-sm:text-4xl font-semibold mb-4">
         EduSheetX Impact
       </h2>
 

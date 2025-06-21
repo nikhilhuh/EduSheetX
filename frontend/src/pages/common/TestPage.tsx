@@ -5,7 +5,7 @@ import Navbar from "../../components/Layout/Navbar";
 import Footer from "../../components/Layout/Footer";
 import { getTestResult } from "../../services/api/apiCalls/common/getTestResult";
 import Hero from "../../components/Test/Hero";
-import CountdownTimer from "../../components/Miscellaneous/CountdownTimer";
+import CountdownTimer from "../../components/Test/CountdownTimer";
 import QuestionCard from "../../components/Test/QuestionCard";
 import ProgressBar from "../../components/Test/ProgressBar";
 import NavigationButtons from "../../components/Test/NavigationButtons";
@@ -29,7 +29,6 @@ const TestPage: React.FC = () => {
   }, []);
 
   if (!test) return <NotFound text="Test was not found." />;
-
 
   const handleNext = () => {
     if (currentQuestionIndex < test.questions.length - 1) {

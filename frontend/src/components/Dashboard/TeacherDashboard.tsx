@@ -34,7 +34,7 @@ interface DashboardData {
   recentTests: RecentTest[];
 }
 
-const StudentDashboard: React.FC = () => {
+const TeacherDashboard: React.FC = () => {
   const { UserDetails } = useUser();
   const [data, setData] = React.useState<DashboardData | null>(null);
   const [error, setError] = React.useState<string>("");
@@ -114,4 +114,4 @@ const StudentDashboard: React.FC = () => {
   );
 };
 
-export default StudentDashboard;
+export default TeacherDashboard;
