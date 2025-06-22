@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import UnauthorizedImg from "../../assets/images/unauthorised-mascot.png";
 import Navbar from "../../components/Layout/Navbar";
-import Footer from "../../components/Layout/Footer";
 
 const Unauthorized: React.FC = () => {
   const navigate = useNavigate();
@@ -46,7 +45,6 @@ const Unauthorized: React.FC = () => {
           />
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

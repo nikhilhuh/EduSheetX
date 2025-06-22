@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Layout/Navbar";
-import Footer from "../../components/Layout/Footer";
 import NotFoundImg from "../../assets/images/404-mascot.png"; 
 
 const Error404: React.FC = () => {
@@ -47,7 +46,6 @@ const Error404: React.FC = () => {
           />
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

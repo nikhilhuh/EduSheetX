@@ -105,7 +105,7 @@ const Navbar: React.FC = () => {
           </div>
           {/* User Options Dropdown */}
           {idClicked && (
-            <div className="absolute top-full mt-2 right-2 bg-white shadow drop-shadow-2xl rounded-2xl border border-gray-200 z-40 animate-fade-in-up text-sm sm:text-base overflow-hidden">
+            <div className="absolute top-full mt-2 right-0 bg-white shadow drop-shadow-2xl rounded-2xl border border-gray-200 z-40 animate-fade-in-up text-sm sm:text-base overflow-hidden">
               {/* Profile Section */}
               <div className="flex items-center gap-4 px-5 py-4 border-b bg-gray-50">
                 <div className="h-12 w-12 rounded-full bg-yellow-500 flex items-center justify-center text-white font-bold text-lg">
@@ -138,7 +138,7 @@ const Navbar: React.FC = () => {
                 <div className="px-2 pb-2">
                   <button
                     title="Add a Test"
-                    onClick={() => navigate("/teacher/addtest")}
+                    onClick={() => navigate("/addtest")}
                     className="w-full text-left px-3 py-2 hover:bg-yellow-200 text-gray-800 transition-all duration-200 cursor-pointer rounded-md"
                   >
                     ➕ Add Test

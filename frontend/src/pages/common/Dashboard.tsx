@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Layout/Navbar";
 import { useUser } from "../../context/UserContext";
 import { Lock } from "lucide-react";
-import StudentDashboard from "../../components/Dashboard/StudentDashboard";
-import TeacherDashboard from "../../components/Dashboard/TeacherDashboard";
+import StudentDashboard from "../../components/Dashboard/Student/StudentDashboard";
+import TeacherDashboard from "../../components/Dashboard/Teacher/TeacherDashboard";
 
 const Dashboard: React.FC = () => {
   const { UserDetails } = useUser();
@@ -26,7 +26,7 @@ const Dashboard: React.FC = () => {
     return(
     <div className="flex flex-col min-h-screen bg-white">
       <Navbar />
-      <div className="relative p-10 bg-white">
+      <div className="relative p-10">
         {/* Centered overlay text */}
         <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
           <div className="bg-white/90 p-6 rounded-xl shadow-lg w-[90%] sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%] text-center pointer-events-auto">

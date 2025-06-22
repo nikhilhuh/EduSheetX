@@ -1,11 +1,11 @@
 import React from "react";
 import { ClipLoader } from "react-spinners";
 
-const Cliploader: React.FC<{size: number}> = ({ size }) => {
+const Cliploader: React.FC<{size: number, color? : string}> = ({ size, color }) => {
   return (
       <ClipLoader
         size={size}
-        color="white" 
+        color={color || "white"}
         aria-label="Loading Spinner"
         data-testid="loader"
       />
