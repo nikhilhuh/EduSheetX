@@ -1,18 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Anton&family=Dancing+Script:wght@400..700&family=Underdog&display=swap");
 @import "tailwindcss";
 
-.modal-input-field {
-  @apply bg-transparent outline-none focus:outline-none border-b-2 border-gray-400 px-2 py-1 max-w-max overflow-ellipsis;
-}
-.cancel-button {
-  @apply bg-[var(--color-secondary)] py-2 px-4 rounded-md font-bold cursor-pointer hover:scale-105 hover:bg-red-800 hover:text-white md:text-lg text-[14px];
-}
-.add-button {
-  @apply bg-[var(--color-secondary)] px-4 py-2 rounded-md font-bold cursor-pointer hover:scale-105 hover:bg-green-800 hover:text-white md:text-lg text-sm;
-}
-.add-another-button {
-  @apply px-4 py-2 rounded-lg cursor-pointer hover:scale-90 flex gap-1 items-center bg-gray-100 hover:bg-gray-200 font-semibold text-black max-w-max;
-}
 .h-screen {
   height: 100svh;
 }
