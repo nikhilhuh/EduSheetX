@@ -127,6 +127,11 @@ router.get("/", async (req: Request, res: Response) => {
       { $sort: { percentage: -1 } },
       { $limit: 10 },
     ]);
+    // Assign rank to top 10 leaderboard
+    const leaderboard = leaderboardAgg.map((entry, index) => ({
+      ...entry,
+      rank: index + 1,
+    }));
 
     // 4. Recent Tests Created by Teacher (sorted by _id timestamp) + Average Marks
     const recentTests = await Promise.all(
@@ -168,7 +173,7 @@ router.get("/", async (req: Request, res: Response) => {
         totalStudents,
         averageMarks,
         percentage,
-        leaderboard: leaderboardAgg,
+        leaderboard,
         recentTests,
       },
     });

@@ -101,6 +101,11 @@ router.get("/", async (req: Request, res: Response) => {
         $unwind: "$userInfo",
       },
       {
+        $match: {
+          "userInfo.role": "student", // ✅ only students
+        },
+      },
+      {
         $project: {
           percentage: {
             $cond: [
@@ -122,6 +127,75 @@ router.get("/", async (req: Request, res: Response) => {
       { $sort: { percentage: -1 } },
       { $limit: 10 },
     ]);
+    // Add rank to the top 10
+    let leaderboard = leaderboardAgg.map((entry, index) => ({
+      ...entry,
+      rank: index + 1,
+    }));
+
+    // Check if current user is already in leaderboard
+    const isInLeaderboard = leaderboard.some(
+      (entry) => String(entry._id) === String(userId)
+    );
+
+    if (!isInLeaderboard) {
+      // Get full sorted leaderboard to find the current user's rank
+      const fullLeaderboard = await testResultModel.aggregate([
+        {
+          $group: {
+            _id: "$user",
+            totalMarks: { $sum: "$marks" },
+            totalQuestions: { $sum: "$totalQuestions" },
+          },
+        },
+        {
+          $lookup: {
+            from: "Users",
+            localField: "_id",
+            foreignField: "_id",
+            as: "userInfo",
+          },
+        },
+        { $unwind: "$userInfo" },
+        { $match: { "userInfo.role": "student" } },
+        {
+          $project: {
+            _id: 1,
+            percentage: {
+              $cond: [
+                { $eq: ["$totalQuestions", 0] },
+                0,
+                {
+                  $multiply: [
+                    { $divide: ["$totalMarks", "$totalQuestions"] },
+                    100,
+                  ],
+                },
+              ],
+            },
+            name: {
+              $concat: ["$userInfo.firstName", " ", "$userInfo.lastName"],
+            },
+          },
+        },
+        { $sort: { percentage: -1 } },
+      ]);
+
+      const userIndex = fullLeaderboard.findIndex(
+        (entry) => String(entry._id) === String(userId)
+      );
+
+      if (userIndex !== -1) {
+        const userEntry = {
+          ...fullLeaderboard[userIndex],
+          rank: userIndex + 1,
+        };
+
+        // Add user entry to the bottom of the top leaderboard
+        leaderboard.push(userEntry);
+      }
+    }
+
     // 4. Recent 5 Tests
     const recentTests = studentResults
       .sort(
@@ -149,7 +223,7 @@ router.get("/", async (req: Request, res: Response) => {
         averageMarks,
         percentage,
         testStreak,
-        leaderboard: leaderboardAgg,
+        leaderboard,
         recentTests,
       },
     });

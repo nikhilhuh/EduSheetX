@@ -14,8 +14,8 @@ interface TestDetailsProps {
   setSelectedSubject: React.Dispatch<React.SetStateAction<string>>;
   selectedTopic: string;
   setSelectedTopic: React.Dispatch<React.SetStateAction<string>>;
-  timeLimit: number | undefined;
-  setTimeLimit: React.Dispatch<React.SetStateAction<number | undefined>>;
+  timeLimit: string;
+  setTimeLimit: React.Dispatch<React.SetStateAction<string>>;
   setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -117,7 +117,7 @@ const TestDetails: React.FC<TestDetailsProps> = ({
   };
 
   return (
-    <div className="space-y-6 bg-white p-6 rounded-lg shadow-md">
+    <div className="space-y-6 bg-white p-2 mobile-l:p-4 tablet:p-6 rounded-lg tablet:shadow-md">
       {/* Test Details Section */}
       <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">
         Test Details
@@ -139,7 +139,7 @@ const TestDetails: React.FC<TestDetailsProps> = ({
               value={testName}
               onChange={handleTestNameChange}
               placeholder="Enter test name"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition-all"
+              className="w-full pr-10 px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition-all overflow-x-hidden break-words overflow-y-auto"
               required
             />
             {/* Only show indicator when not empty and not typing */}
@@ -239,7 +239,7 @@ const TestDetails: React.FC<TestDetailsProps> = ({
               id="TimeLimit"
               type="number"
               value={timeLimit}
-              onChange={(e) => setTimeLimit(Number(e.target.value))}
+              onChange={(e) => setTimeLimit(e.target.value)}
               placeholder="e.g. 30"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition-all cursor-pointer"
               min={1}

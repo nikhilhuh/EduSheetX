@@ -18,7 +18,6 @@ import { router as getStudentDashboardRoute } from "../routes/studentRoutes/getS
 
 // teacher routes
 import { router as validateTestNameRoute } from "../routes/teacherRoutes/validateTestName";
-import { router as extractQuestionsRoute } from "../routes/teacherRoutes/extractQuestions";
 import { router as addTestRoute } from "../routes/teacherRoutes/addTest";
 import { router as getTeacherDashboard } from "../routes/teacherRoutes/getTeacherDashboard";
 
@@ -44,7 +43,6 @@ mainRouter.use("/getstudentdashboard", getStudentDashboardRoute);
 
 // teacher routes
 mainRouter.use("/validatetestname", validateTestNameRoute);
-mainRouter.use("/extractquestions", extractQuestionsRoute);
 mainRouter.use("/addtest", addTestRoute);
 mainRouter.use("/getteacherdashboard" , getTeacherDashboard)
 

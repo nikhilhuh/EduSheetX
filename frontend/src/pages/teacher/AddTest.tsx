@@ -9,7 +9,6 @@ import Hero from "../../components/AddTest/Hero";
 import Footer from "../../components/Layout/Footer";
 import TestDetails from "../../components/AddTest/TestDetails";
 import Questions from "../../components/AddTest/Questions";
-import ExtractQuestions from "../../components/AddTest/ExtractQuestions";
 
 const AddTest: React.FC = () => {
   const { UserDetails } = useUser();
@@ -17,12 +16,21 @@ const AddTest: React.FC = () => {
   const [selectedSubject, setSelectedSubject] = React.useState("");
   const [selectedTopic, setSelectedTopic] = React.useState("");
   const [testName, setTestName] = React.useState("");
-  const [timeLimit, setTimeLimit] = React.useState<number>();
+  const [timeLimit, setTimeLimit] = React.useState<string>("");
   const [questions, setQuestions] = React.useState<any[]>([
     {
+      questionType: "text",
       questionText: "",
-      options: { A: "", B: "", C: "", D: "" },
+      questionImage: "",
+      questionCaption: "",
+      options: {
+        A: "",
+        B: "",
+        C: "",
+        D: "",
+      },
       correctAnswer: "",
+      explanation: "",
     },
   ]);
   const [error, setError] = React.useState("");
@@ -59,12 +67,32 @@ const AddTest: React.FC = () => {
       name: testName,
       subject: selectedSubject,
       topic: selectedTopic,
-      timeLimit,
+      timeLimit: Number(timeLimit),
       questions,
     };
     try {
       const res = await addTest(UserDetails.email, test);
       if (res.success) {
+        setTestName("");
+        setSelectedSubject("");
+        setSelectedTopic("");
+        setTimeLimit("");
+        setQuestions([
+          {
+            questionType: "text",
+            questionText: "",
+            questionImage: "",
+            questionCaption: "",
+            options: {
+              A: "",
+              B: "",
+              C: "",
+              D: "",
+            },
+            correctAnswer: "",
+            explanation: "",
+          },
+        ]);
         setSuccess("Test added successfully!");
         setTimeout(() => {
           setSuccess("");
@@ -94,7 +122,7 @@ const AddTest: React.FC = () => {
       <Navbar />
       <Hero />
       {/* Main content */}
-      <div className="px-4 py-2 flex-1">
+      <div className="p-2 flex-1">
         <form onSubmit={handleSubmit} className="space-y-6 max-w-6xl mx-auto">
           <TestDetails
             testName={testName}
@@ -107,8 +135,6 @@ const AddTest: React.FC = () => {
             setTimeLimit={setTimeLimit}
             setError={setError}
           />
-
-          <ExtractQuestions setQuestions={setQuestions} setError={setError} setSuccess={setSuccess} />
 
           <Questions questions={questions} setQuestions={setQuestions} />
 

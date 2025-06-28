@@ -2,7 +2,28 @@ import mongoose from "mongoose";
 
 const questionSchema = new mongoose.Schema(
   {
-    questionText: { type: String, required: true },
+    questionType: {
+      type: String,
+      enum: ["text", "image"],
+      required: true,
+      default: "text",
+    },
+    questionText: {
+      type: String,
+      required: function () {
+        return this.questionType === "text";
+      },
+    },
+    questionImage: {
+      type: String, // URL or Base64 string
+      required: function () {
+        return this.questionType === "image";
+      },
+    },
+    questionCaption : {
+      type: String,
+      required: false, 
+    },
     options: {
       A: { type: String, required: true },
       B: { type: String, required: true },
@@ -14,9 +35,14 @@ const questionSchema = new mongoose.Schema(
       enum: ["A", "B", "C", "D"],
       required: true,
     },
+    explanation: {
+      type: String,
+      required: false,
+    }
   },
   { _id: false }
 );
+
 
 const testSchema = new mongoose.Schema(
   {

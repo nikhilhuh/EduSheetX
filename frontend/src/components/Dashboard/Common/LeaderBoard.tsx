@@ -13,6 +13,7 @@ import { getOrCreateUserId } from "../../../utils/getOrCreateUserId";
 
 interface LeaderboardEntry {
   _id: string;
+  rank: number;
   name: string;
   percentage: number;
 }
@@ -86,7 +87,7 @@ const LeaderBoard: React.FC<LeaderboardProps> = ({ leaderboard }) => {
               <div className="flex justify-between items-center">
                 <div>
                   <p className="text-xl font-bold">
-                    <span className="text-3xl font-extrabold">#{idx + 1}</span>
+                    <span className="text-3xl font-extrabold">#{entry.rank}</span>
                     <br /> {entry.name}
                   </p>
                   <p className="text-sm opacity-90">
@@ -94,7 +95,7 @@ const LeaderBoard: React.FC<LeaderboardProps> = ({ leaderboard }) => {
                   </p>
                 </div>
                 <div className="text-3xl">
-                  {idx === 0
+                  {entry.rank === 0
                     ? "🥇"
                     : idx === 1
                     ? "🥈"

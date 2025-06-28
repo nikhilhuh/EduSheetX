@@ -71,7 +71,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="w-full sticky top-0 bg-gradient-to-br from-blue-500 to-blue-600 text-white px-6 py-4 flex justify-around items-center z-30">
+    <nav className="w-full sticky top-0 bg-gradient-to-br from-blue-500 to-blue-600 text-white px-6 py-4 flex justify-between tablet:justify-around items-center z-30">
       {success && <SuccessModal success={success} />}
       {error && <ErrorModal error={error} />}
       <Link to="/" className="cursor-pointer">
@@ -125,6 +125,13 @@ const Navbar: React.FC = () => {
               {/* Menu Options */}
               <div className="border-t border-black p-2">
                 <button
+                  title="Go to Home"
+                  onClick={() => navigate("/")}
+                  className="w-full text-left px-3 py-2 hover:bg-yellow-200 text-gray-800 transition-all duration-200 cursor-pointer rounded-md"
+                >
+                  🛖 Home
+                </button>
+                <button
                   title="Go to your dashboard"
                   onClick={() => navigate("/dashboard")}
                   className="w-full text-left px-3 py-2 hover:bg-yellow-200 text-gray-800 transition-all duration-200 cursor-pointer rounded-md"
@@ -139,7 +146,7 @@ const Navbar: React.FC = () => {
                   <button
                     title="Add a Test"
                     onClick={() => navigate("/addtest")}
-                    className="w-full text-left px-3 py-2 hover:bg-yellow-200 text-gray-800 transition-all duration-200 cursor-pointer rounded-md"
+                    className="w-full text-left px-3 py-1 hover:bg-yellow-200 text-gray-800 transition-all duration-200 cursor-pointer rounded-md"
                   >
                     ➕ Add Test
                   </button>

@@ -32,6 +32,9 @@ export type Subject = {
 };
 
 export type Question = {
+  questionType: "text" | "image",
+  questionImage: string;
+  questionCaption: string;
   questionText: string;
   options: {
     A: string;
@@ -57,7 +60,10 @@ export type Test = {
 };
 
 export type QuestionResult = {
+  questionType: "text" | "image";
   questionText: string;
+  questionImage: string;
+  questionCaption: string;
   selectedOption: string | null;
   correctAnswer: string;
   options: {
@@ -66,6 +72,7 @@ export type QuestionResult = {
     C: string;
     D: string;
   };
+  explanation: string;
   status: "correct" | "wrong" | "unattempted";
   isCorrect: boolean;
 };

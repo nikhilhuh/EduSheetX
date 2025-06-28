@@ -10,7 +10,7 @@ const MainContent: React.FC<{ tests: Test[], setError: React.Dispatch<React.SetS
         Assess Your Knowledge — One Test at a Time
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 items-stretch">
+      <div className="grid grid-cols-1 tablet:grid-cols-2 laptop-sm:grid-cols-3 gap-8 items-stretch">
         {tests.map((test, idx) => (
           <div
             key={idx}

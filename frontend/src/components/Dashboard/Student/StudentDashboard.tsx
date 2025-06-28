@@ -12,6 +12,7 @@ import AnalyticsLoader from "../../Loaders/AnalyticsLoader";
 
 interface LeaderboardEntry {
   _id: string;
+  rank: number;
   name: string;
   percentage: number;
 }

@@ -88,14 +88,24 @@ router.get("/", async (req: Request, res: Response) => {
           status = "wrong";
         }
 
-        return {
-          questionText: question.questionText,
+        const result: any = {
+          questionType: question.questionType,
+          questionCaption: question.questionCaption,
           selectedOption: userAnswer,
           correctAnswer: question.correctAnswer,
+          explanation: question.explanation,
           options: question.options,
           status,
           isCorrect,
         };
+
+        if (question.questionType === "text") {
+          result.questionText = question.questionText;
+        } else if (question.questionType === "image") {
+          result.questionImage = question.questionImage;
+        }
+
+        return result;
       }
     );
 

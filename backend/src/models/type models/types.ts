@@ -2,7 +2,7 @@ export type UserRole = "student" | "teacher";
 export type UserStatus = "active" | "inactive";
 
 export interface User {
-  _id: string; 
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -18,7 +18,10 @@ export interface SubjectType {
 }
 
 export type QuestionResult = {
+  questionType: "text" | "image";
   questionText: string;
+  questionImage: string;
+  questionCaption: string;
   selectedOption: string | null;
   correctAnswer: string;
   options: {
@@ -27,10 +30,10 @@ export type QuestionResult = {
     C: string;
     D: string;
   };
+  explanation: string;
   status: "correct" | "wrong" | "unattempted";
   isCorrect: boolean;
 };
-
 
 export type ResultType = {
   totalQuestions: number;

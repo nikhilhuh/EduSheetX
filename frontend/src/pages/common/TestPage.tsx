@@ -13,6 +13,7 @@ import SubmitButton from "../../components/Test/SubmitButton";
 import { Test } from "../../utils/constants";
 import NotFound from "../../components/Miscellaneous/NotFound";
 import EvaluationModal from "../../components/Modals/EvaluationModal";
+import QuestionStatusGrid from "../../components/Test/QuestionsStatusGrid";
 
 const TestPage: React.FC = () => {
   const { state } = useLocation();
@@ -110,6 +111,13 @@ const TestPage: React.FC = () => {
           totalQuestions={test.questions.length}
           onNext={handleNext}
           onPrev={handlePrev}
+        />
+
+        <QuestionStatusGrid
+          answers={answers}
+          totalQuestions={test.questions.length}
+          currentIndex={currentQuestionIndex}
+          setCurrentIndex={setCurrentQuestionIndex}
         />
 
         <SubmitButton onSubmit={handleSubmit} evaluating={evaluating} />

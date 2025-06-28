@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Test } from "../../utils/constants";
 import { getOldTestResult } from "../../services/api/apiCalls/common/getOldTestResult";
 import Cliploader from "../Loaders/Cliploader";
+import { Check } from "lucide-react";
 
 interface TestDataProps {
   test: Test;
@@ -55,8 +56,8 @@ const TestData: React.FC<TestDataProps> = ({ test, setError }) => {
         shadow hover:shadow-xl transition-all hover:scale-[1.03]`}
     >
       {isDone && (
-        <span className="absolute top-2 right-2 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow">
-          ✅ Completed
+        <span className="absolute top-2 right-2 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow flex gap-1 items justify-center">
+          <Check className="h-4 w-4" /> Completed
         </span>
       )}
       <div className="bg-white p-4 rounded-full shadow-sm">

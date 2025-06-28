@@ -85,6 +85,9 @@ router.get("/", async (req: Request, res: Response) => {
               as: "q",
               in: {
                 questionText: "$$q.questionText",
+                questionImage: "$$q.questionImage",
+                questionCaption: "$$q.questionCaption",
+                questionType: "$$q.questionType",
                 options: "$$q.options",
               },
             },

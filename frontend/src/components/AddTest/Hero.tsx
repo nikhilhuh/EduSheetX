@@ -60,7 +60,7 @@ const Hero: React.FC = () => {
             <p className="font-semibold mb-2">💡Quick Tips:</p>
             <ul className="list-disc pl-4 space-y-1">
               <li>Use varied difficulty levels</li>
-              <li>Try uploading a PDF or image</li>
+              <li>Try uploading few questions images instead of all text </li>
             </ul>
           </div>
         </div>
