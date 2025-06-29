@@ -1,5 +1,7 @@
 import React from "react";
 import imageCompression from "browser-image-compression";
+import { axiosInstance } from "../../services/axiosInstance";
+import Cliploader from "../Loaders/Cliploader";
 
 interface QuestionProps {
   questions: any[];
@@ -7,6 +9,16 @@ interface QuestionProps {
 }
 
 const Questions: React.FC<QuestionProps> = ({ questions, setQuestions }) => {
+  const [loading, setLoading] = React.useState<Record<number, boolean>>({});
+
+  const toggleLoading = (index: number, isLoading: boolean) => {
+    setLoading((prev) => ({ ...prev, [index]: isLoading }));
+  };
+
+  React.useEffect(() => {
+    setLoading({});
+  }, [questions.length]);
+
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
@@ -15,27 +27,35 @@ const Questions: React.FC<QuestionProps> = ({ questions, setQuestions }) => {
     if (!file) return;
 
     try {
-      // Compression options
       const options = {
-        maxSizeMB: 1, // (1 MB max)
-        maxWidthOrHeight: 800, // resize if larger
+        maxSizeMB: 1,
+        maxWidthOrHeight: 800,
         useWebWorker: true,
       };
+      toggleLoading(index, true);
 
       const compressedFile = await imageCompression(file, options);
 
-      // Convert compressed file to Base64
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const updated = questions.map((q, i) =>
-          i === index ? { ...q, questionImage: reader.result as string } : q
-        );
-        setQuestions(updated);
-      };
-      reader.readAsDataURL(compressedFile);
-    } catch (error) {
-      console.error("Image compression failed:", error);
-      alert("Image compression failed. Please try another image.");
+      // Upload to backend
+      const formData = new FormData();
+      formData.append("image", compressedFile);
+
+      const res = await axiosInstance.post("/uploadquestionimage", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      const imagePath = res.data.path; // e.g. "/uploads/abc123.png"
+
+      const updated = questions.map((q, i) =>
+        i === index ? { ...q, questionImage: imagePath } : q
+      );
+
+      setQuestions(updated);
+    } catch (error: any) {
+      console.error("Upload error:", error.response || error.message || error);
+      alert("Image upload failed. Please try another image.");
+    } finally {
+      toggleLoading(index, false);
     }
   };
 
@@ -146,6 +166,7 @@ const Questions: React.FC<QuestionProps> = ({ questions, setQuestions }) => {
                       />
                     </div>
                   )}
+                  {loading[idx] && <Cliploader size={25} color="blue" />}
                 </>
               ) : (
                 <input
