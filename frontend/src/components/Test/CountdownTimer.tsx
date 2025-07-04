@@ -1,50 +1,10 @@
 import React from "react";
 
 interface CountdownTimerProps {
-  minutes: number;
-  onComplete?: () => void;
-  testId: string;
+  secondsLeft: number;
 }
 
-const CountdownTimer: React.FC<CountdownTimerProps> = ({
-  minutes,
-  onComplete,
-  testId,
-}) => {
-  const [secondsLeft, setSecondsLeft] = React.useState<number>(minutes * 60);
-
-  React.useEffect(() => {
-    const storageKey = `test_start_time_${testId}`;
-    let parsedStartTime: number;
-
-    const saved = localStorage.getItem(storageKey);
-    if (saved) {
-      parsedStartTime = parseInt(saved);
-    } else {
-      parsedStartTime = Date.now();
-      localStorage.setItem(storageKey, parsedStartTime.toString());
-    }
-
-    const endTime = parsedStartTime + minutes * 60 * 1000;
-
-    const update = () => {
-      const now = Date.now();
-      const remaining = Math.floor((endTime - now) / 1000);
-      if (remaining <= 0) {
-        setSecondsLeft(0);
-        clearInterval(interval);
-        localStorage.removeItem(storageKey);
-        if (onComplete) onComplete();
-      } else {
-        setSecondsLeft(remaining);
-      }
-    };
-
-    update();
-    const interval = setInterval(update, 1000);
-    return () => clearInterval(interval);
-  }, [minutes, onComplete, testId]);
-
+const CountdownTimer: React.FC<CountdownTimerProps> = ({ secondsLeft }) => {
   const format = (s: number) => {
     const m = Math.floor(s / 60);
     const sec = s % 60;

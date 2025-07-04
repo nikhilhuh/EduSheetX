@@ -39,7 +39,7 @@ const PageLoader: React.FC = () => {
         />
       </div>
 
-      <p className="text-gray-600 text-lg font-medium mt-6 animate-pulse">
+      <p className="text-gray-600 text-lg font-medium mt-6 animate-pulse text-center">
         Get ready to explore the world of knowledge!
       </p>
     </div>

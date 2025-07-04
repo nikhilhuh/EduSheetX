@@ -8,7 +8,6 @@ import { fetchuser } from "../../services/api/apiCalls/common/fetchUserDetails";
 import { SignInUser } from "../../utils/constants";
 import Cliploader from "../../components/Loaders/Cliploader";
 import Navbar from "../../components/Layout/Navbar";
-import Footer from "../../components/Layout/Footer";
 import SigninImg from "../../assets/images/signin.svg";
 import LeaderBoardImg from "../../assets/images/leaderboard.svg";
 import { getOrCreateUserId } from "../../utils/getOrCreateUserId";
@@ -87,42 +86,43 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col h-screen bg-white">
       {error && <ErrorModal error={error} />}
       {success && <SuccessModal success={success} />}
       <Navbar />
 
       {/* Main content wrapper should expand to fill space */}
-      <div className="grid grid-cols-1 tablet:grid-cols-2">
+      <div className="grid grid-cols-1 laptop-sm:grid-cols-2 h-[92svh]">
         <img
           src={SigninImg}
           alt="Sign In Image"
-          className="h-full w-full object-contain"
+          className="hidden laptop-sm:block h-full w-full object-contain"
         />
 
-        <div className="flex-1 flex flex-col justify-center items-center px-4 py-8 bg-white">
+        <div className="flex-1 flex flex-col h-full items-center px-4 py-6">
           {/* leaderboard image */}
           <img
             src={LeaderBoardImg}
             alt="Leaderboard Image"
             className="h-[10vh] w-[10vh] mb-4"
           />
-          {/* Heading */}
-          <h1 className="text-center text-3xl laptop-sm:text-4xl font-semibold text-gray-800 mb-3 leading-snug">
-            Welcome Back to{" "}
-            <span className="text-blue-600 font-extrabold">EduSheetX</span>!
-          </h1>
-          <p className="text-center text-gray-600 text-base laptop-sm:text-lg mb-6">
-            Sign in to unlock powerful tools, track your progress,
-            <br />
-            and climb your way to the leaderboard!
-          </p>
-
-          {/* Card Container */}
-          <div className="bg-white shadow-2xl rounded-2xl px-8 py-6 w-full max-w-md">
+          {/* Heading and subtext */}
+          <div className="text-center mb-6">
+            <h1 className="text-xl tablet:text-2xl laptop-sm:text-3xl font-semibold text-gray-800 mb-3">
+              Welcome Back to{" "}
+              <span className="text-blue-600 text-2xl tablet:text-3xl laptop-sm:text-4xl font-extrabold">EduSheetX</span>!
+            </h1>
+            <p className="text-sm laptop-sm:text-base text-gray-600">
+              Sign in to unlock powerful tools, track your progress,
+              <br />
+              and climb your way to the leaderboard!
+            </p>
+            
+          </div>
+          {/* sign in form */}
             <form
               onSubmit={handleSubmit}
-              className="flex flex-col gap-5 text-base laptop-sm:text-lg 4k:text-xl"
+              className="flex flex-col gap-4 text-base laptop-sm:text-lg 4k:text-xl w-full max-w-md h-full"
             >
               {/* Email Field */}
               <div className="flex flex-col gap-1">
@@ -190,7 +190,7 @@ const SignIn: React.FC = () => {
             </form>
 
             {/* Sign up prompt */}
-            <div className="text-center mt-5">
+            <div className="text-center mt-auto">
               <p className="text-sm text-gray-700">
                 Don't have an account?
                 <Link to="/signup">
@@ -200,12 +200,9 @@ const SignIn: React.FC = () => {
                 </Link>
               </p>
             </div>
-          </div>
+         
         </div>
       </div>
-
-      {/* Sticky Footer */}
-      <Footer />
     </div>
   );
 };

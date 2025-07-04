@@ -78,13 +78,14 @@ const Hero: React.FC = () => {
         {/* Left Content */}
         <div className="z-20 max-w-xl space-y-4 text-center laptop-sm:text-left">
           {/* Headline */}
-          <h1 className="text-4xl tablet:text-5xl laptop-sm:text-6xl font-extrabold text-white leading-tight drop-shadow-md">
-            Online Tests for <br />
-            <span className="text-yellow-300 glow">Class 10</span>
+          <h1 className="text-6xl tablet:text-7xl laptop-sm:text-6xl laptop-lg:text-7xl font-extrabold text-white leading-tight drop-shadow-md">
+            Test. {" "}
+            <span className="text-yellow-300 glow">Practice.</span> <br />
+            <span className='text-yellow-500 glow'>Progress.</span>
           </h1>
 
           {/* Subtext */}
-          <p className="text-gray-100 text-lg tablet:text-xl leading-relaxed text-center max-w-xl">
+          <p className="text-gray-100 text-lg tablet:text-xl leading-relaxed text-center laptop-sm:text-left max-w-xl">
             Attempt MCQ tests by subject and topic. Get instant scores and track
             your progress easily — all in one place.
           </p>
@@ -106,7 +107,7 @@ const Hero: React.FC = () => {
           {/* Why Us Section */}
           <section className="pt-10 border-t border-white/20 mt-8 tablet:hidden laptop-sm:block">
             <h2 className="text-2xl laptop-sm:text-3xl font-semibold text-white mb-4 text-left">
-              Why <span className="text-yellow-300 glow">EduSheetX?</span>
+              Why <span className="text-yellow-300 glow font-extrabold">EduSheetX?</span>
             </h2>
             <ul className="space-y-4 text-lg laptop-sm:text-xl text-gray-100 text-left">
               <li className="flex items-start gap-3">

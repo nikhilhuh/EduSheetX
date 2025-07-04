@@ -2,6 +2,7 @@ import React from "react";
 import imageCompression from "browser-image-compression";
 import { axiosInstance } from "../../services/axiosInstance";
 import Cliploader from "../Loaders/Cliploader";
+import SelectOptionDropdown from "../Dropdown/SelectOptionDropdown";
 
 interface QuestionProps {
   questions: any[];
@@ -44,7 +45,7 @@ const Questions: React.FC<QuestionProps> = ({ questions, setQuestions }) => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      const imagePath = res.data.path; // e.g. "/uploads/abc123.png"
+      const imagePath = res.data.path;
 
       const updated = questions.map((q, i) =>
         i === index ? { ...q, questionImage: imagePath } : q
@@ -209,28 +210,12 @@ const Questions: React.FC<QuestionProps> = ({ questions, setQuestions }) => {
               </div>
 
               <div>
-                <label
-                  htmlFor={`correctanswer-${idx}`}
+                <span
                   className="block text-sm font-medium text-gray-700 mb-1"
                 >
                   Correct Answer
-                </label>
-                <select
-                  id={`correctanswer-${idx}`}
-                  value={q.correctAnswer}
-                  onChange={(e) =>
-                    handleQuestionChange(idx, "correctAnswer", e.target.value)
-                  }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition-all cursor-pointer"
-                  required
-                >
-                  <option value="">Select correct option</option>
-                  {["A", "B", "C", "D"].map((opt) => (
-                    <option key={opt} value={opt}>
-                      Option {opt}
-                    </option>
-                  ))}
-                </select>
+                </span>
+                <SelectOptionDropdown options={[ {label: "A", value: "A"}, {label: "B", value: "B"}, {label: "C", value: "C"}, {label: "D", value: "D"}]} placeholder="Select correct option" onSelect={(value)=> handleQuestionChange(idx, "correctAnswer", value)}  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition-all cursor-pointer"/>
               </div>
 
               <div>

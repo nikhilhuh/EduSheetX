@@ -50,7 +50,7 @@ const SelectOptionDropdown: React.FC<SelectOptionDropdownProps> = ({
   return (
     <div
       ref={dropdownRef}
-      className={`relative inline-block bg-transparent border-b-2 border-gray-300 px-2 py-1 text-sm tablet:text-base ${className}!`}
+      className={`relative inline-block bg-transparent border-gray-300 px-2 py-1 text-sm tablet:text-base ${className}!`}
     >
       <button
         type="button"
@@ -63,11 +63,11 @@ const SelectOptionDropdown: React.FC<SelectOptionDropdownProps> = ({
         <span>▼</span>
       </button>
       {isOpen && (
-        <ul className="absolute z-10 w-full break-words mt-2 left-0 bg-[var(--color-secondary)] border border-gray-300 rounded shadow-lg max-h-[30vh] overflow-y-auto">
+        <ul className="absolute z-10 w-full break-words mt-2 left-0 bg-gray-50 border border-gray-300 rounded shadow-lg max-h-[30vh] overflow-y-auto">
           {options.map((option) => (
             <li
               key={option.value}
-              className="px-4 py-2 hover:bg-[var(--color-primaryHover)] cursor-pointer"
+              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
               onClick={() => handleOptionClick(option.value)}
             >
               {option.label}

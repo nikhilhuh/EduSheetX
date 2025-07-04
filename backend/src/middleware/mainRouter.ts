@@ -8,6 +8,8 @@ import { router as getSubjectTopicsRoute } from "../routes/commonRoutes/getSubje
 import { router as getSubjectTopicTestsRoute } from "../routes/commonRoutes/getSubjectTopicTests";
 import { router as getTestResultRoute } from "../routes/commonRoutes/getTestResult";
 import { router as getOldTestResultRoute } from "../routes/commonRoutes/getOldTestResult";
+import { router as generateOTPRoute } from "../routes/commonRoutes/generateOTP";
+import { router as veirfyOTPRoute } from "../routes/commonRoutes/verifyOTP";
 import { router as signURoute } from "../routes/commonRoutes/signUp";
 import { router as signInRoute } from "../routes/commonRoutes/signIn";
 import { router as fetchUserRoute } from "../routes/commonRoutes/fetchUser";
@@ -34,6 +36,8 @@ mainRouter.use("/getsubjecttopics", getSubjectTopicsRoute);
 mainRouter.use("/getsubjecttopictests", getSubjectTopicTestsRoute);
 mainRouter.use("/gettestresult", getTestResultRoute);
 mainRouter.use("/getoldtestresult", getOldTestResultRoute);
+mainRouter.use("/generateotp", generateOTPRoute);
+mainRouter.use("/verifyotp", veirfyOTPRoute);
 mainRouter.use("/signup", signURoute);
 mainRouter.use("/signin", signInRoute);
 mainRouter.use("/fetchuser", fetchUserRoute);
