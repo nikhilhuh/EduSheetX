@@ -2,27 +2,35 @@ import mongoose from "mongoose";
 import { testResultModel } from "../models/dbmodels/testResultSchema";
 
 export const mergeGuestToUser = async (guestId: string, userId: string) => {
-  const guestResults = await testResultModel.find({
-    $expr: {
-      $eq: [{ $toString: "$user" }, guestId.toString()],
-    },
-  });
-  const userObjectId = new mongoose.Types.ObjectId(userId);
+  try {
+    if (!guestId || !userId) return;
 
-  for (const result of guestResults) {
-    const existingUserTest = await testResultModel.findOne({
+    const userObjectId = new mongoose.Types.ObjectId(userId);
+
+    // Fetch all guest test results
+    const guestResults = await testResultModel.find({
       $expr: {
-        $eq: [{ $toString: "$user" }, userId.toString()],
+        $eq: [{ $toString: "$user" }, guestId],
       },
-      test: result.test,
-    });    
+    });
 
-    // Only update if the user doesn't already have a result for this test
-    if (!existingUserTest) {
-      await testResultModel.updateOne(
-        { _id: result._id },
-        { $set: { user: userObjectId } }
-      );
+    for (const result of guestResults) {
+      const existing = await testResultModel.findOne({
+        test: result.test,
+        $expr: {
+          $eq: [{ $toString: "$user" }, userId],
+        },
+      });
+
+      // If the user hasn't already attempted this test
+      if (!existing) {
+        await testResultModel.updateOne(
+          { _id: result._id },
+          { $set: { user: userObjectId } }
+        );
+      }
     }
+  } catch (error) {
+    console.error("Error merging guest test results to user:", error);
   }
 };

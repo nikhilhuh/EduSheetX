@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home } from "lucide-react"; // You can use any icon library here
+import { Home } from "lucide-react";
 
 const formatSegment = (segment: string) =>
   decodeURIComponent(segment)

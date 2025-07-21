@@ -41,7 +41,7 @@ router.post("/", async (req: Request, res: Response) => {
     }
 
     res
-      .status(201)
+      .status(200)
       .json({ success: true, message: "Test Name available" });
     return;
   } catch (error) {

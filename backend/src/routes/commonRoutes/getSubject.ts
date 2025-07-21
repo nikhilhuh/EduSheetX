@@ -10,18 +10,17 @@ router.get("/", async (req: Request, res: Response) => {
         .status(400)
         .json({
           success: false,
-          message: "Subject name is required to fetch topics",
+          message: "Subject name is required to fetch subject",
         });
       return;
     }
-    const subject = await subjectModel.findOne({name: { $regex: new RegExp(`^${subjectName}$`, "i") }});
+    const subject = await subjectModel.findOne({name: subjectName});
     if(!subject){
         res.status(404).json({ success: false, message: "Subject not found"});
         return;
     }
-    const topics = subject.topics;
 
-    res.status(200).json({ success: true, data: topics });
+    res.status(200).json({ success: true, data: subject });
     return;
   } catch (error) {
     console.error("Error retrieving subjects:", error);

@@ -1,18 +1,22 @@
 import React from "react";
 import { Subject } from "../../utils/constants";
+import { useUser } from "../../context/UserContext";
 
 const MainContent: React.FC<{
-  subjectName: Subject['name'];
-  topics: Subject['topics'];
+  subject: Subject;
   handleTopicClick: (topic: string) => void;
-}> = ({ subjectName, topics, handleTopicClick }) => {
+  setEditSubject: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ subject, handleTopicClick, setEditSubject }) => {
+  const { UserDetails } = useUser();
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-16">
       <h2 className="text-3xl laptop-sm:text-4xl font-extrabold text-center text-blue-800 mb-10 capitalize">
-        Topics in {subjectName}
+        Topics in {subject.name}
       </h2>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        {topics.map((topic, idx) => (
+        {subject.topics.map((topic, idx) => (
           <div
             key={idx}
             onClick={() => handleTopicClick(topic)}
@@ -28,6 +32,17 @@ const MainContent: React.FC<{
           </div>
         ))}
       </div>
+
+      {UserDetails && UserDetails.role === "teacher" && (
+        <div className="mt-10 flex justify-end">
+          <button
+            onClick={() => setEditSubject(true)}
+            className="max-w-max bg-blue-500 hover:bg-blue-600 cursor-pointer px-4 py-2 rounded text-center text-white font-semibold"
+          >
+            Edit Subject
+          </button>
+        </div>
+      )}
     </div>
   );
 };

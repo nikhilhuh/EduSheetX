@@ -6,7 +6,6 @@ import { signUp } from "../../services/api/apiCalls/common/signUp";
 import { SignUpUser } from "../../utils/constants";
 import Cliploader from "../../components/Loaders/Cliploader";
 import Navbar from "../../components/Layout/Navbar";
-import LeaderBoardImg from "../../assets/images/leaderboard.svg";
 import SignUpImg from "../../assets/images/signup.png";
 import Step1 from "../../components/Signup/Step1";
 import Step2 from "../../components/Signup/Step2";
@@ -90,32 +89,20 @@ const SignUp: React.FC = () => {
         />
 
         <div className="flex-1 flex flex-col h-full items-center px-4 py-6">
-          {/* Header Image */}
-          <img
-            src={LeaderBoardImg}
-            alt="Leaderboard"
-            className="h-[10vh] w-[10vh] mb-4"
-          />
-
           {/* Heading and Subtext */}
           <div className="text-center mb-6">
-            <h1 className="text-xl tablet:text-2xl laptop-sm:text-3xl font-semibold text-gray-800">
-              Create your{" "}
-              <span className="text-blue-600 text-2xl tablet:text-3xl laptop-sm:text-4xl font-extrabold">
-                EduSheetX
-              </span>{" "}
-              account
+            <h1 className="text-xl tablet:text-2xl laptop-sm:text-3xl font-bold text-gray-800">
+              Create your account
             </h1>
             <p className="text-sm laptop-sm:text-base text-gray-600 mt-1">
-              Access personalized dashboards, compete on the leaderboard, <br />
-              and unlock a better learning experience tailored just for you.
+              Access personalized dashboards, compete on the leaderboard, and many more <br />
             </p>
           </div>
 
           {/* Form */}
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col gap-4 text-base laptop-sm:text-lg 4k:text-xl w-full max-w-md h-full"
+            className="flex-1 flex flex-col justify-center gap-4 lg:text-lg 4k:text-xl w-[90vw] tablet:w-[70vw] laptop-sm:w-[40vw] laptop-lg:w-[30vw]"
           >
             {step === 1 && (
               <Step1

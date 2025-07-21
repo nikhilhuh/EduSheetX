@@ -1,20 +1,35 @@
 import React from "react";
+import mailSentImg from "../../assets/images/mail.svg";
+import { useUser } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
 import Cliploader from "../Loaders/Cliploader";
 import { Check, Edit } from "lucide-react";
-import { verifyOTP } from "../../services/api/apiCalls/common/veirfyOTP";
-import { generateSignUpOTP } from "../../services/api/apiCalls/common/generateSignUpOTP";
-import mailSentImg from "../../assets/images/mail.svg";
+import { signin } from "../../services/api/apiCalls/common/signin";
+import { fetchuser } from "../../services/api/apiCalls/common/fetchUserDetails";
+import { generateSignInOTP } from "../../services/api/apiCalls/common/generateSignInOTP";
+import { getOrCreateUserId } from "../../utils/getOrCreateUserId";
 
 interface Step2Props {
   email: string;
+  verifying: boolean;
+  setVerifying: React.Dispatch<React.SetStateAction<boolean>>;
   setStep: React.Dispatch<React.SetStateAction<number>>;
+  setSuccess: React.Dispatch<React.SetStateAction<string>>;
   setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Step2: React.FC<Step2Props> = ({ email, setStep, setError }) => {
+const Step2: React.FC<Step2Props> = ({
+  email,
+  setVerifying,
+  verifying,
+  setStep,
+  setSuccess,
+  setError,
+}) => {
+  const { setUserDetails } = useUser();
+  const navigate = useNavigate();
   const [otp, setOtp] = React.useState<string[]>(Array(6).fill(""));
   const inputRefs = React.useRef<(HTMLInputElement | null)[]>([]);
-  const [verifying, setVerifying] = React.useState<boolean>(false);
   const [resending, setResending] = React.useState<boolean>(false);
   const [resent, setResent] = React.useState<boolean>(false);
   const [resendText, setResendText] = React.useState<string>("Resend OTP");
@@ -58,11 +73,24 @@ const Step2: React.FC<Step2Props> = ({ email, setStep, setError }) => {
     if (finalOtp.length !== 6) return;
     setVerifying(true);
     try {
-      const response = await verifyOTP(email, finalOtp);
+      const guestId = getOrCreateUserId();
+      const response = await signin({ email: email, otp: finalOtp, guestId: guestId });
       if (response.success) {
-        setStep(3);
+        const userDetailsResponse = await fetchuser(email);
+        if (userDetailsResponse.success) {
+          localStorage.setItem(
+            "user",
+            JSON.stringify(userDetailsResponse.user)
+          );
+          setUserDetails(userDetailsResponse.user);
+          setSuccess("Signin successful!");
+          setTimeout(() => {
+            setSuccess("");
+            navigate(`/`);
+          }, 2000);
+        }
       } else {
-        setError(response.message || "Verification failed. Try again.");
+        setError(response.message || "Signin failed. Try again.");
         setTimeout(() => {
           setError("");
         }, 2000);
@@ -81,7 +109,7 @@ const Step2: React.FC<Step2Props> = ({ email, setStep, setError }) => {
     if (!email || resent) return;
     setResending(true);
     try {
-      const response = await generateSignUpOTP(email);
+      const response = await generateSignInOTP(email);
       if (response.success) {
         setResent(true);
         setResendText("OTP Resent");
@@ -104,7 +132,6 @@ const Step2: React.FC<Step2Props> = ({ email, setStep, setError }) => {
       setResending(false);
     }
   };
-  
   return (
     <form onSubmit={handleOtpSubmit} className="w-full flex flex-col gap-4">
       <img src={mailSentImg} alt="Send Mail" className="h-[15svh]" />
@@ -144,7 +171,7 @@ const Step2: React.FC<Step2Props> = ({ email, setStep, setError }) => {
           onClick={handleResendOTP}
           title="Resend otp"
           className={`outline-none font-semibold w-max text-xs lg:text-sm text-black/90 ${
-            !resent ? "cursor-pointer underline-offset-2 hover:underline" : ""
+            !resent ? "cursor-pointer underline-offset-2 underline" : ""
           }`}
         >
           {resending ? (
@@ -169,7 +196,7 @@ const Step2: React.FC<Step2Props> = ({ email, setStep, setError }) => {
             : "hover:bg-blue-600 cursor-pointer"
         }`}
       >
-        {verifying ? <Cliploader size={20} /> : "Submit OTP"}
+        {verifying ? <Cliploader size={20} /> : "Sign in"}
       </button>
     </form>
   );

@@ -2,9 +2,9 @@ import { User } from "../../../../utils/constants";
 import { axiosInstance } from "../../../axiosInstance";
 import { apiErrorHandler } from "../../apiErrorHandling";
 
-export const generateOTP = async (email: User['email']) => {
+export const generateSignUpOTP = async (email: User['email']) => {
   try {
-    const response = await axiosInstance.post("/generateotp", {
+    const response = await axiosInstance.post("/generatesignupotp", {
       email
     });
     return response.data;

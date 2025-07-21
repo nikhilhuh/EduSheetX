@@ -25,7 +25,7 @@ export type SignInUser = {
 };
 
 export type Subject = {
-  _id: string;
+  _id?: string;
   name: string;
   topics: string[];
 };

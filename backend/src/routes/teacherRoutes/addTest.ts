@@ -51,7 +51,7 @@ router.post("/", async (req: Request, res: Response) => {
     });
 
     res
-      .status(201)
+      .status(200)
       .json({ success: true, message: "Test added successfully." });
     return;
   } catch (error) {

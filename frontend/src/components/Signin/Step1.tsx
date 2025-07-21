@@ -1,11 +1,13 @@
 import React from "react";
-import Cliploader from "../Loaders/Cliploader";
-import { generateSignUpOTP } from "../../services/api/apiCalls/common/generateSignUpOTP";
 import sendMailImg from "../../assets/images/send-mail.svg";
+import Cliploader from "../Loaders/Cliploader";
+import { generateSignInOTP } from "../../services/api/apiCalls/common/generateSignInOTP";
 
 interface Step1Props {
   email: string;
   setEmail: React.Dispatch<React.SetStateAction<string>>;
+  verifying: boolean;
+  setVerifying: React.Dispatch<React.SetStateAction<boolean>>;
   setStep: React.Dispatch<React.SetStateAction<number>>;
   setError: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -13,16 +15,17 @@ interface Step1Props {
 const Step1: React.FC<Step1Props> = ({
   email,
   setEmail,
+  verifying,
+  setVerifying,
   setStep,
   setError,
 }) => {
-  const [verifying, setVerifying] = React.useState<boolean>(false);
-
   const handleVerification = async () => {
     if (!email) return;
+
     setVerifying(true);
     try {
-      const response = await generateSignUpOTP(email);
+      const response = await generateSignInOTP(email);
       if (response.success) {
         setStep(2);
       } else {
@@ -43,8 +46,8 @@ const Step1: React.FC<Step1Props> = ({
 
   return (
     <>
-     <img src={sendMailImg} alt="Send Mail" className="h-[15svh] mb-2" />
-    <p className="block mb-2 text-sm text-center font-medium text-gray-700">
+      <img src={sendMailImg} alt="Send Mail" className="h-[15svh]" />
+      <p className="block mb-2 text-xs md:text-sm text-center font-medium text-gray-800">
         An OTP will be sent to the mail you provide below
       </p>
       <div className="relative">
@@ -54,9 +57,9 @@ const Step1: React.FC<Step1Props> = ({
           id="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Your email"
+          placeholder="Your registered email"
           autoComplete="email"
-          className="bg-gray-100 border border-gray-500 rounded-xl py-2 px-10 w-full invalid:border-pink-500 invalid:text-pink-600"
+          className="bg-gray-100 border border-gray-500 w-full rounded-xl py-2 px-10 invalid:border-pink-500 invalid:text-pink-600"
         />
         <div className="absolute top-1/2 left-3 -translate-y-1/2">📧</div>
       </div>

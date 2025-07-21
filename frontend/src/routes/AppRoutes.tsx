@@ -16,6 +16,7 @@ import Tests from "../pages/common/Tests";
 import Dashboard from "../pages/common/Dashboard";
 import TestPage from "../pages/common/TestPage";
 import TestResultPage from "../pages/common/TestResultPage";
+import Profile from "../pages/common/Profile";
 
 const AppRoutes: React.FC = () => {
   return (
@@ -26,6 +27,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/profile" element={<Profile />} />
       <Route path="/subjects" element={<Subjects />} />
       <Route path="/subjects/:subjectName" element={<Topics />} />
       <Route path="/subjects/:subjectName/:topicName"  element={<Tests />} />

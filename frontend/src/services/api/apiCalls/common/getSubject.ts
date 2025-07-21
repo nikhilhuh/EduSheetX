@@ -2,9 +2,9 @@ import { Subject } from "../../../../utils/constants";
 import { axiosInstance } from "../../../axiosInstance";
 import { apiErrorHandler } from "../../apiErrorHandling";
 
-export const getSubjectTopics = async (subjectName: Subject['name']) => {
+export const getSubject = async (subjectName: Subject['name']) => {
   try {
-    const response = await axiosInstance.get("/getsubjecttopics", {
+    const response = await axiosInstance.get("/getsubject", {
       params: { subjectName }
     });
     return response.data;

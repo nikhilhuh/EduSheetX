@@ -47,7 +47,15 @@ const questionResultSchema = new mongoose.Schema({
 });
 
 const testResultSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.Mixed, required: true },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Users",
+    required: false, // required only for logged-in users
+  },
+  guestId: {
+    type: String,
+    required: false, // required only for guests
+  },
   test: { type: mongoose.Schema.Types.ObjectId, ref: "Tests", required: true },
   subject: {
     type: mongoose.Schema.Types.ObjectId,
@@ -65,8 +73,11 @@ const testResultSchema = new mongoose.Schema({
   attemptedAt: { type: Date, default: Date.now },
 });
 
+// 🔁 Index for both user and guestId use-cases
 testResultSchema.index({ user: 1 });
-testResultSchema.index({ user: 1, test: 1 }, { unique: true });
+testResultSchema.index({ guestId: 1 });
+testResultSchema.index({ user: 1, test: 1 }, { unique: true, sparse: true }); // sparse allows null user
+testResultSchema.index({ guestId: 1, test: 1 }, { unique: true, sparse: true });
 
 const testResultModel = mongoose.model(
   "TestResult",

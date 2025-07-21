@@ -26,7 +26,7 @@ export const sendOTP = async (email: string, otp: string) => {
   `;
 
   await transporter.sendMail({
-    from: `"Codebase OTP" <${process.env.GMAIL_USER}>`,
+    from: `"EduSheetX OTP" <${process.env.GMAIL_USER}>`,
     to: email,
     subject: `Your OTP for EduSheetX Verification`,
     html: htmlBody,

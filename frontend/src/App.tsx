@@ -5,7 +5,6 @@ import { AppProvider } from "./context/AppProvider";
 import { incrementSiteVisitors } from "./services/api/apiCalls/common/incrementSiteVisitors";
 import PageLoader from "./components/Loaders/PageLoader";
 
-
 function App() {
   const [loading, setLoading] = useState(true);
 
@@ -19,14 +18,16 @@ function App() {
     }
   }, []);
 
+  const handleLoad = () => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  };
+
   // Wait for full page load (images, fonts, etc.)
   useEffect(() => {
-    const handleLoad = () => {
-      setLoading(false);
-    };
-
     if (document.readyState === "complete") {
-      setLoading(false); // Already loaded
+      handleLoad();
     } else {
       window.addEventListener("load", handleLoad);
     }

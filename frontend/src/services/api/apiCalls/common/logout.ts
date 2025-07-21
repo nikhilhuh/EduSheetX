@@ -2,10 +2,10 @@ import { User } from "../../../../utils/constants";
 import { axiosInstance } from "../../../axiosInstance";
 import { apiErrorHandler } from "../../apiErrorHandling";
 
-export const logout = async (email: User['email']) => {
+export const logout = async (userId: User['_id']) => {
   try {
     const response = await axiosInstance.post("/logout", {
-      email
+      userId
     });
     return response.data;
   } catch (err: any) {

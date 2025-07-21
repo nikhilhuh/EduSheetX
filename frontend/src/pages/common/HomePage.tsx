@@ -5,7 +5,7 @@ import { getSiteStats } from "../../services/api/apiCalls/common/getSiteStats";
 import { StatsSection } from "../../components/Home/StatsSection";
 import { Instructions } from "../../components/Home/Instructions";
 import Hero from "../../components/Home/Hero";
-import PopularSubjects from "../../components/Home/PopularSubjects";
+import PopularTopics from "../../components/Home/PopularTopics";
 
 const HomePage: React.FC = () => {
   const [siteStats, setSiteStats] = React.useState<{
@@ -13,7 +13,30 @@ const HomePage: React.FC = () => {
     totalTestsTaken: number;
     totalQuestionsAnswered: number;
     testsAvailable: number;
+    popularTopics: { subjectName: string; topicName: string }[];
   }>();
+
+  const defaultPopularTopics = [
+    { subjectName: "Mathematics", topicName: "Trigonometric Identities" },
+    { subjectName: "Mathematics", topicName: "Real Numbers" },
+    { subjectName: "Mathematics", topicName: "Circles" },
+    { subjectName: "Science", topicName: "Chemical Reactions and Equations" },
+    {
+      subjectName: "Science",
+      topicName: "Heredity and Evolution",
+    },
+    {
+      subjectName: "Science",
+      topicName: "The Human Eye and the Colourful World",
+    },
+  ];
+
+  const defaultSiteStats = {
+    totalStudents: 0,
+    totalTestsTaken: 0,
+    totalQuestionsAnswered: 0,
+    testsAvailable: 0,
+  };
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
@@ -35,8 +58,12 @@ const HomePage: React.FC = () => {
       <Navbar />
       <Hero />
       <Instructions />
-      <PopularSubjects />
-      <StatsSection siteStats={siteStats ?? { totalStudents: 0, totalTestsTaken: 0, totalQuestionsAnswered: 0, testsAvailable: 0 }} />
+      <PopularTopics
+        popularTopics={
+          siteStats ? siteStats.popularTopics : defaultPopularTopics
+        }
+      />
+      <StatsSection siteStats={siteStats ?? defaultSiteStats} />
       <Footer />
     </div>
   );

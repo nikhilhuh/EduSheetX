@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import mongoose from "mongoose";
 import { testResultModel } from "../../models/dbmodels/testResultSchema";
 import { userModel } from "../../models/dbmodels/userModel";
 import { testModel } from "../../models/dbmodels/testModel";
@@ -10,10 +9,9 @@ const router = express.Router();
 router.get("/", async (req: Request, res: Response) => {
   try {
     const userId = req.query.userId as string;
+
     if (!userId) {
-      res
-        .status(400)
-        .json({ success: false, message: "Teacher ID is required." });
+      res.status(400).json({ success: false, message: "Teacher ID is required." });
       return;
     }
 
@@ -23,34 +21,28 @@ router.get("/", async (req: Request, res: Response) => {
       return;
     }
 
-    // 1. Get all tests created by this teacher
+    // 1. Fetch all tests created by this teacher
     const teacherTests = await testModel
-      .find({ createdBy: new mongoose.Types.ObjectId(userId) })
+      .find({ createdBy: userId })
       .populate("subject");
 
     const testIds = teacherTests.map((test) => test._id);
 
-    // 2. Get all results from those tests
+    // 2. Fetch all test results for these tests, filter only registered users (skip guests)
     const relatedResults = await testResultModel
-      .find({ test: { $in: testIds } })
+      .find({ test: { $in: testIds }, user: { $exists: true, $ne: null } })
       .populate("subject")
       .populate("test")
       .populate("user");
 
-    // Total unique students
     const uniqueStudentIds = new Set(
       relatedResults.map((res) => String(res.user))
     );
-    const totalStudents = uniqueStudentIds.size;
 
-    // Total tests created
+    const totalStudents = uniqueStudentIds.size;
     const totalTests = teacherTests.length;
 
-    // Average marks
-    const totalMarks = relatedResults.reduce(
-      (acc, curr) => acc + curr.marks,
-      0
-    );
+    const totalMarks = relatedResults.reduce((acc, curr) => acc + curr.marks, 0);
     const totalPossibleMarks = relatedResults.reduce(
       (acc, curr) => acc + curr.totalQuestions,
       0
@@ -59,21 +51,19 @@ router.get("/", async (req: Request, res: Response) => {
     const averageMarks = relatedResults.length
       ? (totalMarks / relatedResults.length).toFixed(2)
       : "0.00";
+
     const percentage = totalPossibleMarks
       ? ((totalMarks / totalPossibleMarks) * 100).toFixed(2)
       : "0.00";
 
-    // 3. Leaderboard (Top 10 Students in this teacher's tests)
+    // 3. Leaderboard: Top 10 students across this teacher's tests
     const leaderboardAgg = await testResultModel.aggregate([
-      // 1. Match test results in the given testIds and ensure user is ObjectId
       {
         $match: {
           test: { $in: testIds },
-          user: { $exists: true, $type: "objectId" }, // Only ObjectId users
+          user: { $exists: true, $type: "objectId" },
         },
       },
-
-      // 2. Group by user
       {
         $group: {
           _id: "$user",
@@ -81,40 +71,27 @@ router.get("/", async (req: Request, res: Response) => {
           totalQuestions: { $sum: "$totalQuestions" },
         },
       },
-
-      // 3. Lookup user details (from "Users" collection)
       {
         $lookup: {
-          from: "Users", // Ensure this matches your collection name
+          from: "Users",
           localField: "_id",
           foreignField: "_id",
           as: "userInfo",
         },
       },
-
-      // 4. Unwind userInfo (discard if no match)
       { $unwind: "$userInfo" },
-
-      // 5. Filter to only include students (role: "student")
       {
         $match: {
-          "userInfo.role": "student", // Only keep users with role = "student"
+          "userInfo.role": "student",
         },
       },
-
-      // 6. Calculate percentage & format name
       {
         $project: {
           percentage: {
             $cond: [
               { $eq: ["$totalQuestions", 0] },
               0,
-              {
-                $multiply: [
-                  { $divide: ["$totalMarks", "$totalQuestions"] },
-                  100,
-                ],
-              },
+              { $multiply: [{ $divide: ["$totalMarks", "$totalQuestions"] }, 100] },
             ],
           },
           name: {
@@ -122,46 +99,38 @@ router.get("/", async (req: Request, res: Response) => {
           },
         },
       },
-
-      // 7. Sort by percentage (highest first) and limit to top 10
       { $sort: { percentage: -1 } },
       { $limit: 10 },
     ]);
-    // Assign rank to top 10 leaderboard
+
     const leaderboard = leaderboardAgg.map((entry, index) => ({
       ...entry,
       rank: index + 1,
     }));
 
-    // 4. Recent Tests Created by Teacher (sorted by _id timestamp) + Average Marks
+    // 4. Recent Tests (Top 5 by creation date) with avg marks
     const recentTests = await Promise.all(
       teacherTests
-        .sort(
-          (a, b) =>
-            b._id.getTimestamp().getTime() - a._id.getTimestamp().getTime()
-        )
+        .sort((a, b) => b._id.getTimestamp().getTime() - a._id.getTimestamp().getTime())
         .slice(0, 5)
         .map(async (test) => {
-          // Get all test results for this test
-          const results = await testResultModel.find({ test: test._id }).lean();
+          const results = await testResultModel
+            .find({ test: test._id, user: { $exists: true, $ne: null } })
+            .lean();
 
-          // Calculate metrics
           const studentsAttempted = results.length;
-          const avgMarks =
-            studentsAttempted > 0
-              ? results.reduce((sum, result) => sum + result.marks, 0) /
-                studentsAttempted
-              : 0;
+          const avgMarks = studentsAttempted
+            ? results.reduce((sum, result) => sum + result.marks, 0) / studentsAttempted
+            : 0;
 
           return {
             testId: test._id,
             testName: test.name,
-            subject:
-              (test.subject as unknown as SubjectType)?.name || "Unknown",
-            topic: (test.topic as string) || "Unknown",
+            subject: (test.subject as unknown as SubjectType)?.name || "Unknown",
+            topic: test.topic || "Unknown",
             createdAt: test._id.getTimestamp(),
             avgMarks: Math.round(avgMarks * 100) / 100,
-            studentsAttempted: studentsAttempted,
+            studentsAttempted,
           };
         })
     );
@@ -177,11 +146,12 @@ router.get("/", async (req: Request, res: Response) => {
         recentTests,
       },
     });
-    return;
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Something went wrong" });
-    return;
+    console.error("Dashboard error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong while loading the dashboard.",
+    });
   }
 });
 

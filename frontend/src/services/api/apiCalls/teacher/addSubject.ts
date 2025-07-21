@@ -1,12 +1,12 @@
-import { User } from "../../../../utils/constants";
+import { Subject, User } from "../../../../utils/constants";
 import { axiosInstance } from "../../../axiosInstance";
 import { apiErrorHandler } from "../../apiErrorHandling";
 
-export const verifyOTP = async (email: User['email'], otp: string) => {
+export const addSubject = async (email: User["email"], subject: Subject) => {
   try {
-    const response = await axiosInstance.post("/verifyotp", {
+    const response = await axiosInstance.post("/addsubject", {
       email,
-      otp
+      subject,
     });
     return response.data;
   } catch (err: any) {

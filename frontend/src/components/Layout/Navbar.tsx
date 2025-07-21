@@ -1,180 +1,188 @@
 import React from "react";
 import { useUser } from "../../context/UserContext";
-import { Link, useNavigate } from "react-router-dom";
-import { logout } from "../../services/api/apiCalls/common/logout";
-import SuccessModal from "../Modals/SuccessModal";
-import ErrorModal from "../Modals/ErrorModal";
-import Cliploader from "../Loaders/Cliploader";
-import { getOrCreateUserId } from "../../utils/getOrCreateUserId";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X } from "lucide-react";
+
+interface Menu {
+  label: string;
+  path: string;
+}
+
+const menuItems: Menu[] = [
+  {
+    label: "Home",
+    path: "/",
+  },
+  {
+    label: "Dashboard",
+    path: "/dashboard",
+  },
+];
 
 const Navbar: React.FC = () => {
-  const navigate = useNavigate();
-  const { UserDetails, setUserDetails } = useUser();
-  const [idClicked, setIdClicked] = React.useState<boolean>(false);
-  const dropdownRef = React.useRef<HTMLDivElement>(null);
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<string>("");
-  const [success, setSuccess] = React.useState<string>("");
+  const location = useLocation();
+  const { UserDetails } = useUser();
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState<boolean>(false);
 
-  // handling user options closing if clicked outside
+  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
+
   React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIdClicked(false);
-      }
-    };
-
-    if (idClicked) {
-      document.addEventListener("mousedown", handleClickOutside);
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
     } else {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "";
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "";
     };
-  }, [idClicked]);
+  }, [mobileMenuOpen]);
 
-  // handling logout
-  const handleLogout = async () => {
-    if (loading || !UserDetails) return;
-    setLoading(true);
-    try {
-      const response = await logout(UserDetails.email);
-      if (response.success) {
-        setSuccess("Logged out");
-        setTimeout(() => {
-          setSuccess("");
-          localStorage.removeItem("user");
-          localStorage.removeItem("userId");
-          setUserDetails(null);
-          getOrCreateUserId();
-          navigate("/");
-        }, 2000);
-      } else {
-        setError("Logout failed. Try again.");
-        setTimeout(() => {
-          setError("");
-        }, 2000);
-      }
-    } catch (err: any) {
-      setError("Logout failed. Try again.");
-      setTimeout(() => {
-        setError("");
-      }, 2000);
-    } finally {
-      setLoading(false);
-    }
+  const isActive = (path: string) => {
+    return location.pathname.endsWith(path);
   };
 
   return (
-    <nav className="w-full sticky top-0 bg-gradient-to-br from-blue-500 to-blue-600 text-white px-6 py-4 flex justify-between tablet:justify-around items-center z-30 max-h-[8svh]">
-      {success && <SuccessModal success={success} />}
-      {error && <ErrorModal error={error} />}
-      <Link to="/" className="cursor-pointer">
-        <div title="Go to Home" className="text-2xl font-bold tracking-wide">
+    <nav className="w-full sticky top-0 bg-gradient-to-br from-blue-500 to-blue-600 text-white z-30 h-[8dvh]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center relative">
+        {/* Logo */}
+        <Link
+          to="/"
+          className="text-2xl laptop-sm:text-3xl font-extrabold tracking-wide"
+        >
           EduSheetX
-        </div>
-      </Link>
-      {UserDetails ? (
-        <div className="relative" ref={dropdownRef}>
-          <div
-            onClick={() => setIdClicked((prev) => !prev)}
-            title={`Logged in as ${UserDetails.firstName}`}
-            className="w-[5vh] h-[5vh] rounded-full bg-white text-black font-bold flex items-center justify-center cursor-pointer"
-          >
-            {UserDetails.firstName[0]}
-          </div>
-          {/* User Options Dropdown */}
-          {idClicked && (
-            <div className="absolute top-full mt-2 right-0 bg-white shadow drop-shadow-2xl rounded-2xl border border-gray-200 z-40 animate-fade-in-up text-sm sm:text-base overflow-hidden">
-              {/* Profile Section */}
-              <div className="flex items-center gap-4 px-5 py-4 border-b bg-gray-50">
-                <div className="h-12 w-12 rounded-full bg-yellow-500 flex items-center justify-center text-white font-bold text-lg">
-                  {UserDetails.firstName?.[0]}
-                  {UserDetails.lastName?.[0]}
-                </div>
-                <div>
-                  <div className="font-semibold text-gray-800">
-                    {UserDetails.firstName} {UserDetails.lastName}
-                  </div>
-                  <div className="text-xs text-gray-500 break-words">
-                    {UserDetails.email}
-                  </div>
-                </div>
-              </div>
+        </Link>
 
-              {/* Menu Options */}
-              <div className="border-t border-black p-2">
-                <button
-                  title="Go to Home"
-                  onClick={() => navigate("/")}
-                  className="w-full text-left px-3 py-2 hover:bg-yellow-200 text-gray-800 transition-all duration-200 cursor-pointer rounded-md"
-                >
-                  🛖 Home
-                </button>
-                <button
-                  title="Go to your dashboard"
-                  onClick={() => navigate("/dashboard")}
-                  className="w-full text-left px-3 py-2 hover:bg-yellow-200 text-gray-800 transition-all duration-200 cursor-pointer rounded-md"
-                >
-                  🧭 Dashboard
-                </button>
-              </div>
+        {/* Desktop Menu */}
+        <div className="hidden tablet:flex items-center gap-4 laptop-sm:gap-6 text-lg font-semibold">
+          {menuItems.map((item, idx) => {
+            let active = isActive(item.path);
+            return (
+              <Link
+                key={idx}
+                to={item.path}
+                className={`${
+                  active
+                    ? "text-yellow-300 underline underline-offset-2"
+                    : "hover:text-yellow-300"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
 
-              {/* add test for teachers */}
-              {UserDetails.role === "teacher" && (
-                <div className="px-2 pb-2">
-                  <button
-                    title="Add a Test"
-                    onClick={() => navigate("/addtest")}
-                    className="w-full text-left px-3 py-1 hover:bg-yellow-200 text-gray-800 transition-all duration-200 cursor-pointer rounded-md"
-                  >
-                    ➕ Add Test
-                  </button>
-                </div>
-              )}
+          {UserDetails?.role === "teacher" && (
+            <Link
+              to="/addtest"
+              className={`${
+                isActive("/addtest")
+                  ? "text-yellow-300 underline underline-offset-2"
+                  : "hover:text-yellow-300"
+              }`}
+            >
+              Add Test
+            </Link>
+          )}
 
-              {/* Logout */}
-              <div className="px-2 pb-2">
-                <button
-                  onClick={handleLogout}
-                  title="Logout"
-                  className={`w-full text-left text-red-600 hover:text-white hover:bg-red-500 font-medium py-2 px-3 rounded-md transition-all duration-300 ${
-                    loading ? "bg-red-100" : "cursor-pointer"
-                  }`}
-                >
-                  {loading ? (
-                    <div className="flex justify-center items-center">
-                      <Cliploader size={18} />
-                    </div>
-                  ) : (
-                    "🚪 Logout"
-                  )}
-                </button>
-              </div>
+          {UserDetails ? (
+            <Link
+              to="/profile"
+              className={`${
+                isActive("/profile")
+                  ? "text-yellow-300 underline underline-offset-2"
+                  : "hover:text-yellow-300"
+              }`}
+            >
+              Profile
+            </Link>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link
+                to="/signin"
+                className="bg-white text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-blue-100 transition text-sm"
+              >
+                Sign In
+              </Link>
+              <Link
+                to="/signup"
+                className="bg-transparent border border-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition text-sm"
+              >
+                Sign Up
+              </Link>
             </div>
           )}
         </div>
-      ) : (
-        <div className="flex items-center gap-4">
-          <Link
-            to="/signin"
-            className="bg-white text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-blue-100 transition"
-          >
-            Sign In
-          </Link>
-          <Link
-            to="/signup"
-            className="hidden md:block bg-transparent border border-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition text-white"
-          >
-            Sign Up
-          </Link>
+
+        {/* Hamburger Icon */}
+        <button onClick={toggleMobileMenu} className="tablet:hidden">
+          {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="tablet:hidden absolute top-full left-0 h-[92dvh] max-h-[92dvh] overflow-y-auto w-full py-4 px-6 bg-gradient-to-tr from-blue-500 to-blue-600">
+          <div className="flex flex-col gap-5 text-xl font-semibold">
+            {menuItems.map((item, idx) => (
+              <Link
+                key={idx}
+                to={item.path}
+                className={`${
+                  isActive(item.path)
+                    ? "text-yellow-300 underline underline-offset-2"
+                    : "hover:text-yellow-300"
+                }`}
+                onClick={toggleMobileMenu}
+              >
+                {item.label}
+              </Link>
+            ))}
+
+            {UserDetails?.role === "teacher" && (
+              <Link
+                to="/addtest"
+                onClick={toggleMobileMenu}
+                className={`${
+                  isActive("/addtest")
+                    ? "text-yellow-300 underline underline-offset-2"
+                    : "hover:text-yellow-300"
+                }`}
+              >
+                Add Test
+              </Link>
+            )}
+
+            {UserDetails ? (
+              <Link
+                to="/profile"
+                onClick={toggleMobileMenu}
+                className={`${
+                  isActive("/profile")
+                    ? "text-yellow-300 underline underline-offset-2"
+                    : "hover:text-yellow-300"
+                }`}
+              >
+                Profile
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/signin"
+                  className="bg-white text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-blue-100 transition text-sm text-center"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/signup"
+                  className="bg-transparent border border-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition text-sm text-center"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
         </div>
-        
       )}
     </nav>
   );

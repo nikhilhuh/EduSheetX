@@ -13,7 +13,7 @@ const PageLoader: React.FC = () => {
     const interval = setInterval(() => {
       setPrev(current);
       setCurrent((prev) => (prev + 1) % logos.length);
-    }, 1200);
+    }, 600);
 
     return () => clearInterval(interval);
   }, [current]);
@@ -27,7 +27,7 @@ const PageLoader: React.FC = () => {
             key={`prev-${prev}`}
             src={logos[prev]}
             alt="prev"
-            className="absolute top-0 left-0 h-28 w-28 object-contain transition-all duration-700 ease-in-out opacity-0 translate-y-10"
+            className="absolute top-0 left-0 h-28 w-28 object-contain transition-all duration-400 ease-in-out opacity-0 translate-y-10"
           />
         )}
         {/* Current image (fading in and sliding up) */}
@@ -35,7 +35,7 @@ const PageLoader: React.FC = () => {
           key={`current-${current}`}
           src={logos[current]}
           alt="current"
-          className="absolute top-0 left-0 h-28 w-28 object-contain transition-all duration-700 ease-in-out opacity-100 translate-y-0"
+          className="absolute top-0 left-0 h-28 w-28 object-contain transition-all duration-400 ease-in-out opacity-100 translate-y-0"
         />
       </div>
 

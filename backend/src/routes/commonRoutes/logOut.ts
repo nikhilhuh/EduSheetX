@@ -4,8 +4,8 @@ const router = express.Router();
 
 router.post("/", async (req: Request, res: Response) => {
   try {
-    const { email } = req.body;
-    if (!email) {
+    const { userId } = req.body;
+    if (!userId) {
       res.status(400).json({
         success: false,
         message: "Please provide all required fields.",
@@ -13,12 +13,12 @@ router.post("/", async (req: Request, res: Response) => {
       return;
     }
     //  check if the user exists or not
-    let user = await userModel.findOne({ email: email });
+    let user = await userModel.findById(userId);
     if (!user) {
       res.status(400).json({ success: false, message: "User does not exist." });
     }
     // logout the user
-    await userModel.updateOne({ email: email }, { status: "inactive" });
+    await userModel.findByIdAndUpdate(userId, { status: "inactive" });
     res
       .status(200)
       .json({ success: true, message: "User logged out successfully." });
