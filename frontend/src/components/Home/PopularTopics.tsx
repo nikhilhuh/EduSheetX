@@ -17,7 +17,7 @@ const PopularTopics: React.FC<{ popularTopics: { subjectName: string; topicName:
               <div>
                 <h3 className="text-lg font-semibold">{topic.topicName}</h3>
                 <h3 className="text-sm">{topic.subjectName}</h3>
-                <button className="text-sm mt-2 bg-blue-500 group-hover:bg-blue-600 px-4 py-2 rounded text-white flex items-center justify-center gap-2">Explore Tests <ArrowRight className="group-hover:translate-x-1 h-3 w-3"/></button>
+                <button className="text-sm mt-2 bg-blue-500 group-hover:bg-blue-600 px-4 py-2 rounded text-white flex items-center justify-center gap-2 cursor-pointer">Explore Tests <ArrowRight className="group-hover:translate-x-1 h-3 w-3"/></button>
               </div>
             </Link>
           ))}

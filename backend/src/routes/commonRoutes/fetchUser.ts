@@ -13,7 +13,7 @@ router.post("/", async (req: Request, res: Response) => {
       return;
     } 
       //  check if the user exists or not
-      let user = await userModel.findOne({ email: email }).select("_id email firstName lastName role status");
+      let user = await userModel.findOne({ email }).select("-createdAt -updatedAt -__v -password -status");
       if (!user) {
         res.status(400).json({
           success: false,

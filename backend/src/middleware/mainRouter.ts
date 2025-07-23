@@ -2,6 +2,7 @@ import express from "express";
 
 // common routes
 import { router as incrementSiteVisitorsRoute } from "../routes/commonRoutes/incrementSiteVisitors";
+import { router as generateGuestIdRoute } from "../routes/commonRoutes/generateGuestId";
 import { router as getSiteStatsRoute } from "../routes/commonRoutes/getSiteStats";
 import { router as getSubjectsRoute } from "../routes/commonRoutes/getSubjects";
 import { router as getSubjectRoute } from "../routes/commonRoutes/getSubject";
@@ -10,11 +11,12 @@ import { router as getTestResultRoute } from "../routes/commonRoutes/getTestResu
 import { router as getOldTestResultRoute } from "../routes/commonRoutes/getOldTestResult";
 import { router as generateSignUpOTPRoute } from "../routes/commonRoutes/generateSignUpOTP";
 import { router as generateSignInOTPRoute } from "../routes/commonRoutes/generateSignInOTP";
-import { router as veirfyOTPRoute } from "../routes/commonRoutes/verifyOTP";
+import { router as verifyOTPRoute } from "../routes/commonRoutes/verifyOTP";
 import { router as signURoute } from "../routes/commonRoutes/signUp";
 import { router as signInRoute } from "../routes/commonRoutes/signIn";
 import { router as fetchUserRoute } from "../routes/commonRoutes/fetchUser";
 import { router as logOutRoute } from "../routes/commonRoutes/logOut";
+import { router as updateUserRoute } from "../routes/commonRoutes/updateUser";
 
 // student routes
 import { router as getStudentDashboardRoute } from "../routes/studentRoutes/getStudentDashboard";
@@ -35,6 +37,7 @@ const mainRouter = express.Router();
 
 // common routes
 mainRouter.use("/incrementsitevisitors", incrementSiteVisitorsRoute);
+mainRouter.use("/generateguestid", generateGuestIdRoute);
 mainRouter.use("/getsitestats", getSiteStatsRoute);
 mainRouter.use("/getsubjects", getSubjectsRoute);
 mainRouter.use("/getsubject", getSubjectRoute);
@@ -43,11 +46,12 @@ mainRouter.use("/gettestresult", getTestResultRoute);
 mainRouter.use("/getoldtestresult", getOldTestResultRoute);
 mainRouter.use("/generatesignupotp", generateSignUpOTPRoute);
 mainRouter.use("/generatesigninotp", generateSignInOTPRoute);
-mainRouter.use("/verifyotp", veirfyOTPRoute);
+mainRouter.use("/verifyotp", verifyOTPRoute);
 mainRouter.use("/signup", signURoute);
 mainRouter.use("/signin", signInRoute);
 mainRouter.use("/fetchuser", fetchUserRoute);
 mainRouter.use("/logout", logOutRoute);
+mainRouter.use("/updateuser", updateUserRoute);
 
 // student routes
 mainRouter.use("/getstudentdashboard", getStudentDashboardRoute);

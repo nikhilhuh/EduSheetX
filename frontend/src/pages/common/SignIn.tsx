@@ -33,7 +33,7 @@ const SignIn: React.FC = () => {
           className="hidden laptop-sm:block h-full w-full object-contain"
         />
 
-        <div className="flex-1 flex flex-col h-full items-center px-4 py-6">
+        <div className="flex-1 flex flex-col h-full items-center justify-center px-4 py-6">
           {/* Heading and subtext */}
           <div className="text-center mb-6">
             <h1 className="text-xl tablet:text-2xl laptop-sm:text-3xl font-bold text-gray-800 mb-3">
@@ -47,7 +47,7 @@ const SignIn: React.FC = () => {
           </div>
 
           {/* login options  */}
-          <div className="flex-1">
+          <div className="flex-1 flex flex-col justify-center gap-4 lg:text-lg 4k:text-xl w-[90vw] tablet:w-[70vw] laptop-sm:w-[40vw] laptop-lg:w-[30vw]">
             <div className="h-[40svh]">
               {loginMethod === "password" ? (
                 <UsernameForm setSuccess={setSuccess} setError={setError} />
@@ -73,14 +73,14 @@ const SignIn: React.FC = () => {
                 {loginMethod === "password" ? (
                   <button
                     onClick={() => setLoginMethod("otp")}
-                    className={`bg-blue-400 hover:cursor-pointer hover:bg-blue-500 font-medium text-white text-sm py-2 px-4 rounded-xl transition-all w-[90vw] md:w-[70vw] lg:w-[50vw] xl:w-[30vw]`}
+                    className={`bg-blue-400 hover:cursor-pointer hover:bg-blue-500 font-medium text-white text-sm py-2 px-4 rounded-xl transition-all w-[90vw] tablet:w-[70vw] laptop-sm:w-[40vw] laptop-lg:w-[30vw]`}
                   >
                     Login with OTP
                   </button>
                 ) : (
                   <button
                     onClick={() => setLoginMethod("password")}
-                    className={`bg-blue-400 hover:cursor-pointer hover:bg-blue-500 font-medium text-white text-sm  py-2 px-4 rounded-xl transition-all w-[90vw] md:w-[70vw] lg:w-[50vw] xl:w-[30vw]`}
+                    className={`bg-blue-400 hover:cursor-pointer hover:bg-blue-500 font-medium text-white text-sm  py-2 px-4 rounded-xl transition-all w-[90vw] tablet:w-[70vw] laptop-sm:w-[40vw] laptop-lg:w-[30vw]`}
                   >
                     Login with Password
                   </button>

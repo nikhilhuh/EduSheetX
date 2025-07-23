@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { userModel } from "../../models/dbmodels/userModel";
 import { generateOTP } from "../../utils/generateOTP";
-import { sendOTP } from "../../utils/sendOTP";
+import { sendOTPviaMail } from "../../utils/sendOTP";
 import { otpModel } from "../../models/dbmodels/otpModel";
 
 const router = express.Router();
@@ -31,7 +31,7 @@ router.post("/", async (req: Request, res: Response) => {
     // Generate a new OTP
     const otp = generateOTP();
 
-    sendOTP(email, otp);
+    sendOTPviaMail(email, otp);
 
     // Check if an OTP already exists for the email
     const existingOTP = await otpModel.findOne({ email });

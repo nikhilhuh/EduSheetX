@@ -45,8 +45,8 @@ const UsernameForm: React.FC<UsernameFormProps> = ({
     if (!isFormValid || loading) return;
     setLoading(true);
     try {
-      const guestId = getOrCreateUserId();
-      const response = await signin({ email: credentials.email, password: credentials.password, guestId: guestId });
+      const guestId = await getOrCreateUserId();
+      const response = await signin({ email: credentials.email, password: credentials.password, guestId });
       if (response.success) {
         const userDetailsResponse = await fetchuser(credentials.email);
         if (userDetailsResponse.success) {
@@ -54,6 +54,7 @@ const UsernameForm: React.FC<UsernameFormProps> = ({
             "user",
             JSON.stringify(userDetailsResponse.user)
           );
+          localStorage.setItem("userId", userDetailsResponse.user._id);
           setUserDetails(userDetailsResponse.user);
           setSuccess("Signin successful!");
           setTimeout(() => {
@@ -81,7 +82,7 @@ const UsernameForm: React.FC<UsernameFormProps> = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col h-full justify-center gap-4 text-base lg:text-lg 4k:text-xl w-[85vw] md:w-[70vw] lg:w-[50vw] xl:w-[30vw]"
+      className="flex-1 flex flex-col justify-center gap-4 lg:text-lg 4k:text-xl w-[90vw] tablet:w-[70vw] laptop-sm:w-[40vw] laptop-lg:w-[30vw]"
     >
       {/* Username Field */}
       <div className="flex flex-col gap-1">

@@ -13,7 +13,7 @@ const OTPLogin: React.FC<OTPLoginProps> = ({ step, setStep, setError, setSuccess
   const [verifying, setVerifying] = React.useState<boolean>(false);
 
   return (
-    <div className="flex flex-col justify-center gap-4 text-base lg:text-lg 4k:text-xl w-[90vw] tablet:w-[70vw] laptop-sm:w-[50vw] laptop-lg:w-[30vw]">
+    <div className="flex-1 flex flex-col justify-center gap-4 lg:text-lg 4k:text-xl w-[90vw] tablet:w-[70vw] laptop-sm:w-[40vw] laptop-lg:w-[30vw]">
       {step === 1 && (
         <Step1
           email={email}

@@ -2,7 +2,7 @@ import { axiosInstance } from "../../../axiosInstance";
 import { apiErrorHandler } from "../../apiErrorHandling";
 import { getOrCreateUserId } from "../../../../utils/getOrCreateUserId";
 
-const userId = getOrCreateUserId();
+const userId = await getOrCreateUserId();
 
 export const getOldTestResult = async (
   testId: string

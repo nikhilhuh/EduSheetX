@@ -68,12 +68,13 @@ const Step2: React.FC<Step2Props> = ({
     }
   };
 
-  const handleOtpSubmit = async () => {
+  const handleOtpSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     const finalOtp = otp.join("");
     if (finalOtp.length !== 6) return;
     setVerifying(true);
     try {
-      const guestId = getOrCreateUserId();
+      const guestId = await getOrCreateUserId();
       const response = await signin({ email: email, otp: finalOtp, guestId: guestId });
       if (response.success) {
         const userDetailsResponse = await fetchuser(email);

@@ -1,7 +1,7 @@
 import React from "react";
 import Cliploader from "../Loaders/Cliploader";
 import { Check, Edit } from "lucide-react";
-import { verifyOTP } from "../../services/api/apiCalls/common/veirfyOTP";
+import { verifyOTP } from "../../services/api/apiCalls/common/verifyOTP";
 import { generateSignUpOTP } from "../../services/api/apiCalls/common/generateSignUpOTP";
 import mailSentImg from "../../assets/images/mail.svg";
 
@@ -106,7 +106,7 @@ const Step2: React.FC<Step2Props> = ({ email, setStep, setError }) => {
   };
   
   return (
-    <form onSubmit={handleOtpSubmit} className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-4">
       <img src={mailSentImg} alt="Send Mail" className="h-[15svh]" />
       <p className="text-xs lg:text-sm text-center font-medium text-gray-800 w-full justify-center flex flex-wrap gap-1">
         Enter the 6-digit OTP sent to
@@ -161,7 +161,8 @@ const Step2: React.FC<Step2Props> = ({ email, setStep, setError }) => {
       </div>
 
       <button
-        type="submit"
+        type="button"
+        onClick={handleOtpSubmit}
         disabled={verifying || otp.join("").length < 6}
         className={`bg-blue-500 text-white py-2 px-4 rounded-xl transition-colors duration-300 ${
           verifying || otp.join("").length < 6
@@ -171,7 +172,7 @@ const Step2: React.FC<Step2Props> = ({ email, setStep, setError }) => {
       >
         {verifying ? <Cliploader size={20} /> : "Submit OTP"}
       </button>
-    </form>
+    </div>
   );
 };
 

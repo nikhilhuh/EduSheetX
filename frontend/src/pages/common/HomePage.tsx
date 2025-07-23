@@ -6,6 +6,7 @@ import { StatsSection } from "../../components/Home/StatsSection";
 import { Instructions } from "../../components/Home/Instructions";
 import Hero from "../../components/Home/Hero";
 import PopularTopics from "../../components/Home/PopularTopics";
+import { getOrCreateUserId } from "../../utils/getOrCreateUserId";
 
 const HomePage: React.FC = () => {
   const [siteStats, setSiteStats] = React.useState<{
@@ -51,6 +52,7 @@ const HomePage: React.FC = () => {
       }
     };
     getsitestats();
+    getOrCreateUserId();
   }, []);
 
   return (

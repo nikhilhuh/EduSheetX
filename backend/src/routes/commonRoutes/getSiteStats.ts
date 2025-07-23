@@ -38,13 +38,13 @@ router.get("/", async (req: Request, res: Response) => {
       },
     ]);
 
-    const statsWithTests = {
-      ...stats?.toObject(),
+    const siteStats = {
+      ...(stats?.toObject() || {}),
       testsAvailable,
       popularTopics: popularTopicsAggregation,
     };
 
-    res.status(200).json({ success: true, data: statsWithTests });
+    res.status(200).json({ success: true, data: siteStats });
   } catch (error) {
     console.error("Error retrieving stats: ", error);
     res.status(500).json({ success: false, message: "Internal server error." });

@@ -1,5 +1,4 @@
 export type UserRole = "student" | "teacher";
-export type UserStatus = "active" | "inactive";
 
 export interface User {
   _id: string;
@@ -8,7 +7,10 @@ export interface User {
   email: string;
   password: string;
   role: UserRole;
-  status: UserStatus;
+  class?: string;
+  phoneNumber?: string;
+  gaurdianName?: string;
+  gaurdianPhoneNumber?: number;
 }
 
 export interface SubjectType {

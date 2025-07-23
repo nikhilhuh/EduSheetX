@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const userId = req.query.userId as string;
+    const userId = req.query.userId;
 
     if (!userId) {
       res.status(400).json({ success: false, message: "Teacher ID is required." });

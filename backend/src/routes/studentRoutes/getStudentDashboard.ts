@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const userId = req.query.userId as string;
+    const userId = req.query.userId;
     if (!userId) {
       res.status(400).json({ success: false, message: "User id is required." });
       return;
@@ -20,7 +20,7 @@ router.get("/", async (req: Request, res: Response) => {
     }
     // 1. Student's Test Results
     const studentResults = await testResultModel
-      .find({ user: new mongoose.Types.ObjectId(userId) })
+      .find({ user: userId })
       .populate("subject")
       .populate("test");
 

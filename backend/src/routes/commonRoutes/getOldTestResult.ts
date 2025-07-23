@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const testId = req.query.testId as string;
-    const userId = req.query.userId as string;
+    const testId = req.query.testId;
+    const userId = req.query.userId;
 
     if (!testId || !userId) {
       res.status(400).json({

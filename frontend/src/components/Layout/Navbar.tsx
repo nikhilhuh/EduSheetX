@@ -14,6 +14,10 @@ const menuItems: Menu[] = [
     path: "/",
   },
   {
+    label: "Explore Subjects",
+    path: "/subjects",
+  },
+  {
     label: "Dashboard",
     path: "/dashboard",
   },

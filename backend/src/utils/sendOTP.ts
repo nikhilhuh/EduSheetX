@@ -1,9 +1,10 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+// import { twilioClient, twilioPhoneNumber } from "../configs/twilioClient";
 
 dotenv.config();
 
-export const sendOTP = async (email: string, otp: string) => {
+export const sendOTPviaMail = async (email: string, otp: string) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -32,3 +33,13 @@ export const sendOTP = async (email: string, otp: string) => {
     html: htmlBody,
   });
 };
+
+// export const sendOTPViaSms = async (phone: string, otp: string) => {
+//   const message = `Your OTP for phone verification is: ${otp}`;
+
+//   await twilioClient.messages.create({
+//     body: message,
+//     from: twilioPhoneNumber,
+//     to: phone
+//   });
+// };

@@ -1,14 +1,28 @@
 export type UserRole = "student" | "teacher";
-export type UserStatus = "active" | "inactive";
 
 export interface User {
-  _id: string; 
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
+  password: string;
   role: UserRole;
-  status: UserStatus;
+  class?: string;
+  phoneNumber?: string;
+  gaurdianName?: string;
+  gaurdianPhoneNumber?: number;
 }
+
+export type EditableUserField =
+  | "firstName"
+  | "lastName"
+  | "email"
+  | "role"
+  | "class"
+  | "phoneNumber"
+  | "gaurdianName"
+  | "gaurdianPhoneNumber";
+
 
 export type SignUpUser = {
   firstName: string;
