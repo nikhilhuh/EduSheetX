@@ -2,8 +2,6 @@ import { axiosInstance } from "../../../axiosInstance";
 import { apiErrorHandler } from "../../apiErrorHandling";
 import { getOrCreateUserId } from "../../../../utils/getOrCreateUserId";
 
-const userId = getOrCreateUserId();
-
 export const getTestResult = async (
   subjectId: string,
   topicName: string,
@@ -11,6 +9,7 @@ export const getTestResult = async (
   answers: (string | null)[]
 ) => {
   try {
+    const userId = await getOrCreateUserId();
     const response = await axiosInstance.get("/gettestresult", {
       params: {
         subjectId,

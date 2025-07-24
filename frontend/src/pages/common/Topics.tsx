@@ -11,11 +11,13 @@ import { getSubject } from "../../services/api/apiCalls/common/getSubject";
 import LoadingData from "../../components/Miscellaneous/LoadingData";
 import SuccessModal from "../../components/Modals/SuccessModal";
 import EditSubjectModal from "../../components/Modals/EditSubjectModal";
+import { useUser } from "../../context/UserContext";
 
 const Topics: React.FC = () => {
   const navigate = useNavigate();
   const { subjectName } = useParams();
   const decodedSubjectName = subjectName ? decodeURIComponent(subjectName) : "";
+  const { UserDetails } = useUser();
   const [error, setError] = React.useState<string>("");
   const [success, setSuccess] = React.useState<string>("");
   const [subject, setSubject] = React.useState<Subject | null>(null);
@@ -75,13 +77,14 @@ const Topics: React.FC = () => {
     <div className="flex flex-col min-h-screen bg-white">
       {error && <ErrorModal error={error} />}
       {success && <SuccessModal success={success} />}
-      {editSubject && (
+      {editSubject && UserDetails && subject && (
         <EditSubjectModal
           subject={subject}
           setError={setError}
           setSuccess={setSuccess}
           fetchSubject={fetchSubject}
           setEditSubject={setEditSubject}
+          UserDetails={UserDetails}
         />
       )}
       <Navbar />
@@ -96,11 +99,26 @@ const Topics: React.FC = () => {
           ) : subject.topics.length === 0 ? (
             <NoData text="No topics found at the moment.." />
           ) : (
-            <MainContent
-              subject={subject}
-              handleTopicClick={handleTopicClick}
-              setEditSubject={setEditSubject}
-            />
+            <div className="max-w-6xl mx-auto px-4 py-16">
+              <MainContent
+                subject={subject}
+                handleTopicClick={handleTopicClick}
+              />
+              {UserDetails && UserDetails.role === "teacher" && (
+                <div
+                  data-aos="fade-up"
+                  data-aos-delay="200"
+                  className="mt-10 flex justify-end"
+                >
+                  <button
+                    onClick={() => setEditSubject(true)}
+                    className="max-w-max bg-blue-500 hover:bg-blue-600 cursor-pointer px-4 py-2 rounded text-center text-white font-semibold"
+                  >
+                    Edit Subject
+                  </button>
+                </div>
+              )}
+            </div>
           )}
         </div>
       )}

@@ -74,10 +74,17 @@ const testResultSchema = new mongoose.Schema({
 });
 
 // 🔁 Index for both user and guestId use-cases
-testResultSchema.index({ user: 1 });
-testResultSchema.index({ guestId: 1 });
-testResultSchema.index({ user: 1, test: 1 }, { unique: true, sparse: true }); // sparse allows null user
-testResultSchema.index({ guestId: 1, test: 1 }, { unique: true, sparse: true });
+// For logged-in users only
+testResultSchema.index(
+  { user: 1, test: 1 },
+  { unique: true, partialFilterExpression: { user: { $type: "objectId" } } }
+);
+
+// For guests only
+testResultSchema.index(
+  { guestId: 1, test: 1 },
+  { unique: true, partialFilterExpression: { guestId: { $type: "string" } } }
+);
 
 const testResultModel = mongoose.model(
   "TestResult",

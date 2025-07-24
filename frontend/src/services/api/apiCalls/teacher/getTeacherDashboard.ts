@@ -4,7 +4,7 @@ import { apiErrorHandler } from "../../apiErrorHandling";
 
 const userId = await getOrCreateUserId();
 
-export const getTeacherDashoard = async () => {
+export const getTeacherDashboard = async () => {
   try {
     const response = await axiosInstance.get("/getteacherdashboard", {
       params: { userId },

@@ -9,8 +9,7 @@ const Hero: React.FC = () => {
       <header className="relative bg-blue-500 w-full flex flex-col-reverse tablet:flex-row items-center justify-around gap-14 px-6 py-10 pb-20 overflow-hidden">
         {/* Background Gradient (under everything) */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 z-0" />
-        {/* Decorative Floating Shapes (above gradient, behind content) */}
-        {/* Floating Decorative Shapes */}
+        {/* Floating Elements */}
         <div className="absolute inset-0 z-10 pointer-events-none">
           {/* Large Circle */}
           <svg
@@ -75,21 +74,34 @@ const Hero: React.FC = () => {
             <circle cx="12" cy="12" r="4" />
           </svg>
         </div>
+
         {/* Left Text Content */}
-        <div className="z-20 max-w-xl space-y-6 text-center md:text-left">
+        <div
+          className="z-20 max-w-xl space-y-6 text-center md:text-left"
+          data-aos="fade-right"
+          data-aos-duration="900"
+        >
           <h1 className="text-4xl tablet:text-5xl laptop-sm:text-6xl font-extrabold text-white leading-tight">
             Choose Your <span className="text-yellow-300">Subject</span>
           </h1>
           <p className="text-white/90 text-lg">
             Unlock your potential with every quiz.
           </p>
-          <div className="inline-flex items-center gap-2 bg-white/20 text-white rounded-full px-4 py-1 backdrop-blur-md">
+          <div
+            className="inline-flex items-center gap-2 bg-white/20 text-white rounded-full px-4 py-1 backdrop-blur-md"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
             <Breadcrumbs />
           </div>
         </div>
+
         {/* Right Mascot/Image */}
-        <div className="hidden tablet:block relative z-20 w-full max-w-xs laptop-sm:max-w-sm laptop-lg:max-w-md">
-          {/* Yellow Glow Blob */}
+        <div
+          className="hidden tablet:block relative z-20 w-full max-w-xs laptop-sm:max-w-sm laptop-lg:max-w-md"
+          data-aos="zoom-in-up"
+          data-aos-delay="300"
+        >
           <img
             src={EduSheetXgif}
             alt="Why EduSheet"
@@ -97,6 +109,7 @@ const Hero: React.FC = () => {
           />
         </div>
       </header>
+
       {/* Bottom Wave */}
       <div className="w-full overflow-hidden leading-none -mt-20 z-10">
         <svg

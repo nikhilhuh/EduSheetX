@@ -24,10 +24,14 @@ interface RecentTestsProps {
   recentTests: RecentTest[];
 }
 
-const StudentRecentTests: React.FC<RecentTestsProps> = ({ recentTests }) => {
+const TeacherRecentTests: React.FC<RecentTestsProps> = ({ recentTests }) => {
   return (
     <div className="bg-white rounded-2xl shadow-md p-6">
-      <h2 className="text-xl tablet:text-2xl laptop-sm:text-3xl font-semibold mb-6 text-center">
+      <h2
+        data-aos="zoom-in"
+        data-aos-duration="800"
+        className="text-xl tablet:text-2xl laptop-sm:text-3xl font-semibold mb-6 text-center"
+      >
         📝 Recent Tests
       </h2>
 
@@ -50,7 +54,7 @@ const StudentRecentTests: React.FC<RecentTestsProps> = ({ recentTests }) => {
 
           {/* X Axis */}
           <XAxis
-          className="hidden"
+            className="hidden"
             dataKey="testName"
             tick={{ fontSize: 12 }}
           />
@@ -92,8 +96,10 @@ const StudentRecentTests: React.FC<RecentTestsProps> = ({ recentTests }) => {
 
       {/* Test list */}
       <div className="mt-6 grid gap-4">
-        {recentTests.map((test) => (
+        {recentTests.map((test, i) => (
           <div
+            data-aos="fade-up"
+            data-aos-delay={150 + i * 100}
             key={test.testId}
             className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-wrap gap-4 justify-between items-start"
           >
@@ -104,14 +110,18 @@ const StudentRecentTests: React.FC<RecentTestsProps> = ({ recentTests }) => {
               </p>
               {test.studentsAttempted > 0 ? (
                 <>
-                <p className="text-sm text-gray-500">Students Attempted: {test.studentsAttempted}</p>
-                <p className="text-sm text-gray-500">Average Marks: {test.avgMarks}</p>
+                  <p className="text-sm text-gray-500">
+                    Students Attempted: {test.studentsAttempted}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Average Marks: {test.avgMarks}
+                  </p>
                 </>
               ) : (
-                <p className="text-sm text-gray-500">No Student has attempted this test.</p>
+                <p className="text-sm text-gray-500">
+                  No Student has attempted this test.
+                </p>
               )}
-              
-              
             </div>
             <div className="flex items-center text-sm text-gray-400 gap-2">
               <CalendarDays className="w-4 h-4" />
@@ -128,4 +138,4 @@ const StudentRecentTests: React.FC<RecentTestsProps> = ({ recentTests }) => {
   );
 };
 
-export default StudentRecentTests;
+export default TeacherRecentTests;

@@ -142,7 +142,8 @@ const TestPage: React.FC = () => {
       <Navbar />
       <Hero />
 
-      <div className="flex-1 mx-auto space-y-4 min-w-[90vw] max-w-[95vw] laptop-sm:min-w-[70vw] laptop-sm:max-w-[70vw] px-4 py-16">
+      <div data-aos="zoom-in-up"
+          data-aos-duration="300" className="flex-1 mx-auto space-y-4 min-w-[90vw] max-w-[95vw] laptop-sm:min-w-[70vw] laptop-sm:max-w-[70vw] px-4 py-16">
         <div className="flex justify-between items-baseline">
           <div className="text-lg text-gray-800">
             Question {currentQuestionIndex + 1} of {test.questions.length}

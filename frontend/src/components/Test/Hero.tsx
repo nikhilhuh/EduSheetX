@@ -75,7 +75,11 @@ const Hero: React.FC = () => {
           </svg>
         </div>
         {/* Left Text Content */}
-        <div className="z-20 max-w-xl space-y-6 text-center md:text-left">
+        <div
+          data-aos="fade-right"
+          data-aos-duration="900"
+          className="z-20 max-w-xl space-y-6 text-center md:text-left"
+        >
           <h1 className="text-4xl tablet:text-5xl laptop-sm:text-6xl font-extrabold text-white leading-tight">
             GOOD <span className="text-yellow-300">LUCK</span>
           </h1>
@@ -102,7 +106,11 @@ const Hero: React.FC = () => {
         </div>
 
         {/* Right Mascot/Image */}
-        <div className="hidden tablet:block relative z-20 w-full max-w-sm">
+        <div
+          data-aos="zoom-in-up"
+          data-aos-delay="300"
+          className="hidden tablet:block relative z-20 w-full max-w-sm"
+        >
           {/* Yellow Glow Blob */}
           <img
             src={GoodLuckImg}

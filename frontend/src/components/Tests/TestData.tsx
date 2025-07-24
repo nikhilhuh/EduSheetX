@@ -8,12 +8,12 @@ import { Check } from "lucide-react";
 
 interface TestDataProps {
   test: Test;
-  setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const TestData: React.FC<TestDataProps> = ({ test, setError }) => {
+const TestData: React.FC<TestDataProps> = ({ test }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string>("");
 
   const handleStartTest = () => {
     if (!test.isDone) {
@@ -34,12 +34,12 @@ const TestData: React.FC<TestDataProps> = ({ test, setError }) => {
           state: { result },
         });
       } else {
-        setError(response.message || "Something went wrong");
-        setTimeout(() => setError(""), 2000);
+        setError("Could not fetch the test result, try again later");
+        setTimeout(() => setError(""), 4000);
       }
     } catch (err: any) {
-      setError("Something went wrong.");
-      setTimeout(() => setError(""), 2000);
+      setError("Could not fetch the test result, try again later");
+      setTimeout(() => setError(""), 4000);
     } finally {
       setLoading(false);
     }
@@ -74,7 +74,7 @@ const TestData: React.FC<TestDataProps> = ({ test, setError }) => {
         </h3>
 
         <div
-          className={`text-lg text-gray-700 flex items-center flex-wrap justify-center gap-4`}
+          className={`text-lg text-gray-700 flex items-center flex-col justify-center gap-4`}
         >
           <p>
             📝 Questions:{" "}
@@ -84,6 +84,12 @@ const TestData: React.FC<TestDataProps> = ({ test, setError }) => {
             ⏱ Time: <span className="font-semibold">{test.timeLimit} mins</span>
           </p>
         </div>
+
+        {error && (
+        <div className="text-red-500 text-center px-4 py-1 w-full font-inter font-bold text-xs tablet:text-sm">
+          {error}
+        </div>
+      )}
 
         {isDone ? (
           <button

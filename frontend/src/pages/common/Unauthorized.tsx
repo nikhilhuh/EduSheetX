@@ -15,32 +15,42 @@ const Unauthorized: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
-      <main className="flex flex-col-reverse laptop-sm:flex-row items-center justify-center min-h-[80vh] px-6 py-10  gap-10">
-        {/* Text Section */}
-        <div className="text-center laptop-sm:text-left max-w-xl">
-          <h1 className="text-6xl font-extrabold text-red-600 mb-4">403</h1>
-          <h2 className="text-3xl font-bold text-gray-800 mb-3">
+      <main className="flex flex-col-reverse md:flex-row items-center justify-center flex-grow px-6 py-12 gap-10">
+        {/* Text Content */}
+        <div
+          className="text-center md:text-left max-w-lg"
+          data-aos="fade-left"
+          data-aos-duration="800"
+        >
+          <h1 className="text-7xl font-extrabold text-red-600 mb-3 tracking-tight">
+            403
+          </h1>
+          <h2 className="text-3xl font-semibold text-gray-800 mb-4">
             Unauthorized Access
           </h2>
           <p className="text-gray-600 text-base mb-6 leading-relaxed">
-            You do not have permission to view this page. <br />
-            Please check your role or try logging in with a different account.
+            Sorry, you don’t have permission to access this page. <br />
+            Check your role or try logging in with a different account.
           </p>
           <button
             onClick={handleGoBack}
-            className="px-6 py-3 bg-blue-500 text-white font-medium rounded-xl shadow hover:bg-blue-600 transition-all duration-200 hover:scale-105 cursor-pointer"
+            className="inline-block px-6 py-3 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 hover:shadow-lg transition duration-200 transform hover:scale-105"
           >
-            Go Back
+            ← Go Back
           </button>
         </div>
 
-        {/* Illustration */}
-        <div className="w-full max-w-sm">
+        {/* Image */}
+        <div
+          className="w-full max-w-sm"
+          data-aos="zoom-in"
+          data-aos-delay="200"
+        >
           <img
             src={UnauthorizedImg}
-            alt="Unauthorized Elephant Mascot"
+            alt="Unauthorized Access Mascot"
             className="w-full h-auto object-contain"
           />
         </div>

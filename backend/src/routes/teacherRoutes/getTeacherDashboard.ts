@@ -3,15 +3,16 @@ import { testResultModel } from "../../models/dbmodels/testResultSchema";
 import { userModel } from "../../models/dbmodels/userModel";
 import { testModel } from "../../models/dbmodels/testModel";
 import { SubjectType } from "../../models/type models/types";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const userId = req.query.userId;
+    const userId = req.query.userId as string;
 
-    if (!userId) {
-      res.status(400).json({ success: false, message: "Teacher ID is required." });
+    if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+      res.status(400).json({ success: false, message: "Valid Teacher ID is required." });
       return;
     }
 

@@ -1,32 +1,26 @@
-import mongoose from "mongoose";
 import { testResultModel } from "../models/dbmodels/testResultSchema";
+import { guestModel } from "../models/dbmodels/guestModel";
 
 export const mergeGuestToUser = async (guestId: string, userId: string) => {
   try {
     if (!guestId || !userId) return;
 
-    const userObjectId = new mongoose.Types.ObjectId(userId);
-
     // Fetch all guest test results
-    const guestResults = await testResultModel.find({
-      $expr: {
-        $eq: [{ $toString: "$user" }, guestId],
-      },
-    });
+    const guestResults = await testResultModel.find({ guestId });
+
+    await guestModel.deleteOne({ guestId });
 
     for (const result of guestResults) {
       const existing = await testResultModel.findOne({
         test: result.test,
-        $expr: {
-          $eq: [{ $toString: "$user" }, userId],
-        },
+        user: userId,
       });
 
       // If the user hasn't already attempted this test
       if (!existing) {
         await testResultModel.updateOne(
           { _id: result._id },
-          { $set: { user: userObjectId } }
+          { $set: { user: userId } }
         );
       }
     }

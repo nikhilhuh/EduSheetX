@@ -1,15 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Anton&family=Dancing+Script:wght@400..700&family=Underdog&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
 @import "tailwindcss";
 
 .h-screen {
   height: 100svh;
 }
 @theme {
-
   /* your fonts (imported from google fonts) */
-  --font-underdog: Underdog, sans-serif;
-  --font-dancing: "Dancing Script", sans-serif;
-  --font-anton: "Anton", sans-serif;
+  --font-inter: "Inter", sans-serif;
 
   /* font-sizes */
   --font-size-xs: 0.75rem;
@@ -82,34 +79,4 @@
 
 .animate-float-fast {
   animation: floatFast 4s ease-in-out infinite;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fade-in-up {
-  animation: fadeInUp 0.5s ease-out forwards;
-}
-
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.3s ease-out;
 }

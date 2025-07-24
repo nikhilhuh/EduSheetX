@@ -1,6 +1,5 @@
 import React from "react";
 import imageCompression from "browser-image-compression";
-import { axiosInstance } from "../../services/axiosInstance";
 import Cliploader from "../Loaders/Cliploader";
 import SelectOptionDropdown from "../Dropdown/SelectOptionDropdown";
 
@@ -37,24 +36,12 @@ const Questions: React.FC<QuestionProps> = ({ questions, setQuestions }) => {
 
       const compressedFile = await imageCompression(file, options);
 
-      // Upload to backend
-      const formData = new FormData();
-      formData.append("image", compressedFile);
-
-      const res = await axiosInstance.post("/uploadquestionimage", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      const imagePath = res.data.path;
-
-      const updated = questions.map((q, i) =>
-        i === index ? { ...q, questionImage: imagePath } : q
-      );
-
+      const updated = [...questions];
+      updated[index].questionImage = compressedFile;
       setQuestions(updated);
     } catch (error: any) {
-      console.error("Upload error:", error.response || error.message || error);
-      alert("Image upload failed. Please try another image.");
+      console.error("Image compression error:", error);
+      alert("Image processing failed. Please try another image.");
     } finally {
       toggleLoading(index, false);
     }
@@ -147,13 +134,17 @@ const Questions: React.FC<QuestionProps> = ({ questions, setQuestions }) => {
                   {q.questionImage && (
                     <div className="mt-3 flex flex-col items-center justify-center mb-3 gap-4">
                       <img
-                        src={q.questionImage}
+                        src={
+                          typeof q.questionImage === "string"
+                            ? q.questionImage
+                            : URL.createObjectURL(q.questionImage)
+                        }
                         alt={`Question ${idx + 1}`}
-                        className="max-w-xs max-h-64 rounded border"
+                        className="max-h-64 rounded border max-w-[90vw] tablet:max-w-xs"
                       />
                       <input
-                        id={`questionCaption-${idx}`}
                         type="text"
+                        id={`questionCaption-${idx}`}
                         value={q.questionCaption}
                         onChange={(e) =>
                           handleQuestionChange(
@@ -167,6 +158,7 @@ const Questions: React.FC<QuestionProps> = ({ questions, setQuestions }) => {
                       />
                     </div>
                   )}
+
                   {loading[idx] && <Cliploader size={25} color="blue" />}
                 </>
               ) : (
@@ -210,12 +202,22 @@ const Questions: React.FC<QuestionProps> = ({ questions, setQuestions }) => {
               </div>
 
               <div>
-                <span
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
+                <span className="block text-sm font-medium text-gray-700 mb-1">
                   Correct Answer
                 </span>
-                <SelectOptionDropdown options={[ {label: "A", value: "A"}, {label: "B", value: "B"}, {label: "C", value: "C"}, {label: "D", value: "D"}]} placeholder="Select correct option" onSelect={(value)=> handleQuestionChange(idx, "correctAnswer", value)}  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition-all cursor-pointer"/>
+                <SelectOptionDropdown
+                  options={[
+                    { label: "A", value: "A" },
+                    { label: "B", value: "B" },
+                    { label: "C", value: "C" },
+                    { label: "D", value: "D" },
+                  ]}
+                  placeholder="Select correct option"
+                  onSelect={(value) =>
+                    handleQuestionChange(idx, "correctAnswer", value)
+                  }
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition-all cursor-pointer"
+                />
               </div>
 
               <div>

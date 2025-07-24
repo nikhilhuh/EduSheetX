@@ -4,28 +4,28 @@ import AppRoutes from "./routes/AppRoutes";
 import { AppProvider } from "./context/AppProvider";
 import { incrementSiteVisitors } from "./services/api/apiCalls/common/incrementSiteVisitors";
 import PageLoader from "./components/Loaders/PageLoader";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function App() {
   const [loading, setLoading] = useState(true);
 
-  // Visitor counter logic
+  // AOS + Visitor Tracking
   useEffect(() => {
+    AOS.init({ once: true, duration: 1200 });
+
     const alreadyCounted = localStorage.getItem("visitor-counted");
     if (!alreadyCounted) {
-      incrementSiteVisitors().then(() => {
-        localStorage.setItem("visitor-counted", "true");
-      });
+      incrementSiteVisitors()
+        .then(() => localStorage.setItem("visitor-counted", "true"))
+        .catch((err) => console.error("Visitor count failed:", err));
     }
   }, []);
 
-  const handleLoad = () => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  };
-
-  // Wait for full page load (images, fonts, etc.)
+  // Handle Full Page Load (images/fonts)
   useEffect(() => {
+    const handleLoad = () => setLoading(false);
+
     if (document.readyState === "complete") {
       handleLoad();
     } else {
@@ -37,6 +37,7 @@ function App() {
     };
   }, []);
 
+  // Optional: remove fixed delay
   if (loading) return <PageLoader />;
 
   return (

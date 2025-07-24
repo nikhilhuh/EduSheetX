@@ -76,7 +76,11 @@ const Hero: React.FC = () => {
           </svg>
         </div>
         {/* Left Text Content */}
-        <div className="z-20 max-w-xl space-y-6 text-center md:text-left">
+        <div
+          data-aos="fade-right"
+          data-aos-duration="900"
+          className="z-20 max-w-xl space-y-6 text-center md:text-left"
+        >
           <h1 className="text-4xl tablet:text-5xl laptop-sm:text-6xl font-extrabold text-white leading-tight">
             Choose Your <span className="text-yellow-300">Test</span>
           </h1>
@@ -90,12 +94,20 @@ const Hero: React.FC = () => {
               tab once the test starts.
             </li>
           </ul>
-          <div className="inline-flex items-center gap-2 bg-white/20 text-white rounded-full px-4 py-1 backdrop-blur-md">
+          <div
+            data-aos="fade-up"
+            data-aos-delay="200"
+            className="inline-flex items-center gap-2 bg-white/20 text-white rounded-full px-4 py-1 backdrop-blur-md"
+          >
             <Breadcrumbs />
           </div>
         </div>
         {/* Right Mascot/Image */}
-        <div className="hidden tablet:block relative z-20 max-w-xs laptop-sm:max-w-sm laptop-lg:max-w-md">
+        <div
+          data-aos="zoom-in-up"
+          data-aos-delay="300"
+          className="hidden tablet:block relative z-20 max-w-xs laptop-sm:max-w-sm laptop-lg:max-w-md"
+        >
           {/* Yellow Glow Blob */}
           <img
             src={EduSheetXgif}

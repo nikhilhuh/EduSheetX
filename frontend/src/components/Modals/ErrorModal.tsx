@@ -13,11 +13,10 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ error }) => {
       document.body.style.overflow = originalOverflow;
     };
   }, []);
+
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center">
-      <div
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/50 backdrop-blur-md border border-white/30 rounded-xl shadow-2xl p-8 flex flex-col items-center max-w-md w-[90%]"
-      >
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/50 backdrop-blur-md border border-white/30 rounded-xl shadow-2xl p-8 flex flex-col items-center max-w-md w-[90%]">
         <div className="flex flex-col items-center">
           {/* Animated Cross Icon */}
           <svg
@@ -45,12 +44,13 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ error }) => {
               d="M36 16 16 36"
             />
           </svg>
-          <p className="text-red-500 font-semibold font-serif text-[6vw] tablet:text-[4vw] laptop-sm:text-[3vw] laptop-l:text-[2.5vw]">
-            Error
+          <p className="text-red-600 font-bold text-center text-base tablet:text-[2.5vw] laptop-sm:text-[1.7vw] laptop-lg:text-[1.5vw] tracking-wide">
+            Something went wrong
           </p>
         </div>
 
-        <div className="break-words text-black text-center text-[4vw] tablet:text-[3vw] laptop-sm:text-[2vw] laptop-l:text-[1.7vw]">
+        {/* Error Message */}
+        <div className="text-gray-800 text-sm tablet:text-[2.2vw] laptop-sm:text-[1.4vw] laptop-lg:text-[1.2vw] leading-snug px-2 break-words text-center mt-2 font-inter">
           {error}
         </div>
       </div>

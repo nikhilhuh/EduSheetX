@@ -9,6 +9,8 @@ import Hero from "../../components/AddTest/Hero";
 import Footer from "../../components/Layout/Footer";
 import TestDetails from "../../components/AddTest/TestDetails";
 import Questions from "../../components/AddTest/Questions";
+import { axiosInstance } from "../../services/axiosInstance";
+import Unauthorized from "../common/Unauthorized";
 
 const AddTest: React.FC = () => {
   const { UserDetails } = useUser();
@@ -19,48 +21,89 @@ const AddTest: React.FC = () => {
   const [timeLimit, setTimeLimit] = React.useState<string>("");
   const [questions, setQuestions] = React.useState<any[]>([
     {
-    questionType: "text",
-    questionText: "",
-    questionImage: "",
-    options: {
-      A: "",
-      B: "",
-      C: "",
-      D: "",
+      questionType: "text",
+      questionText: "",
+      questionImage: null,
+      questionCaption: "",
+      options: {
+        A: "",
+        B: "",
+        C: "",
+        D: "",
+      },
+      correctAnswer: "",
+      explanation: "",
     },
-    correctAnswer: "",
-    explanation: "",
-  },
   ]);
+  const [formError, setFormError] = React.useState<Record<string, string>>({});
   const [error, setError] = React.useState("");
   const [success, setSuccess] = React.useState("");
 
+  if (!UserDetails) return <Unauthorized />;
+
+  // function to handle adding test 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if(loading) return; // Prevent multiple submissions
+    setFormError({}); // Reset form errors
+
+    // check for form errors and inform user
     if (
-      !testName ||
-      !selectedSubject ||
-      !selectedTopic ||
-      !timeLimit ||
+      !testName.trim() ||
+      !selectedSubject.trim() ||
+      !selectedTopic.trim() ||
+      !timeLimit.trim() ||
       questions.length === 0
     ) {
-      setError("Please fill out the fields correctly.");
-      setTimeout(() => {
-        setError("");
-      }, 2000);
-      return;
-    }
+      if (
+        !testName.trim() ||
+        !selectedSubject.trim() ||
+        !selectedTopic.trim() ||
+        !timeLimit.trim() ||
+        questions.length === 0
+      ) {
+        const newErrors: Record<string, string> = {};
 
-    if (!UserDetails) {
-      {
-        setError("Cannot find your details, please login again.");
-        setTimeout(() => {
-          setError("");
-        }, 2000);
+        if (!testName.trim()) newErrors.testName = "Test name is required.";
+        if (!selectedSubject.trim()) newErrors.subject = "Subject is required.";
+        if (!selectedTopic.trim()) newErrors.topic = "Topic is required.";
+        if (!timeLimit.trim()) newErrors.timeLimit = "Time limit is required.";
+        if (questions.length === 0)
+          newErrors.questions = "At least one question is required.";
+
+        setFormError(newErrors);
         return;
       }
     }
     setLoading(true);
+
+    for (let i = 0; i < questions.length; i++) {
+      const q = questions[i];
+      if (q.questionImage) {
+        const formData = new FormData();
+        formData.append("image", q.questionImage);
+
+        try {
+          const res = await axiosInstance.post(
+            "/uploadquestionimage",
+            formData,
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+            }
+          );
+
+          questions[i].questionImage = res.data.path; // set final image path
+        } catch (error) {
+          console.error("Image upload failed for question", i, error);
+          setError(`Image upload failed for question ${i + 1}`);
+          setTimeout(() => {
+            setError("");
+          }, 2000);
+          setLoading(false);
+          return;
+        }
+      }
+    }
 
     const test = {
       name: testName,
@@ -69,6 +112,7 @@ const AddTest: React.FC = () => {
       timeLimit: Number(timeLimit),
       questions,
     };
+
     try {
       const res = await addTest(UserDetails.email, test);
       if (res.success) {
@@ -112,8 +156,6 @@ const AddTest: React.FC = () => {
     }
   };
 
-  if (!UserDetails) return null;
-
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {error && <ErrorModal error={error} />}
@@ -132,7 +174,8 @@ const AddTest: React.FC = () => {
             setSelectedTopic={setSelectedTopic}
             timeLimit={timeLimit}
             setTimeLimit={setTimeLimit}
-            setError={setError}
+            formError={formError}
+            setFormError={setFormError}
           />
 
           <Questions questions={questions} setQuestions={setQuestions} />

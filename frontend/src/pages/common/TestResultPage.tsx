@@ -25,7 +25,11 @@ const TestResultPage: React.FC = () => {
       <Navbar />
       <Hero result={result} />
       {/* Main Content */}
-      <div className="flex-1 mx-auto space-y-4 min-w-[90vw] laptop-sm:min-w-[60vw] laptop-sm:max-w-[70vw] px-4 py-6">
+      <div
+        data-aos="zoom-in-up"
+        data-aos-duration="500"
+        className="flex-1 mx-auto space-y-4 min-w-[90vw] laptop-sm:min-w-[60vw] laptop-sm:max-w-[70vw] px-4 py-6"
+      >
         <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-6">
           <button
             onClick={() => setPanel("review")}

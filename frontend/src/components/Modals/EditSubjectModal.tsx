@@ -1,17 +1,17 @@
 import React from "react";
-import { useUser } from "../../context/UserContext";
 import Cliploader from "../../components/Loaders/Cliploader";
-import { Subject } from "../../utils/constants";
+import { Subject, User } from "../../utils/constants";
 import { X } from "lucide-react";
 import { editSubject } from "../../services/api/apiCalls/teacher/editSubject";
 import { useNavigate } from "react-router-dom";
 
 interface EditSubjectModalProps {
-  subject: Subject | null;
+  subject: Subject;
   setError: React.Dispatch<React.SetStateAction<string>>;
   setSuccess: React.Dispatch<React.SetStateAction<string>>;
   setEditSubject: React.Dispatch<React.SetStateAction<boolean>>;
   fetchSubject: (name: string) => void;
+  UserDetails: User;
 }
 
 const EditSubjectModal: React.FC<EditSubjectModalProps> = ({
@@ -20,15 +20,16 @@ const EditSubjectModal: React.FC<EditSubjectModalProps> = ({
   setSuccess,
   setEditSubject,
   fetchSubject,
+  UserDetails,
 }) => {
-  const { UserDetails } = useUser();
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [subjectName, setSubjectName] = React.useState<string>(
-    subject?.name || ""
+    subject.name || ""
   );
-  const [topics, setTopics] = React.useState<string[]>(subject?.topics || []);
+  const [topics, setTopics] = React.useState<string[]>(subject.topics || []);
   const [newTopic, setNewTopic] = React.useState<string>("");
+  const [formError, setFormError] = React.useState<Record<string, string>>({});
 
   const handleAddTopic = () => {
     const trimmed = newTopic.trim();
@@ -44,32 +45,33 @@ const EditSubjectModal: React.FC<EditSubjectModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError({});
 
-    if (!subjectName.trim() || topics.length === 0) {
-      setEditSubject(false);
-      setError("Please provide subject name and at least one topic.");
-      setTimeout(() => setError(""), 2000);
+    const newErrors: Record<string, string> = {};
+    if (!subjectName.trim()) {
+      newErrors.name = "Subject name is required.";
+    }
+    if (topics.length === 0) {
+      newErrors.topics = "At least one topic is required.";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setFormError(newErrors);
       return;
     }
 
-    if (!UserDetails) {
+    if (!subject._id) {
+      setError("Invalid subject ID.");
       setEditSubject(false);
-      setError("Cannot find your details, please login again.");
-      setTimeout(() => setError(""), 2000);
-      return;
-    }
-
-    if (!subject || !subject._id) {
-      setEditSubject(false);
-      setError("Subject was not found.");
       setTimeout(() => {
         setError("");
       }, 2000);
       return;
     }
 
-    setLoading(true);
     try {
+      setLoading(true);
+
       const updatedSubject: Subject = {
         name: subjectName.trim(),
         topics,
@@ -82,7 +84,9 @@ const EditSubjectModal: React.FC<EditSubjectModalProps> = ({
       );
       if (res.success) {
         setSuccess("Subject updated successfully!");
-        navigate(`/subjects/${encodeURIComponent(updatedSubject.name)}`, { replace: true })
+        navigate(`/subjects/${encodeURIComponent(updatedSubject.name)}`, {
+          replace: true,
+        });
         fetchSubject(updatedSubject.name);
         setEditSubject(false);
         setTimeout(() => {
@@ -101,6 +105,10 @@ const EditSubjectModal: React.FC<EditSubjectModalProps> = ({
       setLoading(false);
     }
   };
+
+  React.useEffect(() => {
+    setFormError({});
+  }, [subjectName, topics]);
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center">
@@ -132,14 +140,26 @@ const EditSubjectModal: React.FC<EditSubjectModalProps> = ({
               value={subjectName}
               onChange={(e) => setSubjectName(e.target.value)}
               placeholder="e.g. Science, History, etc."
-              className="w-full p-2 tablet:px-4 tablet:py-2 border border-gray-300 rounded-lg focus:border-blue-500"
+              className={`w-full p-2 tablet:px-4 tablet:py-2 border rounded-lg focus:border-blue-500 ${
+                formError.name ? "border-red-500" : "border-gray-300"
+              }`}
               required
             />
+            {formError.name && (
+              <p className="text-red-500 text-xs tablet:text-sm mt-1 ml-1">
+                {formError.name}
+              </p>
+            )}
           </div>
 
           {/* Topics Section */}
           <div className="space-y-3 tablet:space-y-5">
             <h3 className="font-medium text-gray-800 border-t pt-4">Topics</h3>
+            {formError.topics && (
+              <p className="text-red-500 text-xs tablet:text-sm mt-1 ml-1">
+                {formError.topics}
+              </p>
+            )}
 
             {topics.length > 0 && (
               <div className="max-h-[20svh] space-y-3 tablet:space-y-5 overflow-y-auto">
@@ -175,7 +195,9 @@ const EditSubjectModal: React.FC<EditSubjectModalProps> = ({
                 value={newTopic}
                 onChange={(e) => setNewTopic(e.target.value)}
                 placeholder="Enter a topic"
-                className="w-full p-2 tablet:px-4 tablet:py-2 border border-gray-300 rounded-lg focus:border-blue-500"
+                className={`w-full p-2 tablet:px-4 tablet:py-2 border rounded-lg focus:border-blue-500  ${
+                  formError.topics ? "border-red-500" : "border-gray-300"
+                }`}
               />
               <button
                 type="button"

@@ -1,11 +1,11 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 import MascotImg from "../../assets/images/mascot.png";
 
 const Hero: React.FC = () => {
   return (
     <>
-    {/* Hero Section */}
+      {/* Hero Section */}
       <header className="relative bg-blue-500 w-full flex flex-col laptop-sm:flex-row items-center justify-around gap-14 px-6 py-10 overflow-hidden pb-20">
         {/* Background Gradient (under everything) */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 z-0" />
@@ -78,20 +78,31 @@ const Hero: React.FC = () => {
         {/* Left Content */}
         <div className="z-20 max-w-xl space-y-4 text-center laptop-sm:text-left">
           {/* Headline */}
-          <h1 className="text-6xl tablet:text-7xl laptop-sm:text-6xl laptop-lg:text-7xl font-extrabold text-white leading-tight drop-shadow-md">
-            Test. {" "}
+          <h1
+            data-aos="zoom-in-up"
+            className="text-6xl tablet:text-7xl laptop-sm:text-6xl laptop-lg:text-7xl font-extrabold text-white leading-tight drop-shadow-md"
+          >
+            <span>Test.</span>{" "}
             <span className="text-yellow-300 glow">Practice.</span> <br />
-            <span className='text-yellow-500 glow'>Progress.</span>
+            <span className="text-yellow-500 glow">Progress.</span>
           </h1>
 
           {/* Subtext */}
-          <p className="text-gray-100 text-lg tablet:text-xl leading-relaxed text-center laptop-sm:text-left max-w-xl">
+          <p
+            data-aos="fade-up"
+            data-aos-delay="300"
+            className="text-gray-100 text-lg tablet:text-xl leading-relaxed text-center laptop-sm:text-left max-w-xl"
+          >
             Attempt MCQ tests by subject and topic. Get instant scores and track
             your progress easily — all in one place.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 mt-6 justify-center laptop-sm:justify-start">
+          <div
+            data-aos="fade-up"
+            data-aos-delay="500"
+            className="flex flex-col sm:flex-row gap-4 mt-6 justify-center laptop-sm:justify-start"
+          >
             <Link to="/subjects">
               <button className="px-6 py-3 bg-yellow-300 text-black font-semibold rounded-xl shadow-md hover:bg-yellow-400 transition-all text-sm sm:text-base cursor-pointer">
                 🚀 Start Practicing
@@ -105,9 +116,16 @@ const Hero: React.FC = () => {
           </div>
 
           {/* Why Us Section */}
-          <section className="pt-10 border-t border-white/20 mt-8 tablet:hidden laptop-sm:block">
+          <section
+            data-aos="fade-up"
+            data-aos-delay="700"
+            className="pt-10 border-t border-white/20 mt-8 tablet:hidden laptop-sm:block"
+          >
             <h2 className="text-2xl laptop-sm:text-3xl font-semibold text-white mb-4 text-left">
-              Why <span className="text-yellow-300 glow font-extrabold">EduSheetX?</span>
+              Why{" "}
+              <span className="text-yellow-300 glow font-extrabold">
+                EduSheetX?
+              </span>
             </h2>
             <ul className="space-y-4 text-lg laptop-sm:text-xl text-gray-100 text-left">
               <li className="flex items-start gap-3">
@@ -129,7 +147,11 @@ const Hero: React.FC = () => {
           </section>
         </div>
         {/* Right Image or mascot */}
-        <div className="z-20 flex justify-center items-center">
+        <div
+          data-aos="fade-left"
+          data-aos-delay="400"
+          className="z-20 flex justify-center items-center"
+        >
           <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
             <img
               src={MascotImg}
@@ -154,7 +176,7 @@ const Hero: React.FC = () => {
         </svg>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Hero
+export default Hero;

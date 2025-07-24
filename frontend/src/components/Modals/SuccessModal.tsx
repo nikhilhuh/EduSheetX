@@ -41,7 +41,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ success }) => {
           </svg>
         </div>
 
-        <div className="break-words text-black text-center text-[4vw] tablet:text-[3vw] laptop-sm:text-[2vw] laptop-l:text-[1.7vw]">
+        <div className="text-gray-800 text-sm tablet:text-[2.2vw] laptop-sm:text-[1.4vw] laptop-lg:text-[1.2vw] leading-snug px-2 break-words text-center mt-2 font-inter">
           {success}
         </div>
       </div>

@@ -16,9 +16,9 @@ const Dashboard: React.FC = () => {
       {UserDetails ? (
         <>
           {UserDetails.role === "student" ? (
-            <StudentDashboard />
+            <StudentDashboard UserDetails={UserDetails}/>
           ) : (
-            <TeacherDashboard />
+            <TeacherDashboard UserDetails={UserDetails} />
           )}
         </>
       ) : (

@@ -6,17 +6,19 @@ export async function getOrCreateUserId(): Promise<string> {
   if (!userId) {
     try {
       const response = await axiosInstance.get("/generateguestid");
-      if (response && response.data && response.data.success) {
+
+      if (response?.data?.success && response.data.guestId) {
         userId = response.data.guestId;
       } else {
-        console.error("Failed to retrieve guest ID from server");
+        console.warn("Failed to retrieve guest ID from server. Using fallback.");
       }
-    } catch (err: any) {
-      console.error("Failed to retrieve guest ID from server:", err);
-    } finally {
-      if (!userId) {
-        userId = crypto.randomUUID();
-      }
+    } catch (err) {
+      console.error("Error retrieving guest ID:", err);
+    }
+
+    // Fallback to UUID
+    if (!userId) {
+      userId = crypto.randomUUID();
     }
 
     localStorage.setItem("userId", userId);

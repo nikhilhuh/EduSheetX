@@ -19,7 +19,11 @@ const Error404: React.FC = () => {
       <Navbar />
       <main className="flex flex-col-reverse laptop-sm:flex-row items-center justify-center min-h-[80vh] px-6 py-12 gap-10">
         {/* Text Section */}
-        <div className="text-center laptop-sm:text-left max-w-xl">
+        <div
+          className="text-center laptop-sm:text-left max-w-xl"
+          data-aos="fade-right"
+          data-aos-duration="800"
+        >
           <h1 className="text-6xl font-extrabold text-blue-700 mb-4">404</h1>
           <h2 className="text-2xl font-bold text-gray-800 mb-3">
             Page Not Found
@@ -38,7 +42,11 @@ const Error404: React.FC = () => {
         </div>
 
         {/* Illustration */}
-        <div className="w-full max-w-sm">
+        <div
+          className="w-full max-w-sm"
+          data-aos="zoom-in"
+          data-aos-delay="200"
+        >
           <img
             src={NotFoundImg}
             alt="404 Elephant Mascot"

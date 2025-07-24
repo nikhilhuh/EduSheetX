@@ -47,12 +47,16 @@ router.get("/", async (req: Request, res: Response) => {
       return;
     }
 
-    // ✅ Check if user already submitted this test
+    // ✅ Determine if it's a logged-in user or guest
+    const isValidUserId = mongoose.Types.ObjectId.isValid(userId);
+    const userObjId = isValidUserId
+      ? new mongoose.Types.ObjectId(userId)
+      : null;
+
+    // ✅ Check if result already exists
     const existingResult = await testResultModel.findOne({
       test: test._id,
-      $expr: {
-        $eq: [{ $toString: "$user" }, userId.toString()],
-      },
+      ...(isValidUserId ? { user: userObjId } : { guestId: userId.toString() }),
     });
 
     if (existingResult) {
@@ -121,9 +125,7 @@ router.get("/", async (req: Request, res: Response) => {
 
     // ✅ Save to testResultModel
     await testResultModel.create({
-      user: mongoose.Types.ObjectId.isValid(userId)
-        ? new mongoose.Types.ObjectId(userId)
-        : userId,
+      ...(isValidUserId ? { user: userObjId } : { guestId: userId.toString() }),
       test: test._id,
       subject: subject._id,
       topic: topicName,

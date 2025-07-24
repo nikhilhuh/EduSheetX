@@ -2,7 +2,6 @@ import React from "react";
 import ErrorModal from "../../components/Modals/ErrorModal";
 import { getSubjects } from "../../services/api/apiCalls/common/getSubjects";
 import { Subject } from "../../utils/constants";
-import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Layout/Navbar";
 import Footer from "../../components/Layout/Footer";
 import Hero from "../../components/Subjects/Hero";
@@ -17,10 +16,10 @@ import ConfirmationModal from "../../components/Modals/ConfirmationModal";
 
 const Subjects: React.FC = () => {
   const { UserDetails } = useUser();
-  const navigate = useNavigate();
   const [loadingData, setLoadingData] = React.useState<boolean>(false);
   const [success, setSuccess] = React.useState<string>("");
   const [error, setError] = React.useState<string>("");
+  const [mainError, setMainError] = React.useState<string>("");
   const [subjects, setSubjects] = React.useState<Subject[]>([]);
   const [addSubject, setAddSubject] = React.useState<boolean>(false);
   const [showConfirmModal, setShowConfirmModal] = React.useState(false);
@@ -52,19 +51,13 @@ const Subjects: React.FC = () => {
       if (response.success) {
         setSubjects(response.data);
       } else {
-        setError(response.message || "Something went wrong.");
-        setTimeout(() => setError(""), 2000);
+        setError("Could not connect to the server, try refreshing the page.");
       }
     } catch (err: any) {
-      setError("Something went wrong.");
-      setTimeout(() => setError(""), 2000);
+      setError("Could not connect to the server, try refreshing the page.");
     } finally {
       setLoadingData(false);
     }
-  };
-
-  const handleSubjectClick = (subject: Subject) => {
-    navigate(`${encodeURIComponent(subject.name)}`);
   };
 
   const handleDeleteConfirm = async () => {
@@ -105,17 +98,23 @@ const Subjects: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      {error && <ErrorModal error={error} />}
+      {error && (
+        <div className="text-white text-center px-4 py-1 w-full bg-red-400/80 font-inter font-bold text-sm tablet:text-base">
+          {error}
+        </div>
+      )}
+      {mainError && <ErrorModal error={mainError} />}
       {success && <SuccessModal success={success} />}
-      {addSubject && (
+      {addSubject && UserDetails && (
         <AddSubjectModal
-          setError={setError}
+          setMainError={setMainError}
           setSuccess={setSuccess}
           setAddSubject={setAddSubject}
           fetchSubjects={fetchSubjects}
+          UserDetails={UserDetails}
         />
       )}
-      {showConfirmModal && (
+      {showConfirmModal && UserDetails && (
         <ConfirmationModal
           message={`Are you sure you want to delete "${selectedSubject?.name}"?`}
           onCancel={() => setShowConfirmModal(false)}
@@ -132,15 +131,30 @@ const Subjects: React.FC = () => {
           {subjects.length === 0 ? (
             <NoData text="No subjects found at the moment.." />
           ) : (
-            <MainContent
-              subjects={subjects}
-              handleSubjectClick={handleSubjectClick}
-              setAddSubject={setAddSubject}
-              onDeleteClick={(subject: Subject) => {
-                setSelectedSubject(subject);
-                setShowConfirmModal(true);
-              }}
-            />
+            <div className="max-w-6xl mx-auto px-4 py-16">
+              <MainContent
+                subjects={subjects}
+                setAddSubject={setAddSubject}
+                onDeleteClick={(subject: Subject) => {
+                  setSelectedSubject(subject);
+                  setShowConfirmModal(true);
+                }}
+              />
+              {UserDetails && UserDetails.role === "teacher" && (
+                <div
+                  className="mt-10 flex justify-end"
+                  data-aos="fade-up"
+                  data-aos-delay="200"
+                >
+                  <button
+                    onClick={() => setAddSubject(true)}
+                    className="max-w-max bg-blue-500 hover:bg-blue-600 cursor-pointer px-4 py-2 rounded text-center text-white font-semibold"
+                  >
+                    Add Subject
+                  </button>
+                </div>
+              )}
+            </div>
           )}
         </div>
       )}

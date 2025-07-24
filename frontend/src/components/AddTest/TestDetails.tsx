@@ -15,7 +15,8 @@ interface TestDetailsProps {
   setSelectedTopic: React.Dispatch<React.SetStateAction<string>>;
   timeLimit: string;
   setTimeLimit: React.Dispatch<React.SetStateAction<string>>;
-  setError: React.Dispatch<React.SetStateAction<string>>;
+  formError: Record<string, string>;
+  setFormError: React.Dispatch<React.SetStateAction<Record<string, string>>>;
 }
 
 const TestDetails: React.FC<TestDetailsProps> = ({
@@ -27,7 +28,8 @@ const TestDetails: React.FC<TestDetailsProps> = ({
   setSelectedTopic,
   timeLimit,
   setTimeLimit,
-  setError,
+  formError,
+  setFormError,
 }) => {
   const { UserDetails } = useUser();
   const [loadingName, setLoadingName] = React.useState<boolean>(false);
@@ -45,7 +47,9 @@ const TestDetails: React.FC<TestDetailsProps> = ({
 
   React.useEffect(() => {
     if (!UserDetails) return;
+
     const fetchSubjects = async () => {
+      const newErrors: Record<string, string> = {};
       try {
         const res = await getSubjects();
         if (res.success) {
@@ -56,16 +60,15 @@ const TestDetails: React.FC<TestDetailsProps> = ({
           }));
           setSubjectOptions(subs);
         } else {
-          setError("Failed to fetch subjects.");
-          setTimeout(() => {
-            setError("");
-          }, 2000);
+          newErrors.subject =
+            "Failed to fetch subjects, try reloading the page";
         }
       } catch (err) {
-        setError("Failed to fetch subjects.");
-        setTimeout(() => {
-          setError("");
-        }, 2000);
+        newErrors.subject = "Failed to fetch subjects, try reloading the page";
+      } finally {
+        if (Object.keys(newErrors).length > 0) {
+          setFormError((prev) => ({ ...prev, ...newErrors }));
+        }
       }
     };
     fetchSubjects();
@@ -109,12 +112,6 @@ const TestDetails: React.FC<TestDetailsProps> = ({
     };
   }, [debouncedValidate]);
 
-  const handleTestNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newName = e.target.value;
-    setTestName(newName);
-    debouncedValidate(newName);
-  };
-
   return (
     <div className="space-y-6 bg-white p-2 mobile-l:p-4 tablet:p-6 rounded-lg tablet:shadow-md">
       {/* Test Details Section */}
@@ -136,9 +133,15 @@ const TestDetails: React.FC<TestDetailsProps> = ({
               type="text"
               id="Test Name"
               value={testName}
-              onChange={handleTestNameChange}
+              onChange={(e) => {
+                setFormError((prev) => ({ ...prev, testName: "" }));
+                setTestName(e.target.value);
+                debouncedValidate(e.target.value);
+              }}
               placeholder="Enter test name"
-              className="w-full pr-10 px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition-all overflow-x-hidden break-words overflow-y-auto"
+              className={`w-full pr-10 px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition-all overflow-x-hidden break-words overflow-y-auto ${
+                formError.testName ? "border-red-500" : "border-gray-300"
+              }`}
               required
             />
             {/* Only show indicator when not empty and not typing */}
@@ -172,6 +175,12 @@ const TestDetails: React.FC<TestDetailsProps> = ({
                 )}
               </div>
             )}
+            {/* test name error */}
+            {formError.testName && (
+              <p className="text-sm text-red-500 mt-1 ml-1">
+                {formError.testName}
+              </p>
+            )}
           </div>
         </div>
 
@@ -187,11 +196,16 @@ const TestDetails: React.FC<TestDetailsProps> = ({
             <select
               id="SubjectSelect"
               value={selectedSubject}
-              onChange={(e) => setSelectedSubject(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition-all cursor-pointer"
+              onChange={(e) => {
+                setFormError((prev) => ({ ...prev, subject: "" }));
+                setSelectedSubject(e.target.value);
+              }}
+              className={`w-full px-4 py-2 border rounded-lg outline-none focus:border-blue-500 transition-all cursor-pointer ${
+                formError.subject ? "border-red-500" : "border-gray-300"
+              }`}
               required
             >
-              <option>Select Subject</option>
+              <option value="">Select Subject</option>
               {subjectOptions.map((sub) => (
                 <option
                   key={sub.value}
@@ -202,6 +216,13 @@ const TestDetails: React.FC<TestDetailsProps> = ({
                 </option>
               ))}
             </select>
+
+            {/* subject error */}
+            {formError.subject && (
+              <p className="text-sm text-red-500 mt-1 ml-1">
+                {formError.subject}
+              </p>
+            )}
           </div>
           {/* Topic Select */}
           <div>
@@ -214,8 +235,13 @@ const TestDetails: React.FC<TestDetailsProps> = ({
             <select
               id="TopicSelect"
               value={selectedTopic}
-              onChange={(e) => setSelectedTopic(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition-all cursor-pointer"
+              onChange={(e) => {
+                setFormError((prev) => ({ ...prev, topic: "" }));
+                setSelectedTopic(e.target.value);
+              }}
+              className={`w-full px-4 py-2 border rounded-lg outline-none focus:border-blue-500 transition-all cursor-pointer ${
+                formError.topic ? "border-red-500" : "border-gray-300"
+              }`}
               required
             >
               <option>Select Topic</option>
@@ -225,6 +251,13 @@ const TestDetails: React.FC<TestDetailsProps> = ({
                 </option>
               ))}
             </select>
+
+            {/* topic error */}
+            {formError.topic && (
+              <p className="text-sm text-red-500 mt-1 ml-1">
+                {formError.topic}
+              </p>
+            )}
           </div>
           {/* Time Limit */}
           <div>
@@ -238,12 +271,24 @@ const TestDetails: React.FC<TestDetailsProps> = ({
               id="TimeLimit"
               type="number"
               value={timeLimit}
-              onChange={(e) => setTimeLimit(e.target.value)}
+              onChange={(e) => {
+                setFormError((prev) => ({ ...prev, timeLimit: "" }));
+                setTimeLimit(e.target.value);
+              }}
               placeholder="e.g. 30"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500 transition-all cursor-pointer"
+              className={`w-full px-4 py-2 border rounded-lg outline-none focus:border-blue-500 transition-all cursor-pointer ${
+                formError.timeLimit ? "border-red-500" : "border-gray-300"
+              }`}
               min={1}
               required
             />
+
+            {/* time limit error */}
+            {formError.timeLimit && (
+              <p className="text-sm text-red-500 mt-1 ml-1">
+                {formError.timeLimit}
+              </p>
+            )}
           </div>
         </div>
       </div>

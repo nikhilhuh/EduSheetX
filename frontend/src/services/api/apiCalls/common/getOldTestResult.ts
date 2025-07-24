@@ -2,12 +2,11 @@ import { axiosInstance } from "../../../axiosInstance";
 import { apiErrorHandler } from "../../apiErrorHandling";
 import { getOrCreateUserId } from "../../../../utils/getOrCreateUserId";
 
-const userId = await getOrCreateUserId();
-
 export const getOldTestResult = async (
   testId: string
 ) => {
   try {
+    const userId = await getOrCreateUserId();
     const response = await axiosInstance.get("/getoldtestresult", {
       params: {
         testId,

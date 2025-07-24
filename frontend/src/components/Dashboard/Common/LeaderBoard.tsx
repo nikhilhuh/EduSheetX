@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
-import { getOrCreateUserId } from "../../../utils/getOrCreateUserId";
+import { User } from "../../../utils/constants";
 
 interface LeaderboardEntry {
   _id: string;
@@ -20,14 +20,15 @@ interface LeaderboardEntry {
 
 interface LeaderboardProps {
   leaderboard: LeaderboardEntry[];
+  UserDetails: User;
 }
 
-const LeaderBoard: React.FC<LeaderboardProps> = ({ leaderboard }) => {
-  const userId = getOrCreateUserId();
+const LeaderBoard: React.FC<LeaderboardProps> = ({ leaderboard, UserDetails }) => {
+  const userId = UserDetails._id;
 
   return (
     <div className="rounded shadow p-2 tablet:p-6">
-      <h2 className="text-2xl laptop-lg:text-4xl font-semibold mb-6 text-center">
+      <h2 data-aos="zoom-in" data-aos-duration="800" className="text-2xl laptop-lg:text-4xl font-semibold mb-6 text-center">
         🏆 Leaderboard (Top Performers)
       </h2>
       <ResponsiveContainer width="100%" height={350}>
@@ -73,6 +74,8 @@ const LeaderBoard: React.FC<LeaderboardProps> = ({ leaderboard }) => {
 
           return (
             <div
+            data-aos="zoom-in-up"
+              data-aos-delay={idx * 100}
               title={`${entry.name}`}
               key={entry._id}
               className={`bg-gradient-to-br  p-5 rounded-xl shadow-lg transition-transform transform hover:scale-105  text-white ${

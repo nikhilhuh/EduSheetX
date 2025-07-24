@@ -1,24 +1,25 @@
 import React from "react";
-import { useUser } from "../../context/UserContext";
 import Cliploader from "../../components/Loaders/Cliploader";
-import { Subject } from "../../utils/constants";
+import { Subject, User } from "../../utils/constants";
 import { addSubject } from "../../services/api/apiCalls/teacher/addSubject";
 import { X } from "lucide-react";
 
 interface AddSubjectModalProps {
-  setError: React.Dispatch<React.SetStateAction<string>>;
+  setMainError: React.Dispatch<React.SetStateAction<string>>;
   setSuccess: React.Dispatch<React.SetStateAction<string>>;
   setAddSubject: React.Dispatch<React.SetStateAction<boolean>>;
   fetchSubjects: () => void;
+  UserDetails: User;
 }
 
 const AddSubjectModal: React.FC<AddSubjectModalProps> = ({
-  setError,
+  setMainError,
   setSuccess,
   setAddSubject,
   fetchSubjects,
+  UserDetails,
 }) => {
-  const { UserDetails } = useUser();
+  const [formError, setFormError] = React.useState<Record<string, string>>({});
   const [loading, setLoading] = React.useState<boolean>(false);
   const [subject, setSubject] = React.useState<Subject>({
     name: "",
@@ -46,24 +47,22 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError({});
 
-    if (!subject.name.trim() || subject.topics.length === 0) {
-      setAddSubject(false);
-      setError("Please provide subject name and at least one topic.");
-      setTimeout(() => setError(""), 2000);
+    const newErrors: Record<string, string> = {};
+    if (!subject.name.trim()) {
+      newErrors.name = "Subject name is required.";
+    }
+    if (subject.topics.length === 0) {
+      newErrors.topics = "At least one topic is required.";
+    }
+    if (Object.keys(newErrors).length > 0) {
+      setFormError(newErrors);
       return;
     }
-
-    if (!UserDetails) {
-      setAddSubject(false);
-      setError("Cannot find your details, please login again.");
-      setTimeout(() => setError(""), 2000);
-      return;
-    }
-
-    setLoading(true);
 
     try {
+      setLoading(true);
       const res = await addSubject(UserDetails.email, subject);
       if (res.success) {
         setSubject({ name: "", topics: [] });
@@ -76,19 +75,21 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({
         }, 2000);
       } else {
         setAddSubject(false);
-        setError(res.message || "Failed to add subject.");
-        setTimeout(() => setError(""), 2000);
+        setMainError(res.message || "Failed to add subject.");
+        setTimeout(() => setMainError(""), 2000);
       }
     } catch {
       setAddSubject(false);
-      setError("Failed to add subject.");
-      setTimeout(() => setError(""), 2000);
+      setMainError("Failed to add subject.");
+      setTimeout(() => setMainError(""), 2000);
     } finally {
       setLoading(false);
     }
   };
 
-  if (!UserDetails) return null;
+  React.useEffect(() => {
+    setFormError({});
+  }, [subject]);
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center">
@@ -122,14 +123,26 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({
                 setSubject((prev) => ({ ...prev, name: e.target.value }))
               }
               placeholder="e.g. Science, History, etc."
-              className="w-full p-2 tablet:px-4 tablet:py-2 border border-gray-300 rounded-lg focus:border-blue-500"
+              className={`w-full p-2 tablet:px-4 tablet:py-2 border rounded-lg focus:border-blue-500 ${
+                formError.name ? "border-red-500" : "border-gray-300"
+              }`}
               required
             />
+            {formError.name && (
+              <p className="text-red-500 text-xs tablet:text-sm mt-1 ml-1">
+                {formError.name}
+              </p>
+            )}
           </div>
 
           {/* Topics Section */}
           <div className="space-y-3 tablet:space-y-5">
             <h3 className="font-medium text-gray-800 border-t pt-4">Topics</h3>
+            {formError.topics && (
+              <p className="text-red-500 text-xs tablet:text-sm mt-1 ml-1">
+                {formError.topics}
+              </p>
+            )}
 
             {subject.topics.length > 0 && (
               <div className="max-h-[20svh] space-y-3 tablet:space-y-5 overflow-y-auto">
@@ -161,7 +174,9 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({
                 value={newTopic}
                 onChange={(e) => setNewTopic(e.target.value)}
                 placeholder="Enter a topic"
-                className="w-full p-2 tablet:px-4 tablet:py-2 border border-gray-300 rounded-lg focus:border-blue-500"
+                className={`w-full p-2 tablet:px-4 tablet:py-2 border rounded-lg focus:border-blue-500 ${
+                  formError.topics ? "border-red-500" : "border-gray-300"
+                }`}
               />
               <button
                 type="button"
@@ -177,8 +192,14 @@ const AddSubjectModal: React.FC<AddSubjectModalProps> = ({
           <div className="flex justify-end">
             <button
               type="submit"
-              disabled={loading || !UserDetails || UserDetails.role !== "teacher"}
-              className={`bg-blue-600 text-white px-4 py-2 tablet:px-8 tablet:py-3 rounded-lg focus:outline-none transition-all shadow-md hover:shadow-lg ${loading? "cursor-not-allowed opacity-40" : "cursor-pointer hover:bg-blue-700"}`}
+              disabled={
+                loading || !UserDetails || UserDetails.role !== "teacher"
+              }
+              className={`bg-blue-600 text-white px-4 py-2 tablet:px-8 tablet:py-3 rounded-lg focus:outline-none transition-all shadow-md hover:shadow-lg ${
+                loading
+                  ? "cursor-not-allowed opacity-40"
+                  : "cursor-pointer hover:bg-blue-700"
+              }`}
             >
               {loading ? <Cliploader size={20} /> : "Add Subject"}
             </button>

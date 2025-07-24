@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { subjectModel } from "../../models/dbmodels/subjectModel";
 import { testModel } from "../../models/dbmodels/testModel";
+import mongoose from "mongoose";
 const router = express.Router();
 
 router.get("/", async (req: Request, res: Response) => {
@@ -17,12 +18,16 @@ router.get("/", async (req: Request, res: Response) => {
     }
 
     const subject = await subjectModel.findOne({
-      name: { $regex: new RegExp(`^${subjectName}$`, "i") },
-    });
+      name: subjectName });
     if (!subject) {
       res.status(404).json({ success: false, message: "Subject not found." });
       return;
     }
+
+    const isValidUserId = mongoose.Types.ObjectId.isValid(userId);
+    const userObjId = isValidUserId
+      ? new mongoose.Types.ObjectId(userId)
+      : null;
 
     const tests = await testModel.aggregate([
       {
@@ -33,7 +38,7 @@ router.get("/", async (req: Request, res: Response) => {
       },
       {
         $lookup: {
-          from: "users",
+          from: "Users",
           localField: "createdBy",
           foreignField: "_id",
           as: "createdBy",
@@ -55,7 +60,14 @@ router.get("/", async (req: Request, res: Response) => {
                 $expr: {
                   $and: [
                     { $eq: ["$test", "$$testId"] },
-                    { $eq: [{ $toString: "$user" }, userId.toString()] },
+                    {
+                      $or: [
+                        ...(isValidUserId
+                          ? [{ $eq: ["$user", userObjId] }]
+                          : []),
+                        { $eq: ["$guestId", userId.toString()] },
+                      ],
+                    },
                   ],
                 },
               },

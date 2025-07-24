@@ -1,17 +1,18 @@
 import React from "react";
 import { Subject } from "../../utils/constants";
-import { useUser } from "../../context/UserContext";
 
 const MainContent: React.FC<{
   subject: Subject;
   handleTopicClick: (topic: string) => void;
-  setEditSubject: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ subject, handleTopicClick, setEditSubject }) => {
-  const { UserDetails } = useUser();
+}> = ({ subject, handleTopicClick }) => {
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-16">
-      <h2 className="text-3xl laptop-sm:text-4xl font-extrabold text-center text-blue-800 mb-10 capitalize">
+    <div>
+      <h2
+        data-aos="fade-down"
+        data-aos-duration="800"
+        className="text-3xl laptop-sm:text-4xl font-extrabold text-center text-blue-800 mb-10 capitalize"
+      >
         Topics in {subject.name}
       </h2>
 
@@ -20,8 +21,10 @@ const MainContent: React.FC<{
           <div
             key={idx}
             onClick={() => handleTopicClick(topic)}
-            className="fade-in-up group rounded-2xl shadow-lg p-6 border border-blue-100 bg-blue-50 hover:shadow-xl hover:border-blue-300 transition-all duration-300 cursor-pointer flex flex-col items-center text-center hover:scale-[1.03]"
-            style={{ animationDelay: `${idx * 80}ms` }}
+            className="group rounded-2xl shadow-lg p-6 border border-blue-100 bg-blue-50 hover:shadow-xl hover:border-blue-300 transition-all duration-300 cursor-pointer flex flex-col items-center text-center hover:scale-[1.03]"
+            data-aos="zoom-in"
+            data-aos-delay={idx * 100}
+            data-aos-duration="600"
           >
             <div className="bg-blue-100 text-blue-600 p-4 rounded-full mb-4 group-hover:bg-blue-600 group-hover:text-white transition">
               📘
@@ -32,17 +35,6 @@ const MainContent: React.FC<{
           </div>
         ))}
       </div>
-
-      {UserDetails && UserDetails.role === "teacher" && (
-        <div className="mt-10 flex justify-end">
-          <button
-            onClick={() => setEditSubject(true)}
-            className="max-w-max bg-blue-500 hover:bg-blue-600 cursor-pointer px-4 py-2 rounded text-center text-white font-semibold"
-          >
-            Edit Subject
-          </button>
-        </div>
-      )}
     </div>
   );
 };

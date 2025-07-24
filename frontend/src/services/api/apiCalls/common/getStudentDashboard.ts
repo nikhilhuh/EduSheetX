@@ -2,10 +2,9 @@ import { getOrCreateUserId } from "../../../../utils/getOrCreateUserId";
 import { axiosInstance } from "../../../axiosInstance";
 import { apiErrorHandler } from "../../apiErrorHandling";
 
-const userId = await getOrCreateUserId();
-
 export const getStudentDashoard = async () => {
   try {
+    const userId = await getOrCreateUserId();
     const response = await axiosInstance.get("/getstudentdashboard", {
       params: { userId },
     });

@@ -15,7 +15,7 @@ const TeacherHero: React.FC<TeacherHeroProps> = ({
   totalStudents,
   averageMarks,
   percentage,
-  UserDetails
+  UserDetails,
 }) => {
   const cardStyle =
     "rounded-2xl p-5 shadow-lg bg-gradient-to-br text-white from-purple-500 to-indigo-600 flex flex-col justify-center gap-4 text-center";
@@ -94,7 +94,11 @@ const TeacherHero: React.FC<TeacherHeroProps> = ({
         {/* Left Content */}
         <div className="z-20 max-w-2xl space-y-4 text-center">
           {/* Headline */}
-          <h1 className="text-4xl laptop-sm:text-6xl font-extrabold text-white leading-tight text-center drop-shadow-md">
+          <h1
+            data-aos="fade-down"
+            data-aos-duration="1000"
+            className="text-4xl laptop-sm:text-6xl font-extrabold text-white leading-tight text-center drop-shadow-md"
+          >
             <span>Welcome</span>
             <br />
             <span className="text-yellow-300 glow">
@@ -102,10 +106,18 @@ const TeacherHero: React.FC<TeacherHeroProps> = ({
             </span>
           </h1>
           {/* Subtext */}
-          <p className="text-gray-100 text-lg md:text-xl leading-relaxed text-center max-w-lg">
-            Your personalised dashboard is ready to track your progress.
+          <p
+            data-aos="fade-up"
+            data-aos-duration="1000"
+            className="text-gray-100 text-lg md:text-xl leading-relaxed text-center max-w-lg"
+          >
+            Your personalised dashboard is ready to track your tests.
           </p>
-          <div className="flex justify-center">
+          <div
+            data-aos="fade-in"
+            data-aos-delay="200"
+            className="flex justify-center"
+          >
             <div className="inline-flex justify-center items-center gap-2 bg-white/20 text-white rounded-full px-4 py-1 backdrop-blur-md">
               <Breadcrumbs />
             </div>
@@ -114,30 +126,36 @@ const TeacherHero: React.FC<TeacherHeroProps> = ({
         {/* Summary Cards */}
         <div className="grid w-full laptop-sm:w-auto mobile-l:grid-cols-2 gap-4 mb-8 z-20">
           <div
-          title="Total tests created by you"
+            data-aos="zoom-in-up"
+            data-aos-delay="100"
+            title="Total tests created by you"
             className={`${cardStyle} bg-gradient-to-br from-yellow-400 to-yellow-600`}
           >
             <p>Total Tests Created</p>
             <p className="text-xl tablet:text-3xl font-bold">{totalTests}</p>
           </div>
-           <div
-          title={`Total Students who took your tests`}
+          <div
+            data-aos="zoom-in-up"
+            data-aos-delay="200"
+            title="Total Students who took your tests"
             className={`${cardStyle} bg-gradient-to-br from-pink-400 to-pink-600`}
           >
             <p>Total Students</p>
-            <p className="text-xl tablet:text-3xl font-bold">
-              {totalStudents}
-            </p>
+            <p className="text-xl tablet:text-3xl font-bold">{totalStudents}</p>
           </div>
           <div
-          title="Students average marks in all your tests combined"
+            data-aos="zoom-in-up"
+            data-aos-delay="300"
+            title="Students average marks in all your tests combined"
             className={`${cardStyle} bg-gradient-to-br from-sky-400 to-sky-600`}
           >
             <p>Average Marks</p>
             <p className="text-xl tablet:text-3xl font-bold">{averageMarks}</p>
           </div>
           <div
-          title="Average percentage in all tests"
+            data-aos="zoom-in-up"
+            data-aos-delay="400"
+            title="Average percentage in all tests"
             className={`${cardStyle} bg-gradient-to-br from-green-400 to-green-600`}
           >
             <p>Percentage</p>

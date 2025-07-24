@@ -3,7 +3,7 @@ import { ResultType } from "../../utils/constants";
 import { useParams } from "react-router-dom";
 
 const Hero: React.FC<{ result: ResultType }> = ({ result }) => {
-  const { testName } = useParams<{ testName: string}>();
+  const { testName } = useParams<{ testName: string }>();
   const getRemark = (marks: number, total: number): string => {
     const percentage = (marks / total) * 100;
 
@@ -87,9 +87,13 @@ const Hero: React.FC<{ result: ResultType }> = ({ result }) => {
           </svg>
         </div>
         {/* Left Text Content */}
-        <div className="z-20 max-w-xl space-y-6 text-center md:text-left">
+        <div
+          data-aos="fade-right"
+          data-aos-duration="900"
+          className="z-20 max-w-xl space-y-6 text-center md:text-left"
+        >
           <h1 className="text-4xl tablet:text-5xl laptop-lg:text-6xl font-extrabold text-white leading-tight text-center">
-            {testName} 
+            {testName}
             <br />
             <span className="text-yellow-300">RESULT</span>
           </h1>
@@ -102,7 +106,11 @@ const Hero: React.FC<{ result: ResultType }> = ({ result }) => {
           </p>
         </div>
         {/* Summary */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8 z-20">
+        <div
+          data-aos="zoom-in-up"
+          data-aos-delay="300"
+          className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8 z-20"
+        >
           {/* Total Questions */}
           <div className="bg-gradient-to-br from-blue-100 to-blue-200 p-2 mobile-l:p-4 laptop-sm:p-6 rounded-xl text-center shadow-md">
             <p className="font-semibold text-blue-700 mb-1">Questions</p>

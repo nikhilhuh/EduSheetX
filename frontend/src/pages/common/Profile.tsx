@@ -11,6 +11,8 @@ import SuccessModal from "../../components/Modals/SuccessModal";
 import { EditableUserField } from "../../utils/constants";
 import { Pencil, X } from "lucide-react";
 import { updateUser } from "../../services/api/apiCalls/common/updateUser";
+import ConfirmationModal from "../../components/Modals/ConfirmationModal";
+import { getOrCreateUserId } from "../../utils/getOrCreateUserId";
 
 const Profile: React.FC = () => {
   const { UserDetails, setUserDetails } = useUser();
@@ -29,6 +31,7 @@ const Profile: React.FC = () => {
     gaurdianName: UserDetails?.gaurdianName || "",
     gaurdianPhoneNumber: UserDetails?.gaurdianPhoneNumber || "",
   });
+  const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -47,7 +50,9 @@ const Profile: React.FC = () => {
     try {
       const response = await logout(UserDetails._id);
       if (response.success) {
-        setSuccess("Logged out");
+        setSuccess("You are Logged out");
+        localStorage.removeItem("userId");
+        await getOrCreateUserId();
         setTimeout(() => {
           navigate("/");
           localStorage.removeItem("user");
@@ -55,13 +60,14 @@ const Profile: React.FC = () => {
           setSuccess("");
         }, 2000);
       } else {
-        setError(response.message || "Logout failed. Try again later.");
+        setError("Logout failed, try again later.");
         setTimeout(() => setError(""), 2000);
       }
     } catch (err) {
-      setError("Logout failed. Try again later.");
+      setError("Logout failed, try again later.");
       setTimeout(() => setError(""), 2000);
     } finally {
+      setShowConfirmModal(false);
       setLoading(false);
     }
   };
@@ -91,12 +97,11 @@ const Profile: React.FC = () => {
         setSuccess("Profile updated successfully!");
         setTimeout(() => setSuccess(""), 2000);
       } else {
-        setError(response.message || "Update failed. Try again later.");
+        setError("Update failed, try again later.");
         setTimeout(() => setError(""), 2000);
       }
     } catch (err) {
-      console.error("Update error:", err);
-      setError("Update failed. Try again later.");
+      setError("Update failed, try again later.");
       setTimeout(() => setError(""), 2000);
     } finally {
       setLoading(false);
@@ -180,6 +185,9 @@ const Profile: React.FC = () => {
     <div>
       {error && <ErrorModal error={error} />}
       {success && <SuccessModal success={success} />}
+      {showConfirmModal && <ConfirmationModal message="Are you sure you want to logout from your account?"
+      onCancel={()=> setShowConfirmModal(false)}
+      onConfirm={handleLogout} />}
       <Navbar />
       <div className="min-h-screen bg-white py-10 px-4">
         <div className="max-w-xl mx-auto">
@@ -202,7 +210,7 @@ const Profile: React.FC = () => {
           <div className="mt-10 flex justify-end">
             <button
               title="Logout from your account"
-              onClick={handleLogout}
+              onClick={()=> setShowConfirmModal(true)}
               disabled={loading}
               className={`${
                 loading ? "opacity-70" : "hover:bg-red-500 hover:cursor-pointer"

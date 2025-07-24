@@ -6,7 +6,7 @@ export const Instructions: React.FC = () => {
     <section className="p-6 text-gray-800">
       <div className="max-w-6xl mx-auto grid laptop-sm:grid-cols-2 gap-12 items-center">
         {/* Left Text Content */}
-        <div>
+        <div data-aos="fade-right" data-aos-duration="800">
           <h2 className="text-3xl laptop-sm:text-4xl font-semibold mb-4">
             Instructions
           </h2>
@@ -62,8 +62,13 @@ export const Instructions: React.FC = () => {
             </li>
           </ul>
         </div>
+
         {/* right illustrations */}
-        <div className="hidden laptop-sm:flex">
+        <div
+          className="hidden laptop-sm:flex"
+          data-aos="fade-left"
+          data-aos-duration="800"
+        >
           <img
             src={InstructionsImg}
             alt="Instructions Illustration"
